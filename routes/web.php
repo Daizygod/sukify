@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('tracks', 'TracksController');
+Route::resource('tracks', TrackController::class);
 
 Route::get('/', function () {
     return view('welcome');
