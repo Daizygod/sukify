@@ -10,3 +10,12 @@ Connect to MySQL.exe (I have it in mariaDB)
 Create database with your name in env file
 `create database sukify`
 
+`php artisan key:generate`
+
+`npm install`
+
+`npm run dev`
+
+`npm run build`
+
+`php artisan serve`
