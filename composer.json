@@ -20,7 +20,9 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "reliese/laravel": "^1.1",
+        "spatie/laravel-ignition": "^1.0",
+        "sven/artisan-view": "^3.5"
     },
     "autoload": {
         "psr-4": {
