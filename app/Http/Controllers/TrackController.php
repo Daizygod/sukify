@@ -37,33 +37,19 @@ class TrackController extends Controller
      */
     public function create()
     {
-        return View::make('tracks.create');
+        return View('tracks.form');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        var_dump($request);
-        die();
-//        $validatedData = $request->validate([
-//            'name' => 'required',
-//            'type' => 'required',
-//            'counter' => 'required',
-//        ]);
-
-        $emp = new Track();
-
-        $emp->name = $request->input('name');
-        $emp->type = $request->input('type');
-        $emp->counter = $request->input('counter');
-
-        $emp->save();
-        return redirect('track')->with('status', 'Form Data Has Been Inserted');
+        Track::create($request->all());
+        return redirect()->route('tracks.index');
     }
 
     /**

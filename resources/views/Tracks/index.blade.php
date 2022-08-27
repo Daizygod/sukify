@@ -35,6 +35,7 @@
         <ul class="nav navbar-nav">
             <li><a href="{{ URL::to('tracks') }}">View All sharks</a></li>
             <li><a href="{{ URL::to('tracks/create') }}">Create a shark</a>
+            <li><a href="{{ route('tracks.create') }}">Create Track</a>
         </ul>
     </nav>
 
