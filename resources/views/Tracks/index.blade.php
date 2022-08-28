@@ -44,11 +44,11 @@
                     return \App\Models\Track::$types_array[$row->type];
                 }
             ],
-            'counter',
+            [
+                'attribute' => 'counter',
+                'label' => 'Streams',
+            ],
             'photo_cover_id',
-            'file_id',
-            'video_id',
-            'created_by',
             [
                 'attribute' => 'created_by',
                 'label' => 'Created_by',
