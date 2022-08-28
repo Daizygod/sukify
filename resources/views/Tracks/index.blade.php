@@ -29,7 +29,14 @@
                 }
             ],
             'name',
-            'release_date',
+            [
+                'attribute' => 'release_date',
+                'label' => 'Released', // Column label.
+                'value' => function ($row) { // You can set 'value' as a callback function to get a row data value dynamically.
+                    return date('d.m.Y', strtotime($row->release_date));
+                },
+                'format' => 'html', // To render column content without lossless of html tags, set 'html' formatter.
+            ],
             [
                 'attribute' => 'type',
                 'label' => 'Type',
