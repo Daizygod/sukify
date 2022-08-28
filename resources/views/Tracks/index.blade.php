@@ -13,16 +13,52 @@
         'rowsFormAction' => false,
         'columnFields' => [
             'id',
+            [
+                'attribute' => 'artist_id',
+                'label' => 'Artist',
+                'value' => function ($row) {
+                    $artist = \App\Models\Artist::where('id', $row->artist_id)->first();
+                    if ($artist) {
+                        #TODO route to view artist (after create view page)
+                        $result = $artist->name;
+                        //$result = "<a href=" . url('page') . ">" . $artist->name . "</a>";
+                    } else {
+                        $result = "Not found";
+                    }
+                    return $result;
+                }
+            ],
             'name',
-            'artist_id',
             'release_date',
-            'type',
+            [
+                'attribute' => 'type',
+                'label' => 'Type',
+                'value' => function ($row) {
+                    return \App\Models\Track::$types_array[$row->type];
+                }
+            ],
             'counter',
             'photo_cover_id',
             'file_id',
             'video_id',
+            'created_by',
+            [
+                'attribute' => 'created_by',
+                'label' => 'Created_by',
+                'value' => function ($row) {
+                    $user = \App\Models\User::where('id', $row->created_by)->first();
+                    if ($user) {
+                        #TODO route to view users (after create view page)
+                        $result = $user->name;
+                        //$result = "<a href=" . url('page') . ">" . $artist->name . "</a>";
+                    } else {
+                        $result = "Not found";
+                    }
+                    return $result;
+                }
+            ],
             'created_at',
-            'created_by'
+            'updated_at'
         ]
     ];
 @endphp
