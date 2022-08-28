@@ -49,14 +49,6 @@
     {!! Form::number('file_id', 1, ['class' => 'form-control']); !!}
         {!! Form::label('video_id', null, ['class' => 'control-label']) !!}
     {!! Form::number('video_id', 1, ['class' => 'form-control']); !!}
-        {!! Form::label('created_by', null, ['class' => 'control-label']) !!}
-    {!! Form::number('created_by', 1, ['class' => 'form-control']); !!}
-        {!! Form::label('updated_by', null, ['class' => 'control-label']) !!}
-    {!! Form::number('updated_by', 1, ['class' => 'form-control']); !!}
-        {!! Form::label('created_at', null, ['class' => 'control-label']) !!}
-    {!! Form::date('created_at', '', ['class' => 'form-control']); !!}
-        {!! Form::label('updated_at', null, ['class' => 'control-label']) !!}
-    {!! Form::date('updated_at', '', ['class' => 'form-control']); !!}
     {!! Form::submit('Save', ['class' => 'form-control']); !!}
     {!! Form::close(); !!}
     </div>
