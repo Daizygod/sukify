@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Track;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Itstructure\GridView\DataProviders\EloquentDataProvider;
 
@@ -17,17 +18,10 @@ class TrackController extends Controller
      */
     public function index()
     {
-        // get all the sharks
-        $tracks = Track::all();
-
         $dataProvider = new EloquentDataProvider(Track::query());
         return view('tracks.index', [
             'dataProvider' => $dataProvider
         ]);
-
-        // load the view and pass the sharks
-//        return View::make('tracks.index')
-//            ->with('tracks', $tracks);
     }
 
     /**
@@ -48,6 +42,7 @@ class TrackController extends Controller
      */
     public function store(Request $request)
     {
+        $request->counter = 0;
         Track::create($request->all());
         return redirect()->route('tracks.index');
     }

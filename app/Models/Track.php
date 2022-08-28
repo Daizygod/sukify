@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Track
@@ -59,6 +60,23 @@ class Track extends Model
 		'created_by',
 		'updated_by'
 	];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_by = is_object(Auth::guard(config('app.guards.web'))->user()) ? Auth::guard(config('app.guards.web'))->user()->id : 1;
+            $model->updated_by = is_object(Auth::guard(config('app.guards.web'))->user()) ? Auth::guard(config('app.guards.web'))->user()->id : 1;
+        });
+
+        static::updating(function ($model) {
+            $model->updated_by = is_object(Auth::guard(config('app.guards.web'))->user()) ? Auth::guard(config('app.guards.web'))->user()->id : 1;
+            #TODO check UPDATE, if it work on update form or it unnecessary cause of Laravel default
+            //$model->updated_at = time();
+        });
+    }
+
 
     public static $types_array = [
         1 => 'single',
