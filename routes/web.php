@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('tracks', TrackController::class);
+
+Route::resource('artists', ArtistController::class);
 
 Route::get('/', function () {
     return view('welcome');
