@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Track;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
+use Itstructure\GridView\DataProviders\EloquentDataProvider;
 
-class TracksController extends Controller
+
+class TrackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +18,10 @@ class TracksController extends Controller
      */
     public function index()
     {
-        // get all the sharks
-        $tracks = Track::all();
-
-        // load the view and pass the sharks
-        return Track::make('track.index')
-            ->with('track', $tracks);
+        $dataProvider = new EloquentDataProvider(Track::query());
+        return view('tracks.index', [
+            'dataProvider' => $dataProvider
+        ]);
     }
 
     /**
@@ -29,27 +31,29 @@ class TracksController extends Controller
      */
     public function create()
     {
-        //
+        return View('tracks.form');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $request->counter = 0;
+        Track::create($request->all());
+        return redirect()->route('tracks.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Track  $track
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Track $track)
     {
         //
     }
@@ -57,10 +61,10 @@ class TracksController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Track  $track
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Track $track)
     {
         //
     }
@@ -69,10 +73,10 @@ class TracksController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Track  $track
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Track $track)
     {
         //
     }
@@ -80,10 +84,10 @@ class TracksController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Track  $track
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Track $track)
     {
         //
     }
