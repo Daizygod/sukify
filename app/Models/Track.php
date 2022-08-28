@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Track
- * 
+ *
  * @property int $id
  * @property string $name
  * @property int $artist_id
@@ -59,4 +59,10 @@ class Track extends Model
 		'created_by',
 		'updated_by'
 	];
+
+    public static $types_array = [
+        1 => 'single',
+        2 => 'only in album',
+        3 => 'single and album'
+    ];
 }

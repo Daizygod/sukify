@@ -27,12 +27,20 @@
     <div style="justify-content: space-between; height: 60em;margin: unset; width: 22em; display: flex; flex-direction: column; align-items: flex-start;">
     {!! Form::label('name', null, ['class' => 'control-label']) !!}
     {!! Form::text('name', 'Дежавю', ['class' => 'form-control']); !!}
-        {!! Form::label('artist_id', null, ['class' => 'control-label']) !!}
-    {!! Form::number('artist_id', 1, ['class' => 'form-control']); !!}
+    {!!
+        Form::select('artist_id', \App\Models\Artist::select('artists.name')
+        ->leftjoin('tracks', 'tracks.artist_id', '=', 'artists.id')
+        ->groupBy('artists.name', 'artists.id')
+        ->orderByRaw('SUM(tracks.counter) DESC')
+        ->pluck('name')
+        ->take(10)
+        ->toArray(), 1, ['class' => 'form-control']);
+    !!}
+
         {!! Form::label('release_date', null, ['class' => 'control-label']) !!}
     {!! Form::date('release_date', (string)date('d.m.Y',time()), ['class' => 'form-control']); !!}
         {!! Form::label('type', null, ['class' => 'control-label']) !!}
-    {!! Form::number('type', 1, ['class' => 'form-control']); !!}
+    {!! Form::select('type', \App\Models\Track::$types_array, 1, ['class' => 'form-control']); !!}
         {!! Form::label('counter', null, ['class' => 'control-label']) !!}
     {!! Form::number('counter', 1, ['class' => 'form-control']); !!}
         {!! Form::label('photo_cover_id', null, ['class' => 'control-label']) !!}
