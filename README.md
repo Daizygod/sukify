@@ -11,6 +11,9 @@ generate controller
 
 generate views (need svenluijten/artisan-view)
 `php artisan make:view index`
+### Others
+
+`getenv('APP_DEBUG');`
 
 ## Setup
 ### DataBase
