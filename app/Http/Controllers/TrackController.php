@@ -14,7 +14,7 @@ class TrackController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -27,7 +27,7 @@ class TrackController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -51,22 +51,22 @@ class TrackController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Track  $track
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show(Track $track)
     {
-        //
+        return view('show');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Track  $track
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(Track $track)
     {
-        //
+        return View('tracks.form', compact('track'));
     }
 
     /**
