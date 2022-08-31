@@ -65,7 +65,27 @@
                 }
             ],
             'created_at',
-            'updated_at'
+            'updated_at',
+            [ // Set Action Buttons.TODO:
+            'class' => Itstructure\GridView\Columns\ActionColumn::class, // REQUIRED.
+            'actionTypes' => [ // REQUIRED.
+                'view',
+                'edit' => function ($data) {
+                    return route('tracks.edit', $data);
+                },
+                [
+                    'class' => Itstructure\GridView\Actions\Delete::class, // REQUIRED
+                    'url' => function ($data) {
+                        return '/admin/pages/' . $data->id . '/delete';
+                    },
+                    'htmlAttributes' => [
+                        'target' => '_blank',
+                        'style' => 'color: yellow; font-size: 16px;',
+                        'onclick' => 'return window.confirm("Sure to delete?");'
+                    ]
+                ]
+            ]
+        ]
         ]
     ];
 @endphp
