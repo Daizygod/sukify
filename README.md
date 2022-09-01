@@ -31,3 +31,13 @@ Create database with your name in env file
 `npm run build`
 
 `php artisan serve`
+
+### Другое
+
+`php artisan db:seed`
+
+`php artisan key:generate`
+
+### Пакеты для PHP
+`sudo apt install php8.1 php8.1-fpm php8.1-{bcmath,xml,fpm,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi,ssh2}`
+
