@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sukify</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-</head>
+@extends('layout')
+
+@section('content')
+
 <body>
 @php
     $gridData = [
@@ -108,4 +106,4 @@
 
 </div>
 </body>
-</html>
+@endsection
