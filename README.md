@@ -34,6 +34,8 @@ Create database with your name in env file
 
 ### Другое
 
+`php artisan route:clear`
+
 `php artisan db:seed`
 
 `php artisan key:generate`
