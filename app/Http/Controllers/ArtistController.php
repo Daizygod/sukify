@@ -88,15 +88,24 @@ class ArtistController extends Controller
     /**
      * Get list of rows in db
      *
-     * @param  string  $input_text
-     * @return array
      */
-    public function ajaxList($input_text = null)
+    public function getAjax(Request $request)
     {
+        $searchString = $request->input('search');
+        $response = array();
+        $artists = Artist::where('name', 'like', '%' . $searchString . '%')->get();
+        foreach($artists as $artist){
+            $response[] = array(
+                "id"=>$artist->id,
+                "text"=>$artist->name
+            );
+        }
+        return response()->json($response);
         //if (is_null($input_text)) {
             //var_dump(Artist::all()->limit(10)->get()->toArray());
-
-        return [1 => 'Kizaruch'];//Artist::all()->first()->toArray();
-       // }
+        //return var_dump(34343);
+        //return ;//Artist::all()->first()->toArray();
+        //return "{ \"results\": " . json_encode(['id' => 1, 'value' => 'Kizaruch']) . "}";
+        // }
     }
 }

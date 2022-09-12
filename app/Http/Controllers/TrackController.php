@@ -78,7 +78,19 @@ class TrackController extends Controller
      */
     public function update(Request $request, Track $track)
     {
-        //
+        $track->update($request->only(
+            [
+                'name',
+                'artist_id',
+                'release_date',
+                'type',
+                'counter',
+                'photo_cover_id',
+                'file_id',
+                'video_id'
+            ]
+        ));
+        return redirect()->route('tracks.index')->withSuccess('Updated $track ' . $track->name);
     }
 
     /**

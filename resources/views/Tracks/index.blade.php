@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sukify</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-</head>
+@extends('layout')
+
+@section('content')
+
 <body>
 @php
     $gridData = [
@@ -65,7 +63,27 @@
                 }
             ],
             'created_at',
-            'updated_at'
+            'updated_at',
+            [ // Set Action Buttons.TODO:
+            'class' => Itstructure\GridView\Columns\ActionColumn::class, // REQUIRED.
+            'actionTypes' => [ // REQUIRED.
+                'view',
+                'edit' => function ($data) {
+                    return route('tracks.edit', $data);
+                },
+                [
+                    'class' => Itstructure\GridView\Actions\Delete::class, // REQUIRED
+                    'url' => function ($data) {
+                        return '/admin/pages/' . $data->id . '/delete';
+                    },
+                    'htmlAttributes' => [
+                        'target' => '_blank',
+                        'style' => 'color: yellow; font-size: 16px;',
+                        'onclick' => 'return window.confirm("Sure to delete?");'
+                    ]
+                ]
+            ]
+        ]
         ]
     ];
 @endphp
@@ -88,4 +106,4 @@
 
 </div>
 </body>
-</html>
+@endsection

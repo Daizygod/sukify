@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::resource('tracks', TrackController::class);
 
 Route::resource('artists', ArtistController::class);
+//Route::get('artists/getAjax', [ArtistController::class, 'getAjax']);
+Route::get('/getAjax', [ArtistController::class, 'getAjax'])->name('getAjax');
 
 Route::get('/', function () {
     return view('welcome');
