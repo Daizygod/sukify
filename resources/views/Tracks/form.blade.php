@@ -52,6 +52,7 @@
     {!! Form::text('name', isset($track->name) ? $track->name : null, ['class' => 'form-control']); !!}
     {!! Form::label('artist', null, ['class' => 'control-label']) !!}
     {!!
+        //TODO: in future need to be added more than 1 artist (multi seleceting nad in db change integer to json)
         Form::select('artist_id', isset($track->artist_id) ? \App\Models\Artist::where(['id' => $track->artist_id])->pluck('name')->toArray()
         : \App\Models\Artist::select('artists.name')
         ->leftjoin('tracks', 'tracks.artist_id', '=', 'artists.id')
@@ -65,7 +66,6 @@
             'id' => 'artist_id',
             'multiple' => false
         ]);
-        //TODO: need to fix on update select (selecting not by artist_id u know)
     !!}
 
         {!! Form::label('release_date', null, ['class' => 'control-label']) !!}
