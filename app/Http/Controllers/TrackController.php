@@ -58,6 +58,11 @@ class TrackController extends Controller
         return view('show');
     }
 
+    public function view(Track $track)
+    {
+        return View('tracks.view', compact('track'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
