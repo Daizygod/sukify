@@ -2,6 +2,13 @@
 
 @section('content')
 
+    <style>
+        @media (min-width: 1200px) {
+            .col-lg-4 {
+                width: unset !important;
+            }
+        }
+    </style>
 <body>
 @php
     $gridData = [

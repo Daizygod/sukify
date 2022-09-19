@@ -18,6 +18,17 @@
 </head>
 <body class="font-sans antialiased">
 <div class="min-h-screen bg-gray-100">
+    <style>
+        .form_grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));/*repeat(3, 1fr);*/
+            grid-auto-rows: 10em;
+            column-gap: 2em;
+            row-gap: 1em;
+            align-items: center;
+        }
+    </style>
 @yield('content')
 <!-- Page Heading -->
     <header class="bg-white shadow">
