@@ -57,11 +57,11 @@
             {!!
                 //TODO: in future need to be added more than 1 artist (multi seleceting nad in db change integer to json)
                 Form::select('artist_id', isset($track->artist_id) ? \App\Models\Artist::where(['id' => $track->artist_id])->pluck('name')->toArray()
-                : \App\Models\Artist::select('artists.name')
+                : \App\Models\Artist::all()//select('artists.name')
                 //->leftjoin('tracks', 'tracks.artist_id', '=', 'artists.id')
-                ->groupBy('artists.name', 'artists.id')
-                ->orderBy('artists.id', 'asc')
-                ->pluck('name')
+                //->groupBy('artists.name', 'artists.id')
+                //->orderBy('artists.id', 'asc')
+                ->pluck('id', 'name')
                 ->toArray(), (isset($track->artist_id) && $track->artist_id != 0) ? $track->artist_id : 1,
                 [
                     'class' => 'form-control',
