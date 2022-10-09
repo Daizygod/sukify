@@ -40,6 +40,7 @@
         'method' => 'post',
         'id' => 'pohyi_chestno_kakoy_blyat_tut_id',
         'role' => 'form',
+        'files' => true,
         //'class' => 'form-control',
         'enctype' => 'multipart/form-data'
     ]) !!}
@@ -57,11 +58,10 @@
                 //TODO: in future need to be added more than 1 artist (multi seleceting nad in db change integer to json)
                 Form::select('artist_id', isset($track->artist_id) ? \App\Models\Artist::where(['id' => $track->artist_id])->pluck('name')->toArray()
                 : \App\Models\Artist::select('artists.name')
-                ->leftjoin('tracks', 'tracks.artist_id', '=', 'artists.id')
+                //->leftjoin('tracks', 'tracks.artist_id', '=', 'artists.id')
                 ->groupBy('artists.name', 'artists.id')
-                ->orderByRaw('SUM(tracks.counter) DESC')
+                ->orderBy('artists.id', 'asc')
                 ->pluck('name')
-                ->take(10)
                 ->toArray(), (isset($track->artist_id) && $track->artist_id != 0) ? $track->artist_id : 1,
                 [
                     'class' => 'form-control',
@@ -87,17 +87,16 @@
         <?php
         } ?>
         <div>
-
-            {!! Form::label('photo_cover_id', null, ['class' => 'control-label']) !!}
-            {!! Form::number('photo_cover_id', isset($track->photo_cover_id) ? $track->photo_cover_id : 1, ['class' => 'form-control']); !!}
+            {!! Form::label('cover_file', null, ['class' => 'control-label']) !!}
+            {!! Form::file('cover_file', ['class' => 'form-control']); !!}
         </div>
         <div>
-            {!! Form::label('file_id', null, ['class' => 'control-label']) !!}
-            {!! Form::number('file_id', isset($track->file_id) ? $track->file_id : 1, ['class' => 'form-control']); !!}
+            {!! Form::label('file', null, ['class' => 'control-label']) !!}
+            {!! Form::file('file', ['class' => 'form-control']); !!}
         </div>
         <div>
-            {!! Form::label('video_id', null, ['class' => 'control-label']) !!}
-            {!! Form::number('video_id', isset($track->video_id) ? $track->video_id : 1, ['class' => 'form-control']); !!}
+            {!! Form::label('video_file', null, ['class' => 'control-label']) !!}
+            {!! Form::file('video_file', ['class' => 'form-control']); !!}
         </div>
     </div>
     {!! Form::submit('Save', ['class' => 'btn btn-success', 'style' => 'width: 100%']); !!}

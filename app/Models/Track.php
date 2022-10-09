@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon $release_date
  * @property int $type
  * @property int $counter
- * @property int $photo_cover_id
- * @property int $file_id
- * @property int $video_id
+ * @property string $cover_file
+ * @property string $file
+ * @property string $video_file
  * @property int $created_by
  * @property int $updated_by
  * @property Carbon $created_at
@@ -37,9 +37,12 @@ class Track extends Model
 		'artist_id' => 'int',
 		'type' => 'int',
 		'counter' => 'int',
-		'photo_cover_id' => 'int',
-		'file_id' => 'int',
-		'video_id' => 'int',
+        'cover_file' => 'string',
+        'file' => 'string',
+        'video_file' => 'string',
+		//'photo_cover_id' => 'int',
+		//'file_id' => 'int',
+		//'video_id' => 'int',
 		'created_by' => 'int',
 		'updated_by' => 'int'
 	];
@@ -54,9 +57,12 @@ class Track extends Model
 		'release_date',
 		'type',
 		'counter',
-		'photo_cover_id',
-		'file_id',
-		'video_id',
+        'cover_file' => 'string',
+        'file' => 'string',
+        'video_file' => 'string',
+		//'photo_cover_id',
+		//'file_id',
+		//'video_id',
 		'created_by',
 		'updated_by'
 	];
