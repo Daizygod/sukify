@@ -53,7 +53,34 @@
                 'attribute' => 'counter',
                 'label' => 'Streams',
             ],
-            'photo_cover_id',
+            //'photo_cover',
+            [
+                'attribute' => 'cover_file',
+                'label' => 'photo_cover',
+                'value' => function ($row) {
+                    if (!is_null($row->cover_file) && !empty($row->cover_file) && $row->cover_file != '') {
+                        return '<img width="100em"src="' . $row->cover_file . '">';
+                    } else {
+                        return '<b style="color: #f66;">NOT FOUND</b>';
+                    }
+                },
+                'format' => 'html',
+            ],
+            [
+                'attribute' => 'file',
+                'label' => 'file',
+                'value' => function ($row) {
+                    if (!is_null($row->file) && !empty($row->file) && $row->file != '') {
+                        return '<audio controls>
+                            <source src="' . $row->file . '" type="audio/mp3">
+                        </audio>';
+                    } else {
+                        return '<b style="color: #f66;">NOT FOUND</b>';
+                    }
+                    return $result;
+                },
+                'format' => 'html',
+            ],
             [
                 'attribute' => 'created_by',
                 'label' => 'Created_by',
@@ -74,7 +101,9 @@
             [ // Set Action Buttons.TODO:
             'class' => Itstructure\GridView\Columns\ActionColumn::class, // REQUIRED.
             'actionTypes' => [ // REQUIRED.
-                'view',
+                'view' => function ($data) {
+                    return route('tracks.show', $data);
+                },
                 'edit' => function ($data) {
                     return route('tracks.edit', $data);
                 },
