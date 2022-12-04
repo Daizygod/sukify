@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -21,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $updated_by
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * 
+ * @property Collection|Track[] $tracks
  *
  * @package App\Models
  */
@@ -44,4 +47,9 @@ class Artist extends Model
 		'created_by',
 		'updated_by'
 	];
+
+	public function tracks()
+	{
+		return $this->hasMany(Track::class);
+	}
 }
