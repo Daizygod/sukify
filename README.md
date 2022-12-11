@@ -1,6 +1,6 @@
 # Clone spotify (not in release now) work in progress
 ## Picture of last design at moment!
-![alt text](https://user-images.githubusercontent.com/46899953/205667554-f678dc61-e5c0-449e-810d-1c010b9a12fa.png)
+![alt text](https://user-images.githubusercontent.com/46899953/206935728-31d53a46-1be1-4af1-aa53-4fe0355b18e1.png)
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
