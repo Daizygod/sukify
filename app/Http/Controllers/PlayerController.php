@@ -21,7 +21,7 @@ class PlayerController extends Controller
     public function index()
     {
         $tracksArray = [];
-        foreach (Track::all() as $track) {
+        foreach (Track::where('id', '<>', 47)->get() as $track) {
             $tracksArray[] = [
                 'id' => $track->id,
                 'name' => $track->name,
@@ -32,7 +32,8 @@ class PlayerController extends Controller
         }
         return view('player.index', [
             'tracks' => $tracksArray,
-            'count' => Track::all()->count() - 1,
+            'tracksJSON' => json_encode($tracksArray, JSON_PRETTY_PRINT),
+            'count' => Track::where('id', '<>', 47)->count() - 1,
         ]);
     }
 
