@@ -22,13 +22,25 @@ class PlayerController extends Controller
     {
         $tracksArray = [];
         foreach (Track::where('id', '<>', 47)->get() as $track) {
-            $tracksArray[] = [
-                'id' => $track->id,
-                'name' => $track->name,
-                'artist' => $track->artist->name,
-                'src' => $track->file,
-                'cover' => $track->cover_file
-            ];
+            if (true) {
+                $track->file = str_replace('localhost:8000', '192.168.0.10', $track->file);
+                $track->cover_file = str_replace('localhost:8000', '192.168.0.10', $track->cover_file);
+                $tracksArray[] = [
+                    'id' => $track->id,
+                    'name' => $track->name,
+                    'artist' => $track->artist->name,
+                    'src' => $track->file,
+                    'cover' => $track->cover_file
+                ];
+            } else {
+                $tracksArray[] = [
+                    'id' => $track->id,
+                    'name' => $track->name,
+                    'artist' => $track->artist->name,
+                    'src' => $track->file,
+                    'cover' => $track->cover_file
+                ];
+            }
         }
         return view('player.index', [
             'tracks' => $tracksArray,

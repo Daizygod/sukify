@@ -64,19 +64,105 @@
             padding-left: 1em;
         }
 
-        .track-list-artist, #player-current-track-artist {
+        #player-current-track-artist {
             color: #9b9b9b;
         }
 
-        .track-list-info {
-            margin-left: 1.5em;
-            display: flex;
-            flex-direction: column;
+        .player-track-list-track {
+            display: grid;
+            grid-template-columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [last] minmax(120px, 1fr);
+            padding: 0 16px;
+            grid-gap: 16px;
+            height: 56px;
+            border-radius: 4px;
         }
 
-        .player-track-list {
+        .track-list-track-number {
             display: flex;
-            margin-bottom: 2em
+            grid-column: 1;
+            align-items: center;
+        }
+
+        .track-list-action-play {
+            height: 16px;
+            width: 16px;
+            min-height: 16px;
+            min-width: 16px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .track-number {
+            color: white;
+            position: absolute;
+            font-size: 1em;
+            font-weight: 400;
+            top: -4px;
+            right: 0.25em;
+        }
+
+        .play_track_button {
+            /*display: flex;*/
+            display: none;
+            justify-content: center;
+            text-align: center;
+            pointer-events: none;
+            background: transparent;
+            border: 0;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+        }
+
+        .play_track_icon {
+            fill: white;
+            width: 16px;
+            height: 16px;
+        }
+
+        .player-track-list-track:hover {
+            background-color: hsla(0,0%,100%,.1);
+        }
+
+        .player-track-list-track:hover > .track-list-track-number > .track-list-action-play > span {
+            display: none;
+        }
+
+        .player-track-list-track:hover > .track-list-track-number > .track-list-action-play > .play_track_button {
+            display: flex;
+        }
+
+        .player-track-list-track:active {
+            background-color: hsla(0,0%,100%,.3);
+        }
+
+        .track-list-track-primary {
+            display: flex;
+            grid-column: 2;
+            align-items: center;
+        }
+
+        .track-list-info {
+            column-gap: 8px;
+            display: grid;
+            grid-template:
+        "title title"
+        "badges subtitle"/auto 1fr;
+        }
+
+        .track-list-artist {
+            color: #9b9b9b;
+            grid-area: subtitle;
+            grid-column-start: badges;
+        }
+
+        .player-track-list-cover {
+            margin-right: 16px;
+        }
+
+        .track_name, .track_name_play {
+            grid-area: title;
+            justify-self: start;
         }
 
         .player-current-track-info {
@@ -102,14 +188,16 @@
             display: grid;
             /*grid-template-columns: repeat(2, 1fr);*/
             /*grid-template-rows: repeat(2, 1fr);*/
-            grid-template-columns: 1fr 3fr;
+            grid-template-columns: minmax(350px, 1fr) 5fr;
             grid-template-rows: 1fr 90px;
         }
 
         .main-view-tracklist {
             grid-column: 2;
             grid-row: 1;
-            background: #0c5460;
+            display: flex;
+            flex-direction: column;
+            background: #121212;
         }
 
         .navigation-bar {
@@ -274,16 +362,23 @@
                         treck = 0; // То присваиваем treck ноль
                         switchTreck(treck); //Меняем трек
                     }
+                    navigator.mediaSession.playbackState = 'playing';
                     navigator.mediaSession.metadata = new MediaMetadata({
                         title: playlist[treck]["name"],
                         artist: playlist[treck]["artist"],
                         album: playlist[treck]["name"],
                         artwork: [
-                            { src: playlist[treck]["src"],   sizes: '96x96',   type: 'image/png' }
+                            { src: "http://192.168.0.10:80/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
+                            { src: 'http://192.168.0.10:80/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
+                            { src: 'http://192.168.0.10:80/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
+                            { src: 'http://192.168.0.10:80/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
+                            { src: 'http://192.168.0.10:80/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
+                            { src: 'http://192.168.0.10:80/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
                         ]
                     });
                 }, 10)
             } else {
+                navigator.mediaSession.playbackState = 'paused';
                 playIconSVG.style.display = "block";
                 pauseIconSVG.style.display = "none";
                 audio.pause(); // Останавливает песню
@@ -305,12 +400,18 @@
                 treck = '<?= $count ?>'; // Присваиваем три
                 switchTreck(treck); // Меняем песню
             }
+            //navigator.mediaSession.playbackState = 'playing';
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: playlist[treck]["name"],
                 artist: playlist[treck]["artist"],
                 album: playlist[treck]["name"],
                 artwork: [
-                    { src: playlist[treck]["src"],   sizes: '96x96',   type: 'image/png' }
+                    { src: "http://192.168.0.10:80/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
                 ]
             });
         }
@@ -333,17 +434,18 @@
                 treck = 0; // Присваиваем ей ноль
                 switchTreck(treck); // Меняем песню
             }
+            //navigator.mediaSession.playbackState = 'playing';
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: playlist[treck]["name"],
                 artist: playlist[treck]["artist"],
                 album: playlist[treck]["name"],
                 artwork: [
-                    { src: playlist[treck]["src"], sizes: '96x96',   type: 'image/png' },
-                    { src: playlist[treck]["src"], sizes: '128x128', type: 'image/png' },
-                    { src: playlist[treck]["src"], sizes: '192x192', type: 'image/png' },
-                    { src: playlist[treck]["src"], sizes: '256x256', type: 'image/png' },
-                    { src: playlist[treck]["src"], sizes: '384x384', type: 'image/png' },
-                    { src: playlist[treck]["src"], sizes: '512x512', type: 'image/png' },
+                    { src: "http://192.168.0.10:80/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
                 ]
             });
         }
@@ -418,26 +520,35 @@
             </div>
             <div class="main-view-tracklist">
             ';
-    foreach ($tracks as $track) {
-        echo '<div class="player-track-list">' . '<img width="40em"src="' . $track['cover'] . '">'
-        . '<div class="track-list-info"><div id="track_name_' . $track['id'] . '" class="track_name">' . $track['name']
-        . '</div><div class="track-list-artist">' . $track['artist'] . '</div></div>'
+    foreach ($tracks as $key => $track) {
+        echo '<div class="player-track-list-track">'
+        . '<div class="track-list-track-number"><div class="track-list-action-play">'
+        . '<span class="track-number">' . $key+1 . '</span>'
+        . '<button id="play_track_' . $track['id'] . '" class="play_track_button">'
+        . '<svg height="24" width="24" aria-hidden="true" class="play_track_icon" viewBox="0 0 24 24" data-encore-id="icon"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path></svg>'
+        . '</div>'
+        . '</div>'
+        . '<div class="track-list-track-primary">'
+        . '<img class="player-track-list-cover" width="40" height="40" src="' . $track['cover'] . '">'
+        . '<div class="track-list-info"><div id="track_name_' . $track['id'] . '" class="track_name">' . $track['name'] . '</div>'
+        . '<div class="track-list-artist">' . $track['artist'] . '</div></div>'
+        . '</div>'
         . '</div>';
     }
     echo '
             </div>
     </div>';
 
-    echo '<div style="background: #121212; width: 100%; height: 100em">';
-    echo '<div style="display: flex;align-items: flex-start;flex-direction: column;">';
-    foreach ($tracks as $track) {
-        echo '<div class="player-track-list">' . '<img width="40em"src="' . $track['cover'] . '">'
-        . '<div class="track-list-info"><div id="track_name_' . $track['id'] . '" class="track_name">' . $track['name']
-        . '</div><div class="track-list-artist">' . $track['artist'] . '</div></div>'
-        . '</div>';
-    }
-
-    echo '</div>';
+//    echo '<div style="background: #121212; width: 100%; height: 100em">';
+//    echo '<div style="display: flex;align-items: flex-start;flex-direction: column;">';
+//    foreach ($tracks as $track) {
+//        echo '<div class="player-track-list-track">' . '<img width="40em"src="' . $track['cover'] . '">'
+//        . '<div class="track-list-info"><div id="track_name_' . $track['id'] . '" class="track_name">' . $track['name']
+//        . '</div><div class="track-list-artist">' . $track['artist'] . '</div></div>'
+//        . '</div>';
+//    }
+//
+//    echo '</div>';
     foreach ($tracks as $track) {
         echo '<audio id="audio" src="' . $track['src'] . '" controls></audio>';
         break;
@@ -617,22 +728,22 @@
     //        ]
     //    ];
 @endphp
-<div class="container">
+{{--<div class="container">--}}
 
-    <nav class="navbar navbar-inverse">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="{{ URL::to('tracks') }}">Sukify</a>
-        </div>
-        <ul class="nav navbar-nav">
-            <li><a href="{{ route('tracks.create') }}">Create Track</a>
-        </ul>
-    </nav>
+{{--    <nav class="navbar navbar-inverse">--}}
+{{--        <div class="navbar-header">--}}
+{{--            <a class="navbar-brand" href="{{ URL::to('tracks') }}">Sukify</a>--}}
+{{--        </div>--}}
+{{--        <ul class="nav navbar-nav">--}}
+{{--            <li><a href="{{ route('tracks.create') }}">Create Track</a>--}}
+{{--        </ul>--}}
+{{--    </nav>--}}
 
-    <!-- will be used to show any messages -->
-    @if (Session::has('message'))
-        <div class="alert alert-info">{{ Session::get('message') }}</div>
-    @endif
+{{--    <!-- will be used to show any messages -->--}}
+{{--    @if (Session::has('message'))--}}
+{{--        <div class="alert alert-info">{{ Session::get('message') }}</div>--}}
+{{--    @endif--}}
 
-</div>
-</body>
+{{--</div>--}}
+{{--</body>--}}
 @endsection
