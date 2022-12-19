@@ -45,6 +45,10 @@ Create database with your name in env file
 
 `php artisan key:generate`
 
+### Для проверки на моб устройстве (нужно подключится к одной сетке)
+
+`php artisan serve --host=0.0.0.0:80`
+
 ### Пакеты для PHP
 `sudo apt install php8.1 php8.1-fpm php8.1-{bcmath,xml,fpm,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi,ssh2}`
 
