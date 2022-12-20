@@ -8,6 +8,11 @@
                 width: unset !important;
             }
         }
+
+        :root {
+            --nav-bar-width: 367px;
+        }
+
         .audio-track {
             width: 100%;
             height: 4px;
@@ -75,12 +80,19 @@
             grid-gap: 16px;
             height: 56px;
             border-radius: 4px;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
         }
 
         .track-list-track-number {
             display: flex;
             grid-column: 1;
             align-items: center;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
+
         }
 
         .track-list-action-play {
@@ -132,6 +144,10 @@
             display: flex;
         }
 
+        .now-playing-cover:hover > .now-playing-cover-button {
+            opacity: unset;
+        }
+
         .player-track-list-track:active {
             background-color: hsla(0,0%,100%,.3);
         }
@@ -140,6 +156,9 @@
             display: flex;
             grid-column: 2;
             align-items: center;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
         }
 
         .track-list-info {
@@ -148,16 +167,25 @@
             grid-template:
         "title title"
         "badges subtitle"/auto 1fr;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
         }
 
         .track-list-artist {
             color: #9b9b9b;
             grid-area: subtitle;
             grid-column-start: badges;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
         }
 
         .player-track-list-cover {
             margin-right: 16px;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
         }
 
         .track_name, .track_name_play {
@@ -188,7 +216,7 @@
             display: grid;
             /*grid-template-columns: repeat(2, 1fr);*/
             /*grid-template-rows: repeat(2, 1fr);*/
-            grid-template-columns: minmax(350px, 1fr) 5fr;
+            grid-template-columns: auto 1fr;
             grid-template-rows: 1fr 90px;
         }
 
@@ -201,23 +229,255 @@
         }
 
         .navigation-bar {
+            /*grid-column: 1;*/
+            /*grid-row: 1;*/
+            /*background: #dd1044;*/
+            /*display: flex;*/
+            /*flex: 1;*/
+            /*flex-direction: column;*/
+            /*min-height: 0;*/
+            /*padding-top: 24px;*/
+            /*user-select: none;*/
+            /*width: 100%;*/
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            background-color: #000;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
             grid-column: 1;
             grid-row: 1;
-            background: #dd1044;
+            min-height: 0;
+            position: relative;
+            width: calc(var(--nav-bar-width) + 9px);
+            z-index: 3;
         }
 
         .now-playing-bar {
             display: block;
-            grid-column: 1;
-            grid-row: 2;
-            background: #1ED760;
-        }
-
-        .now-playing-bar {
-            display: block;
+            position: relative; /* My own*/
             grid-column: 1 / span 2;
             grid-row: 2;
             background: #1ED760;
+            z-index: 3;
+        }
+
+        .now-playing-bar-footer {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            user-select: none;
+            border: 0;
+            margin: 0;
+            padding: 0;
+            min-width: 620px;
+            background-color: #181818;
+            border-top: 1px solid #282828;
+        }
+
+        .now-player-container {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            height: 90px;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+        /*---1---*/
+        .now-player-info-container {
+            min-width: 180px;
+            width: 30%;
+        }
+        .now-player-info {
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -webkit-box-pack: start;
+            -ms-flex-pack: start;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            justify-content: flex-start;
+            position: relative;
+            -webkit-transform: translateX(0);
+            transform: translateX(0);
+            -webkit-transition: -webkit-transform .25s cubic-bezier(.3,0,0,1);
+            transition: -webkit-transform .25s cubic-bezier(.3,0,0,1);
+            transition: transform .25s cubic-bezier(.3,0,0,1);
+            transition: transform .25s cubic-bezier(.3,0,0,1),-webkit-transform .25s cubic-bezier(.3,0,0,1);
+        }
+
+        .now-player-info.collapsed {
+            -webkit-transform: translateX(-72px);
+            transform: translateX(-72px);
+        }
+
+        .now-playing-cover {
+            position: relative;
+        }
+        #player_cover {
+            background-color: #000;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+        .now-playing-cover-button {
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            background: rgba(0,0,0,.7);
+            border-radius: 500px;
+            border-width: 0;
+            color: #b3b3b3;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            height: 24px;
+            justify-content: center;
+            line-height: 24px;
+            opacity: 0;
+            padding: 0;
+            position: absolute;
+            top: 5px;
+            width: 24px;
+            z-index: 1;
+            right: 5px;
+        }
+
+        .now-playing-big-cover-button {
+            bottom: 35%;
+            left: 35%;
+            position: absolute;
+            right: 35%;
+            top: 35%;
+        }
+
+        .big-cover-img {
+            background-color: #000;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
+        .now-playing-big-cover {
+            isolation: isolate;
+            position: relative;
+            width: 100%;
+            will-change: height;
+            z-index: 2;
+            -webkit-transform: translateY(0);
+            transform: translateY(0);
+            -webkit-transition: -webkit-transform .25s cubic-bezier(.3,0,0,1);
+            transition: -webkit-transform .25s cubic-bezier(.3,0,0,1);
+            transition: transform .25s cubic-bezier(.3,0,0,1);
+            transition: transform .25s cubic-bezier(.3,0,0,1),-webkit-transform .25s cubic-bezier(.3,0,0,1);
+        }
+
+        .now-playing-big-cover:hover > .now-playing-cover-button {
+            opacity: unset;
+        }
+
+        .top-bar-list {
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-box-flex: 1;
+            cursor: default;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            justify-content: flex-end;
+            -ms-flex: 1;
+            flex: 1;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-height: 0;
+            padding-top: 24px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            width: 100%;
+        }
+
+        .bar_resizer {
+            background: linear-gradient(hsla(0,0%,100%,.3),hsla(0,0%,100%,.3)) no-repeat 50%/1px 100%;
+            height: 100%;
+            inset-inline-end: -4.5px;
+            right: -4.5px;
+            width: 9px;
+            cursor: col-resize;
+            opacity: 0;
+            position: absolute;
+        }
+
+        .bar-resizer:active {
+            cursor: col-resize;
+        }
+
+        .now-playing-big-cover.before-show-big-cover {
+            z-index: -1;
+            -webkit-transform: translateY(calc(var(--nav-bar-width) + 9px));
+            transform: translateY(calc(var(--nav-bar-width) + 9px));
+            -webkit-transition: -webkit-transform .25s cubic-bezier(.3,0,0,1);
+            transition: -webkit-transform .25s cubic-bezier(.3,0,0,1);
+            transition: transform .25s cubic-bezier(.3,0,0,1);
+            transition: transform .25s cubic-bezier(.3,0,0,1),-webkit-transform .25s cubic-bezier(.3,0,0,1);
+        }
+
+        .now-playing-big-cover.collapsed {
+            z-index: -1;
+            /*padding: 0 !important;*/
+            /*margin: 0 !important;*/
+            -webkit-transform: translateY(calc(var(--nav-bar-width) + 9px));
+            transform: translateY(calc(var(--nav-bar-width) + 9px));
+        }
+        .now-playing-big-cover.collapsed > div {
+             /*padding: 0 !important;*/
+             /*margin: 0 !important;*/
+         }
+
+        /*---2---*/
+        .player-actions {
+            max-width: 722px;
+            width: 40%;
+        }
+        .now-playing-cover.collapsed {
+            -webkit-transform: translateX(-72px);
+            transform: translateX(-72px);
+            /*flex-grow: 0.00001;*/
+            padding: 0;
+            margin: 0;
+        }
+        /*---3---*/
+        .player-controls {
+            display: flex;
+            -webkit-box-direction: normal;
+            flex-direction: row;
+            justify-content: flex-end;
+            min-width: 180px;
+            width: 30%;
+        }
+
+        #controls {
+            display:none;
         }
 
     </style>
@@ -488,20 +748,111 @@
         });
 
     </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() { // Аналог $(document).ready(function(){
+
+            // resize nav bar
+            const navBar = document.getElementById("navigationBar");
+            let resizeNavBar = document.getElementById("resize_bar");
+
+            document.addEventListener('mouseup', removeResizeBarEvents);
+
+            function removeResizeBarEvents() {
+                console.log("yes");
+
+                document.removeEventListener('mousemove', onMouseMove);
+                resizeNavBar.onmouseup = null;
+            }
+
+            function onMouseMove(event) {
+                let navBarNewWidth = event.pageX;
+                if (navBarNewWidth >= 120 && navBarNewWidth <= 384) {
+                    navBar.style.setProperty('--nav-bar-width', event.pageX + 'px');
+                }
+            }
+
+            resizeNavBar.onmousedown = function(event) {
+                document.addEventListener('mousemove', onMouseMove);
+            }
+            resizeNavBar.ondragstart = function() {
+                return false;
+            };
+            // resizeNavBar.ondragenter = function() {
+            //     return false;
+            // };
+            // resizeNavBar.ondragover = function() {
+            //     return false;
+            // };
+            // resizeNavBar.ondragleave = function() {
+            //     return false;
+            // };
+            // expand cover
+            let BigCoverExpanded = false;
+
+            let cover = document.getElementById("now_player_info");
+            let coverBtn = document.getElementById("collapse_cover");
+
+            let bigCover = document.getElementById("now_playing_big_cover");
+            let bigCoverBtn = document.getElementById("collapse_big_cover");
+
+            function collapseCover() {
+                BigCoverExpanded = !BigCoverExpanded;
+                if (!BigCoverExpanded) {
+                    bigCover.classList.add('collapsed');
+                    cover.classList.remove('collapsed');
+                    setTimeout(() => { bigCover.style.display = "none"; }, 250); //TODO do await
+                } else {
+                    bigCover.style.display = "unset";
+                    bigCover.classList.remove('collapsed');
+                    bigCover.classList.add('before-show-big-cover');
+                    setTimeout(() => { bigCover.classList.remove('before-show-big-cover'); }, 250); //TODO do await
+                    cover.classList.add('collapsed');
+                }
+            }
+            coverBtn.addEventListener('click', collapseCover);
+            bigCoverBtn.addEventListener('click', collapseCover);
+        });
+        </script>
 <body>
 @php
     echo '<div class="top-container">
             <div class="top-bar">
             </div>
-            <div class="navigation-bar">
-            </div>
+            <nav id="navigationBar" class="navigation-bar">
+                <div class="top-bar-list">
+                    <div class="now-playing-big-cover collapsed" style="display: none" id="now_playing_big_cover">
+                        <div style="width: auto; height: auto; padding-bottom: 100%;">
+                            <img id="player_cover" class="big-cover-img" draggable="false" src="' . $tracks[0]['cover'] . '">
+                        </div>
+                        <button type="button" class="now-playing-cover-button" id="collapse_big_cover">
+                            <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" data-encore-id="icon" class="Svg-sc-ytk21e-0 uPxdw" fill="#b3b3b3">
+                                <path d="M.47 4.97a.75.75 0 011.06 0L8 11.44l6.47-6.47a.75.75 0 111.06 1.06L8 13.56.47 6.03a.75.75 0 010-1.06z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="resize_bar" class="bar_resizer" style="z-index: 1;">
+                    <label class="hidden-visually">Изменить размер главной панели навигации
+                        <input id="resizeNavBarInput" class="" type="range" min="120" max="384" step="10" value="384">
+                    </label>
+                </div>
+            </nav>
             <div class="now-playing-bar">
+
                 <footer class="now-playing-bar-footer">
                     <div class="now-player-container">
                         <div class="now-player-info-container">
-                            <div class="now-player-info">
-                                <div class="now-playing-cover">
-
+                            <div class="now-player-info" id="now_player_info">
+                                <div class="now-playing-cover" id="now_playing_cover">
+                                    <div style="width: 56px;height: 56px; position: relative;" aria-hidden="true">
+                                        <img id="player_cover" width="55px" height="55px" src="' . $tracks[0]['cover'] . '">
+                                    </div>
+                                    <button class="now-playing-cover-button" id="collapse_cover">
+                                        <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" data-encore-id="icon" class="Svg-sc-ytk21e-0 uPxdw" fill="#b3b3b3">
+                                            <path d="M.47 11.03a.75.75 0 001.06 0L8 4.56l6.47 6.47a.75.75 0 101.06-1.06L8 2.44.47 9.97a.75.75 0 000 1.06z"></path>
+                                        </svg>
+                                    </button>
                                 </div>
                                 <div class="now-playing-info">
 
@@ -550,7 +901,7 @@
 //
 //    echo '</div>';
     foreach ($tracks as $track) {
-        echo '<audio id="audio" src="' . $track['src'] . '" controls></audio>';
+        echo '<audio id="audio" style="display:none" src="' . $track['src'] . '" controls></audio>';
         break;
     }
     echo '<div id="controls">
