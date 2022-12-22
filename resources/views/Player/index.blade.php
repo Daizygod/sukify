@@ -9,8 +9,25 @@
             }
         }
 
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            height: 100%;
+        }
+
+        .min-h-screen {
+            height: 100%;
+        }
+
         :root {
             --nav-bar-width: 367px;
+            --button-size: 32px;
+            --scrollbar-horizontal-size: 16px;
+            --scrollbar-vertical-size: 16px;
+            --row-height: 56px;
         }
 
         .audio-track {
@@ -83,6 +100,8 @@
             -moz-user-select: none;
             -khtml-user-select: none;
             user-select: none;
+            height: var(--row-height);
+            min-height: var(--row-height);
         }
 
         .track-list-track-number {
@@ -146,6 +165,14 @@
 
         .now-playing-cover:hover > .now-playing-cover-button {
             opacity: unset;
+        }
+
+        .now-playing-cover-button:hover {
+            background: rgba(0,0,0,.8);
+            color: #fff;
+            -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+            cursor: default;
         }
 
         .player-track-list-track:active {
@@ -218,6 +245,7 @@
             /*grid-template-rows: repeat(2, 1fr);*/
             grid-template-columns: auto 1fr;
             grid-template-rows: 1fr 90px;
+            height: 100%;
         }
 
         .main-view-tracklist {
@@ -226,7 +254,49 @@
             display: flex;
             flex-direction: column;
             background: #121212;
+            overflow: auto;
         }
+
+        .main-view-tracklist::-webkit-scrollbar-thumb {
+            /*//height: 35px;*/
+            /*//min-height: 40px;*/
+            /*//max-height: 50px;*/
+            background: hsla(0,0%,100%,.3);
+            transition: background-color .2s;
+        }
+
+        .main-view-tracklist::-webkit-scrollbar-thumb:hover {
+            background: hsla(0,0%,100%,.5);
+        }
+
+        .main-view-tracklist::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-view-tracklist::-webkit-scrollbar {
+            /*width: var(--scrollbar-vertical-size);*/
+            width: 10px;
+            height: 10px;
+        }
+
+        /*::-webkit-scrollbar {*/
+        /*    width: var(--scrollbar-vertical-size);*/
+        /*}*/
+
+        /*!* Track *!*/
+        /*::-webkit-scrollbar-track {*/
+        /*    background: #f1f1f1;*/
+        /*}*/
+
+        /*!* Handle *!*/
+        /*::-webkit-scrollbar-thumb {*/
+        /*    background: #888;*/
+        /*}*/
+
+        /*!* Handle on hover *!*/
+        /*::-webkit-scrollbar-thumb:hover {*/
+        /*    background: #555;*/
+        /*}*/
 
         .navigation-bar {
             /*grid-column: 1;*/
@@ -395,6 +465,25 @@
             opacity: unset;
         }
 
+        #button_favourite {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            align-items: center;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            justify-content: center;
+            color: #1ed760;
+            background-color: transparent;
+            border: none;
+            height: 32px;
+            min-width: 32px;
+            width: 32px;
+            cursor: default;
+        }
+
         .top-bar-list {
             -webkit-box-orient: vertical;
             -webkit-box-direction: normal;
@@ -455,6 +544,44 @@
          }
 
         /*---2---*/
+        .now-playing-info-track {
+            display: grid;
+            align-items: center;
+            column-gap: 8px;
+            margin: 0 14px;
+            grid-template: 1fr/1fr;
+        }
+
+        .now-playing-track-name-container {
+            --trans-x: 0px;
+            display: flex;
+            padding-inline-end: 12px;
+            padding-inline-start: 6px;
+            white-space: nowrap;
+            width: fit-content;
+        }
+
+        .now-playing-track-artist-container {
+            --trans-x: 0px;
+            display: flex;
+            padding-inline-end: 12px;
+            padding-inline-start: 6px;
+            white-space: nowrap;
+            width: fit-content;
+        }
+
+        #now_playing_track_name {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #fff;
+        }
+
+        #now_playing_track_artist {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #6a6a6a;
+        }
+
         .player-actions {
             max-width: 722px;
             width: 40%;
@@ -469,11 +596,180 @@
         /*---3---*/
         .player-controls {
             display: flex;
-            -webkit-box-direction: normal;
-            flex-direction: row;
-            justify-content: flex-end;
-            min-width: 180px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             width: 30%;
+        }
+
+        .player-controls-buttons {
+            display: flex;
+            flex-flow: row nowrap;
+            width: 100%;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .player-controls-left {
+            display: flex;
+            flex: 1;
+            gap: 8px;
+            justify-content: flex-end;
+            -webkit-box-pack: end;
+        }
+
+        .button-shuffle {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            align-items: center;
+            background: transparent;
+            border: none;
+            color: hsla(0,0%,100%,.7);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            height: var(--button-size);
+            justify-content: center;
+            min-width: var(--button-size);
+            position: relative;
+            width: var(--button-size);
+        }
+
+        .button-shuffle::after {
+            background-color: currentcolor;
+            border-radius: 50%;
+            bottom: 0;
+            content: "";
+            display: block;
+            height: 4px;
+            left: 50%;
+            position: absolute;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+            width: 4px;
+        }
+
+        .button-shuffle:hover {
+            color: #fff;
+        }
+
+        .button-prev {
+            --button-size: var(--button-size);
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            align-items: center;
+            background: transparent;
+            border: none;
+            color: hsla(0,0%,100%,.7);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            height: var(--button-size);
+            justify-content: center;
+            min-width: var(--button-size);
+            position: relative;
+            width: var(--button-size);
+        }
+
+        .button-prev:hover {
+            color: #fff;
+        }
+
+        #control_track {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            align-items: center;
+            background-color: #fff;
+            border: none;
+            border-radius: var(--button-size);
+            color: #000;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            height: var(--button-size);
+            justify-content: center;
+            min-width: var(--button-size);
+            position: relative;
+            -webkit-transition: none 33ms cubic-bezier(.3,0,.7,1);
+            transition: none 33ms cubic-bezier(.3,0,.7,1);
+            -webkit-transition-property: all;
+            transition-property: all;
+            width: var(--button-size);
+        }
+
+        #control_track:hover {
+            -webkit-transform: scale(1.06);
+            transform: scale(1.06);
+            -webkit-transition: none 33ms cubic-bezier(.3,0,0,1);
+            transition: none 33ms cubic-bezier(.3,0,0,1);
+            -webkit-transition-property: all;
+            transition-property: all;
+        }
+
+        #control_track:active {
+            -webkit-transform: scale(.99);
+            transform: scale(.99);
+            -webkit-transition: none;
+            transition: none;
+        }
+
+        .button-next {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            align-items: center;
+            background: transparent;
+            border: none;
+            color: hsla(0,0%,100%,.7);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            height: var(--button-size);
+            justify-content: center;
+            min-width: var(--button-size);
+            position: relative;
+            width: var(--button-size);
+        }
+
+        .button-next:hover {
+            color: #fff;
+        }
+
+        .button-repeat {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            align-items: center;
+            background: transparent;
+            border: none;
+            color: hsla(0,0%,100%,.7);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            height: var(--button-size);
+            justify-content: center;
+            min-width: var(--button-size);
+            position: relative;
+            width: var(--button-size);
+        }
+
+        .button-repeat:hover {
+            color: #fff;
+        }
+
+        .player-controls-right {
+            display: flex;
+            -webkit-box-flex: 1;
+            flex: 1;
+            gap: 8px;
         }
 
         #controls {
@@ -544,18 +840,19 @@
 
         let audio = document.getElementById("audio");    // Берём элемент audio
         let time = document.querySelector(".time");      // Берём аудио дорожку
-        let btnPlay = document.getElementById("btnPlay");   // Берём кнопку проигрывания
-        let btnPrev = document.getElementById("btnPrev");   // Берём кнопку переключения предыдущего трека
-        let btnNext = document.getElementById("btnNext");   // Берём кнопку переключение следующего трека
+        let btnPlay = document.getElementById("control_track");   // Берём кнопку проигрывания
+        let btnPrev = document.getElementById("control_prev_track");   // Берём кнопку переключения предыдущего трека
+        let btnNext = document.getElementById("control_next_track");   // Берём кнопку переключение следующего трека
 
         let playerCover = document.getElementById("player_cover");
+        let bigPlayerCover = document.getElementById("big_player_cover");
         let track_name = document.getElementById("track_name_0");
 
-        let player_track_name = document.getElementById("player-current-track-name");
-        let player_track_artist = document.getElementById("player-current-track-artist");
+        let player_track_name = document.getElementById("now_playing_track_name");
+        let player_track_artist = document.getElementById("now_playing_track_artist");
 
-        let playIconSVG = document.getElementById("playButtonSvg");
-        let pauseIconSVG = document.getElementById("pauseButtonSvg");
+        let pauseIconSVG = document.getElementById("playButtonSvg");
+        let playIconSVG = document.getElementById("pauseButtonSvg");
         // Массив с названиями песен
         let playlist = [];
 
@@ -572,6 +869,7 @@
             // Назначаем время песни ноль
             audio.currentTime = 0;
             playerCover.src = playlist[numTreck]["cover"];
+            bigPlayerCover.src = playlist[numTreck]["cover"];
             // Включаем песню
             audio.play();
         }
@@ -823,10 +1121,10 @@
                 <div class="top-bar-list">
                     <div class="now-playing-big-cover collapsed" style="display: none" id="now_playing_big_cover">
                         <div style="width: auto; height: auto; padding-bottom: 100%;">
-                            <img id="player_cover" class="big-cover-img" draggable="false" src="' . $tracks[0]['cover'] . '">
+                            <img id="big_player_cover" class="big-cover-img" draggable="false" src="' . $tracks[0]['cover'] . '">
                         </div>
                         <button type="button" class="now-playing-cover-button" id="collapse_big_cover">
-                            <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" data-encore-id="icon" class="Svg-sc-ytk21e-0 uPxdw" fill="#b3b3b3">
+                            <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" data-encore-id="icon" class="Svg-sc-ytk21e-0 uPxdw" fill="currentColor">
                                 <path d="M.47 4.97a.75.75 0 011.06 0L8 11.44l6.47-6.47a.75.75 0 111.06 1.06L8 13.56.47 6.03a.75.75 0 010-1.06z"></path>
                             </svg>
                         </button>
@@ -849,22 +1147,73 @@
                                         <img id="player_cover" width="55px" height="55px" src="' . $tracks[0]['cover'] . '">
                                     </div>
                                     <button class="now-playing-cover-button" id="collapse_cover">
-                                        <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" data-encore-id="icon" class="Svg-sc-ytk21e-0 uPxdw" fill="#b3b3b3">
+                                        <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" data-encore-id="icon" class="Svg-sc-ytk21e-0 uPxdw" fill="currentColor">
                                             <path d="M.47 11.03a.75.75 0 001.06 0L8 4.56l6.47 6.47a.75.75 0 101.06-1.06L8 2.44.47 9.97a.75.75 0 000 1.06z"></path>
                                         </svg>
                                     </button>
                                 </div>
-                                <div class="now-playing-info">
-
+                                <div class="now-playing-info-track">
+                                    <div class="now-playing-track-name-container">
+                                        <div class="now-playing-track-name">
+                                            <span id="now_playing_track_name">
+                                            ' . $tracks[0]['name'] . '
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="now-playing-track-artist-container">
+                                        <div class="now-playing-track-artist">
+                                            <span id="now_playing_track_artist">
+                                            ' . $tracks[0]['artist'] . '
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button>
-                                    <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" class="Svg-sc-ytk21e-0 uPxdw"><path d="M15.724 4.22A4.313 4.313 0 0012.192.814a4.269 4.269 0 00-3.622 1.13.837.837 0 01-1.14 0 4.272 4.272 0 00-6.21 5.855l5.916 7.05a1.128 1.128 0 001.727 0l5.916-7.05a4.228 4.228 0 00.945-3.577z"></path></svg>
+                                <button id="button_favourite">
+                                    <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" fill="currentcolor">
+                                    <path d="M15.724 4.22A4.313 4.313 0 0012.192.814a4.269 4.269 0 00-3.622 1.13.837.837 0 01-1.14 0 4.272 4.272 0 00-6.21 5.855l5.916 7.05a1.128 1.128 0 001.727 0l5.916-7.05a4.228 4.228 0 00.945-3.577z"></path>
+                                    </svg>
                                 </button>
                             </div>
                         </div>
-                        <div class="player-actions">
-                        </div>
                         <div class="player-controls">
+                            <div class="player-controls-buttons">
+                                <div class="player-controls-left">
+                                    <button id="control_shuffle" role="switch" aria-checked="false" class="button-shuffle">
+                                        <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" fill="currentcolor">
+                                            <path d="M13.151.922a.75.75 0 10-1.06 1.06L13.109 3H11.16a3.75 3.75 0 00-2.873 1.34l-6.173 7.356A2.25 2.25 0 01.39 12.5H0V14h.391a3.75 3.75 0 002.873-1.34l6.173-7.356a2.25 2.25 0 011.724-.804h1.947l-1.017 1.018a.75.75 0 001.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 00.39 3.5z"></path><path d="M7.5 10.723l.98-1.167.957 1.14a2.25 2.25 0 001.724.804h1.947l-1.017-1.018a.75.75 0 111.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 11-1.06-1.06L13.109 13H11.16a3.75 3.75 0 01-2.873-1.34l-.787-.938z"></path>
+                                        </svg>
+                                    </button>
+                                    <button id="control_prev_track" class="button-prev">
+                                        <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" fill="currentcolor">
+                                            <path d="M3.3 1a.7.7 0 01.7.7v5.15l9.95-5.744a.7.7 0 011.05.606v12.575a.7.7 0 01-1.05.607L4 9.149V14.3a.7.7 0 01-.7.7H1.7a.7.7 0 01-.7-.7V1.7a.7.7 0 01.7-.7h1.6z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button id="control_track" class="button-control">
+                                    <svg id="playButtonSvg" style="display: none" role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" fill="currentcolor">
+                                        <path d="M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z"></path>
+                                    </svg>
+                                    <svg id="pauseButtonSvg" role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" fill="currentcolor">
+                                        <path d="M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z"></path>
+                                    </svg>
+                                </button>
+                                <div class="player-controls-right">
+                                    <button id="control_next_track" class="button-next">
+                                        <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" fill="currentcolor">
+                                            <path d="M12.7 1a.7.7 0 00-.7.7v5.15L2.05 1.107A.7.7 0 001 1.712v12.575a.7.7 0 001.05.607L12 9.149V14.3a.7.7 0 00.7.7h1.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-1.6z"></path>
+                                        </svg>
+                                    </button>
+                                    <button id="control_repeat" role="checkbox" aria-checked="false" class="button-repeat">
+                                        <svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" fill="currentcolor">
+                                            <path d="M0 4.75A3.75 3.75 0 013.75 1h8.5A3.75 3.75 0 0116 4.75v5a3.75 3.75 0 01-3.75 3.75H9.81l1.018 1.018a.75.75 0 11-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 111.06 1.06L9.811 12h2.439a2.25 2.25 0 002.25-2.25v-5a2.25 2.25 0 00-2.25-2.25h-8.5A2.25 2.25 0 001.5 4.75v5A2.25 2.25 0 003.75 12H5v1.5H3.75A3.75 3.75 0 010 9.75v-5z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="playback">
+                            </div>
+                        </div>
+                        <div class="player-actions">
                         </div>
                     </div>
                 </footer>
@@ -905,63 +1254,6 @@
         break;
     }
     echo '<div id="controls">
-        <div class="track-information">
-            <img id="player_cover" width="55px" height="55px" src="' . $tracks[0]['cover'] . '">
-            <div class="player-current-track-info">
-                <div id="player-current-track-name">' . $track['name'] . '</div>
-                <div id="player-current-track-artist">' . $track['artist'] . '</div>
-            </div>
-        </div>
-        <div class="player-buttons">
-            <button id="btnPrev" class="play-prev">
-                <svg
-                    id="prevButtonSvg"
-                    version="1.1"
-                    baseProfile="full"
-                    width="40"
-                    height="40"
-                    xmlns="http://www.w3.org/2000/svg">14.273
-                    <polygon points="28.386,28.155 14.273,20.006 28.386,11.858" style="fill:#bababa;" />
-                    <rect x="12.742" y="12" width="4" height="15.5" rx="1" style="fill:#bababa;" />
-                </svg>
-            </button>
-            <button id="btnPlay" class="play">
-                <svg
-                    id="playButtonSvg"
-                    version="1.1"
-                    baseProfile="full"
-                    width="40"
-                    height="40"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="20" fill="white"/>
-                    <polygon points="14.273,28.155 28.386,20.006 14.273,11.858" style="fill:black;" />
-                </svg>
-                <svg
-                    id="pauseButtonSvg"
-                    style="display:none"
-                    version="1.1"
-                    baseProfile="full"
-                    width="40"
-                    height="40"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="20" fill="white"/>
-                    <rect x="13.276" y="12" width="4" height="15.5" rx="1" />
-                    <rect x="22.742" y="12" width="4" height="15.5" rx="1" />
-                </svg>
-            </button>
-            <button id="btnNext" class="play-next">
-                <svg
-                    id="nextButtonSvg"
-                    version="1.1"
-                    baseProfile="full"
-                    width="40"
-                    height="40"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="14.273,28.155 28.386,20.006 14.273,11.858" style="fill:#bababa;" />
-                    <rect x="25.742" y="12" width="4" height="15.5" rx="1" style="fill:#bababa;" />
-                </svg>
-            </button>
-        </div>
         <div class="audio-track">
             <div class="time"></div>
         </div>
