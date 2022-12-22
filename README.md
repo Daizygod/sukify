@@ -1,5 +1,6 @@
 # Clone spotify (not in release now) work in progress
 ## Picture of last design at moment!
+![alt text](https://user-images.githubusercontent.com/46899953/209230334-d8b7e010-e581-4d30-a3cf-f56ca3b5024b.png)
 ![alt text](https://user-images.githubusercontent.com/46899953/208583653-b748f261-5d42-4670-8ed7-ab340ec5d54a.png)
 
 
