@@ -21,7 +21,7 @@ class PlayerController extends Controller
     public function index()
     {
         $tracksArray = [];
-        foreach (Track::where('id', '<>', 47)->get() as $track) {
+        foreach (Track::where('id', '<>', 47)->orderBy('id', 'desc')->get() as $track) {
             if (true) {
                 $track->file = str_replace('localhost:8000', '192.168.0.10', $track->file);
                 $track->cover_file = str_replace('localhost:8000', '192.168.0.10', $track->cover_file);

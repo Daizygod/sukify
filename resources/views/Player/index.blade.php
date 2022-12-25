@@ -255,6 +255,7 @@
             flex-direction: column;
             background: #121212;
             overflow: auto;
+            padding-top: 300px;
         }
 
         .main-view-tracklist::-webkit-scrollbar-thumb {
@@ -838,7 +839,11 @@
         treck = 0; // Присваиваем переменной ноль
         let playButton = false;
 
-        let audio = document.getElementById("audio");    // Берём элемент audio
+        let defaultTransitionSec = 5;
+
+        let audio1 = document.getElementById("audio1");    // Берём элемент audio
+        let mainAudio = audio1;
+        let audio2 = document.getElementById("audio2");    // Берём второй элемент audio
         let time = document.querySelector(".time");      // Берём аудио дорожку
         let btnPlay = document.getElementById("control_track");   // Берём кнопку проигрывания
         let btnPrev = document.getElementById("control_prev_track");   // Берём кнопку переключения предыдущего трека
@@ -853,6 +858,8 @@
 
         let pauseIconSVG = document.getElementById("playButtonSvg");
         let playIconSVG = document.getElementById("pauseButtonSvg");
+
+        let inTransition = false;
         // Массив с названиями песен
         let playlist = [];
 
@@ -861,17 +868,21 @@
         @endphp
 
         playlist = JSON.parse('<?= json_encode($tracks) ?>');
-        console.log(playlist);
 
-        function switchTreck (numTreck) {
+        function isPlaying(audioElement) { return !audioElement.paused; }
+
+        function switchTreck(numTreck) {
             // Меняем значение атрибута src
-            audio.src = playlist[numTreck]["src"];
+            if (mainAudio == audio1) {
+                audio2.pause();
+            } else if (mainAudio == audio2) {
+                audio1.pause();
+            }
+            mainAudio.src = playlist[numTreck]["src"];
             // Назначаем время песни ноль
-            audio.currentTime = 0;
-            playerCover.src = playlist[numTreck]["cover"];
-            bigPlayerCover.src = playlist[numTreck]["cover"];
+            mainAudio.currentTime = 0;
             // Включаем песню
-            audio.play();
+            mainAudio.play();
         }
 
         function changeFeedbackUI(prevTrack, nextTrack) {
@@ -883,6 +894,157 @@
 
             player_track_name.innerHTML = playlist[nextTrack]["name"];
             player_track_artist.innerHTML = playlist[nextTrack]["artist"];
+
+            playerCover.src = playlist[nextTrack]["cover"];
+            bigPlayerCover.src = playlist[nextTrack]["cover"];
+        }
+
+        function audioPlayAsync() {
+            let currentAudio = audio1;
+            if(isPlaying(audio2)) {
+                currentAudio = audio2;
+            }
+            if (isPlaying(audio1) && isPlaying(audio2)) {
+                inTransition = true;
+            } else if (isPlaying(audio1) || isPlaying(audio2)) {
+                inTransition = false;
+            }
+            // Получаем значение на какой секунде песня
+            let audioTime = Math.round(currentAudio.currentTime);
+            // Получаем всё время песни
+            let audioLength = Math.round(currentAudio.duration);
+            // Назначаем ширину элементу time
+            time.style.width = (audioTime * 100) / audioLength + '%';
+
+            if (true) {
+                if (audioTime == (audioLength - defaultTransitionSec) && treck < '<?= $count ?>' && !inTransition) {
+                    inTransition = true;
+                    changeFeedbackUI(treck, treck + 1);
+                    treck++; // То Увеличиваем переменную
+                    // Меняем трек
+                    if (isPlaying(audio1) || isPlaying(audio2)) {
+                        let nowAudio = audio1;
+                        let nextAudio = audio2;
+                        let nowAudioVolume = 1;
+                        let nextAudioVolume = 0;
+                        let transition = defaultTransitionSec;
+                        let volumeStep = 100 / (transition * 10000);
+                        if(isPlaying(audio2)) {
+                            nowAudio = audio2;
+                            nextAudio = audio1;
+                        }
+                        nextAudio.src = playlist[treck]["src"];
+                        nextAudio.currentTime = 0;
+                        nextAudio.volume = 0;
+                        nextAudio.play();
+                        let resultArray = [];
+
+                        let audioPlay2 = setInterval( function() {
+                            let audioTime = Math.round(nowAudio.currentTime * 10) / 10;
+                            let audioLength = Math.round(nowAudio.duration * 10) / 10;
+                            if (audioTime > audioLength - transition) {
+                                if (nowAudioVolume > 0) {
+                                    nowAudioVolume -= volumeStep;
+                                    nowAudio.volume = Math.round(nowAudioVolume * 10) / 10;
+                                } else {
+                                    nowAudioVolume = 0;
+                                    nowAudio.volume = 0;
+                                }
+                                if (nextAudioVolume > 1) {
+                                    nextAudioVolume = 1;
+                                    nextAudioVolume.volume = 1;
+                                } else if (nextAudioVolume < 1 || !isPlaying(nowAudio)) {
+                                    nextAudioVolume += volumeStep;
+                                    nextAudio.volume = Math.round(nextAudioVolume * 10) / 10;
+                                }
+                            }
+                            resultArray.push({'current': nowAudioVolume, 'next': nextAudioVolume});
+                            if (nowAudioVolume == 0 && nextAudioVolume == 1) {
+                                clearInterval(audioPlay2);
+                                mainAudio = nextAudio;
+                                inTransition = false;
+                                console.table(resultArray);
+                            }
+                        }, 10);
+                    }
+                    // Иначе проверяем тоже самое, но переменная treck больше или равна
+                } else if (audioTime == (audioLength - defaultTransitionSec) && treck >= '<?= $count ?>' && !inTransition) {
+                    inTransition = true;
+                    changeFeedbackUI(treck, 0);
+                    treck = 0; // То присваиваем treck ноль
+                    // Меняем трек
+                    if (isPlaying(audio1) || isPlaying(audio2)) {
+                        let nowAudio = audio1;
+                        let nextAudio = audio2;
+                        let nowAudioVolume = 1;
+                        let nextAudioVolume = 0;
+                        let transition = defaultTransitionSec;
+                        let volumeStep = 100 / (transition * 10000);
+                        if(isPlaying(audio2)) {
+                            nowAudio = audio2;
+                            nextAudio = audio1;
+                        }
+                        nextAudio.src = playlist[treck]["src"];
+                        nextAudio.currentTime = 0;
+                        nextAudio.volume = 0;
+                        nextAudio.play();
+
+                        let audioPlay2 = setInterval( function() {
+                            let audioTime = Math.round(nowAudio.currentTime * 10) / 10;
+                            let audioLength = Math.round(nowAudio.duration * 10) / 10;
+                            if (audioTime > audioLength - transition) {
+                                if (nowAudioVolume > 0) {
+                                    nowAudioVolume -= volumeStep;
+                                    nowAudio.volume = Math.round(nowAudioVolume * 10) / 10;
+                                } else {
+                                    nowAudioVolume = 0;
+                                    nowAudio.volume = 0;
+                                }
+                                if (nextAudioVolume > 1) {
+                                    nextAudioVolume = 1;
+                                    nextAudioVolume.volume = 1;
+                                } else if (nextAudioVolume < 1 || !isPlaying(nowAudio)) {
+                                    nextAudioVolume += volumeStep;
+                                    nextAudio.volume = Math.round(nextAudioVolume * 10) / 10;
+                                }
+                            }
+                            if (nowAudioVolume == 0 && nextAudioVolume == 1) {
+                                clearInterval(audioPlay2);
+                                mainAudio = nextAudio;
+                                inTransition = false;
+                            }
+                        }, 10);
+                    }
+                    // Иначе проверяем тоже самое, но переменная treck больше или равна
+                }
+            } else {
+                // Сравниваем, на какой секунде сейчас трек и всего сколько времени длится
+                // И проверяем что переменная treck меньше
+                if (audioTime == audioLength && treck < '<?= $count ?>') {
+                    changeFeedbackUI(treck, treck + 1);
+                    treck++; // То Увеличиваем переменную
+                    switchTreck(treck); // Меняем трек
+                    // Иначе проверяем тоже самое, но переменная treck больше или равна
+                } else if (audioTime == audioLength && treck >= '<?= $count ?>') {
+                    changeFeedbackUI(treck, treck + 1);
+                    treck = 0; // То присваиваем treck ноль
+                    switchTreck(treck); //Меняем трек
+                }
+            }
+            navigator.mediaSession.playbackState = 'playing';
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: playlist[treck]["name"],
+                artist: playlist[treck]["artist"],
+                album: playlist[treck]["name"],
+                artwork: [
+                    { src: "http://192.168.0.10:80/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
+                    { src: 'http://192.168.0.10:80/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
+                ]
+            });
         }
 
         function pauseOrPlayTrack(pause = false) {
@@ -894,52 +1056,20 @@
             if (playButton) {
                 playIconSVG.style.display = "none";
                 pauseIconSVG.style.display = "block";
-
-                audio.play(); // Запуск песни
+                mainAudio.play(); // Запуск песни
+                //audio1.play(); // Запуск песни
                 track_name = document.getElementById("track_name_" + playlist[treck]["id"]);
                 track_name.className = "track_name_play";
 
                 player_track_name.innerHTML = playlist[treck]["name"];
                 // Запуск интервала
-                audioPlay = setInterval(function () {
-                    // Получаем значение на какой секунде песня
-                    let audioTime = Math.round(audio.currentTime);
-                    // Получаем всё время песни
-                    let audioLength = Math.round(audio.duration)
-                    // Назначаем ширину элементу time
-                    time.style.width = (audioTime * 100) / audioLength + '%';
-                    // Сравниваем, на какой секунде сейчас трек и всего сколько времени длится
-                    // И проверяем что переменная treck меньше четырёх
-                    if (audioTime == audioLength && treck < '<?= $count ?>') {
-                        changeFeedbackUI(treck, treck + 1);
-                        treck++; // То Увеличиваем переменную
-                        switchTreck(treck); // Меняем трек
-                        // Иначе проверяем тоже самое, но переменная treck больше или равна четырём
-                    } else if (audioTime == audioLength && treck >= '<?= $count ?>') {
-                        changeFeedbackUI(treck, treck + 1);
-                        treck = 0; // То присваиваем treck ноль
-                        switchTreck(treck); //Меняем трек
-                    }
-                    navigator.mediaSession.playbackState = 'playing';
-                    navigator.mediaSession.metadata = new MediaMetadata({
-                        title: playlist[treck]["name"],
-                        artist: playlist[treck]["artist"],
-                        album: playlist[treck]["name"],
-                        artwork: [
-                            { src: "http://192.168.0.10:80/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
-                            { src: 'http://192.168.0.10:80/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
-                            { src: 'http://192.168.0.10:80/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
-                            { src: 'http://192.168.0.10:80/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
-                            { src: 'http://192.168.0.10:80/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
-                            { src: 'http://192.168.0.10:80/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
-                        ]
-                    });
-                }, 10)
+                audioPlay = setInterval(audioPlayAsync, 10)
             } else {
                 navigator.mediaSession.playbackState = 'paused';
                 playIconSVG.style.display = "block";
                 pauseIconSVG.style.display = "none";
-                audio.pause(); // Останавливает песню
+                audio2.pause(); // Останавливает песню
+                audio1.pause(); // Останавливает песню
                 clearInterval(audioPlay) // Останавливает интервал
             }
         }
@@ -1057,8 +1187,6 @@
             document.addEventListener('mouseup', removeResizeBarEvents);
 
             function removeResizeBarEvents() {
-                console.log("yes");
-
                 document.removeEventListener('mousemove', onMouseMove);
                 resizeNavBar.onmouseup = null;
             }
@@ -1250,7 +1378,7 @@
 //
 //    echo '</div>';
     foreach ($tracks as $track) {
-        echo '<audio id="audio" style="display:none" src="' . $track['src'] . '" controls></audio>';
+
         break;
     }
     echo '<div id="controls">
@@ -1259,6 +1387,9 @@
         </div>
     </div>';
     echo '</div>';
+
+   echo '<audio id="audio1" src="' . $tracks[0]['src'] . '" controls></audio>';
+   echo '<audio id="audio2" src="' . $tracks[1]['src'] . '" controls></audio>';
     //    $gridData = [
     //        'dataProvider' => $dataProvider,
     //        'title' => 'Tracks',
