@@ -6,11 +6,12 @@ I was so happy because it's music service have awesome features like music track
 And they leave us country (of course you know why)<br />
 But! I have so many music that not in library spotify or others music players,<br />
 and I also love "perfect transitions" between two tracks, spotify only allow you to edit default time for transition.<br />
-<br />
+<br/>
 As the result I start create this project,<br>
 <h2><b>Don't take it as anger to spotify or other music players I just have time and power for this</b>
 <b>And of course I don't plan make money on this, just creating a player in spotify design, have fun!</b></h2>
 <br>
+
 ## Planning
 - add creating tracks page (working, need to be editied for albums and artists)
 - add music player page like one page app (edditing design, player works)
