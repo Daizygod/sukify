@@ -57,6 +57,8 @@ Create database with your name in env file
 
 `npm run build`
 
+`php artisan storage:link`
+
 `php artisan serve`
 
 ### Другое
