@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property int $artist_id
+ * @property string|null $ui_background_color
  * 
  * @property Artist $artist
  *
@@ -57,7 +58,8 @@ class Track extends Model
 		'video_file',
 		'created_by',
 		'updated_by',
-		'artist_id'
+		'artist_id',
+        'ui_background_color'
 	];
 
     public static $types_array = [
