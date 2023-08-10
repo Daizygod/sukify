@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::resource('player', PlayerController::class);
+
+Route::resource('tracks', TrackController::class);
+
+Route::resource('artists', ArtistController::class);
+
+Route::get('/getAjax', [ArtistController::class, 'getAjax'])->name('getAjax');
 
 Route::get('/', function () {
     return view('welcome');
