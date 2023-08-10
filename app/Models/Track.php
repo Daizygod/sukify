@@ -12,10 +12,9 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Track
- *
+ * 
  * @property int $id
  * @property string $name
- * @property int $artist_id
  * @property Carbon $release_date
  * @property int $type
  * @property int $counter
@@ -26,6 +25,9 @@ use Illuminate\Support\Facades\Auth;
  * @property int $updated_by
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property int $artist_id
+ * 
+ * @property Artist $artist
  *
  * @package App\Models
  */
@@ -34,17 +36,11 @@ class Track extends Model
 	protected $table = 'tracks';
 
 	protected $casts = [
-		'artist_id' => 'int',
 		'type' => 'int',
 		'counter' => 'int',
-        'cover_file' => 'string',
-        'file' => 'string',
-        'video_file' => 'string',
-		//'photo_cover_id' => 'int',
-		//'file_id' => 'int',
-		//'video_id' => 'int',
 		'created_by' => 'int',
-		'updated_by' => 'int'
+		'updated_by' => 'int',
+		'artist_id' => 'int'
 	];
 
 	protected $dates = [
@@ -53,19 +49,22 @@ class Track extends Model
 
 	protected $fillable = [
 		'name',
-		'artist_id',
 		'release_date',
 		'type',
 		'counter',
-        'cover_file' => 'string',
-        'file' => 'string',
-        'video_file' => 'string',
-		//'photo_cover_id',
-		//'file_id',
-		//'video_id',
+		'cover_file',
+		'file',
+		'video_file',
 		'created_by',
-		'updated_by'
+		'updated_by',
+		'artist_id'
 	];
+
+    public static $types_array = [
+        1 => 'single',
+        2 => 'only in album',
+        3 => 'single and album'
+    ];
 
     protected static function boot()
     {
@@ -83,10 +82,8 @@ class Track extends Model
         });
     }
 
-
-    public static $types_array = [
-        1 => 'single',
-        2 => 'only in album',
-        3 => 'single and album'
-    ];
+	public function artist()
+	{
+		return $this->belongsTo(Artist::class);
+	}
 }
