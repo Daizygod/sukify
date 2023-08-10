@@ -23,8 +23,8 @@ class PlayerController extends Controller
         $tracksArray = [];
         foreach (Track::where('id', '<>', 47)->orderBy('id', 'desc')->get() as $track) {
             if (true) {
-                $track->file = str_replace('localhost:8000', '192.168.0.10', $track->file);
-                $track->cover_file = str_replace('localhost:8000', '192.168.0.10', $track->cover_file);
+                $track->file = str_replace('localhost:8000', '192.168.1.101', $track->file); //FIXME
+                $track->cover_file = str_replace('localhost:8000', '192.168.1.101', $track->cover_file); //FIXME
                 $tracksArray[] = [
                     'id' => $track->id,
                     'name' => $track->name,
