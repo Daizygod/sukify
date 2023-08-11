@@ -22,9 +22,9 @@ class PlayerController extends Controller
     {
         $tracksArray = [];
         foreach (Track::where('id', '<>', 47)->orderBy('id', 'desc')->get() as $track) {
-            if (true) {
-                $track->file = str_replace('localhost:8000', '192.168.0.10', $track->file);
-                $track->cover_file = str_replace('localhost:8000', '192.168.0.10', $track->cover_file);
+            if (env('APP_DEBUG')) {
+                $track->file = str_replace('http://localhost:8000', env('APP_URL'), $track->file);
+                $track->cover_file = str_replace('http://localhost:8000', env('APP_URL'), $track->cover_file);
                 $tracksArray[] = [
                     'id' => $track->id,
                     'name' => $track->name,
@@ -42,6 +42,7 @@ class PlayerController extends Controller
                 ];
             }
         }
+        //TODO ADD PAGINATION
         return view('player.index', [
             'tracks' => $tracksArray,
             'tracksJSON' => json_encode($tracksArray, JSON_PRETTY_PRINT),

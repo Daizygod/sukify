@@ -2,11 +2,32 @@
 
 @section('content')
 
+
     <style>
         @media (min-width: 1200px) {
             .col-lg-4 {
                 width: unset !important;
             }
+        }
+
+        @font-face {
+            font-family: CircularSp-Cyrl-Bold;
+            src: url('/fonts/CircularSp-Cyrl-Bold.ttf');
+        }
+
+        @font-face {
+            font-family: CircularSp-Bold;
+            src: url('/fonts/CircularSp-Bold.ttf');
+        }
+
+        @font-face {
+            font-family: CircularSp-Cyrl-Book;
+            src: url('/fonts/CircularSp-Cyrl-Book.ttf');
+        }
+
+        @font-face {
+            font-family: CircularSp-Book;
+            src: url('/fonts/CircularSp-Book.ttf');
         }
 
         html {
@@ -50,7 +71,9 @@
 
         .track_name, #player-current-track-name {
             color: white;
-            font-weight: bold;
+            /*font-weight: bold;*/
+            font-family: CircularSp-Cyrl-Bold, CircularSp-Bold;
+            font-size: 1.1em;
         }
 
         .track_name_play {
@@ -206,6 +229,7 @@
             -moz-user-select: none;
             -khtml-user-select: none;
             user-select: none;
+            font-family: CircularSp-Cyrl-Book, CircularSp-Book;
         }
 
         .player-track-list-cover {
