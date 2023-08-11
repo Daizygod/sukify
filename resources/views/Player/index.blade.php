@@ -2,11 +2,32 @@
 
 @section('content')
 
+
     <style>
         @media (min-width: 1200px) {
             .col-lg-4 {
                 width: unset !important;
             }
+        }
+
+        @font-face {
+            font-family: CircularSp-Cyrl-Bold;
+            src: url('/fonts/CircularSp-Cyrl-Bold.ttf');
+        }
+
+        @font-face {
+            font-family: CircularSp-Bold;
+            src: url('/fonts/CircularSp-Bold.ttf');
+        }
+
+        @font-face {
+            font-family: CircularSp-Cyrl-Book;
+            src: url('/fonts/CircularSp-Cyrl-Book.ttf');
+        }
+
+        @font-face {
+            font-family: CircularSp-Book;
+            src: url('/fonts/CircularSp-Book.ttf');
         }
 
         html {
@@ -50,12 +71,16 @@
 
         .track_name, #player-current-track-name {
             color: white;
-            font-weight: bold;
+            /*font-weight: bold;*/
+            font-family: CircularSp-Cyrl-Bold, CircularSp-Bold;
+            font-size: 1.1em;
         }
 
         .track_name_play {
             color: #1ED760;
             font-weight: bold;
+            font-family: CircularSp-Cyrl-Bold, CircularSp-Bold;
+            font-size: 1.1em;
         }
 
         #controls {
@@ -206,6 +231,7 @@
             -moz-user-select: none;
             -khtml-user-select: none;
             user-select: none;
+            font-family: CircularSp-Cyrl-Book, CircularSp-Book;
         }
 
         .player-track-list-cover {
@@ -218,6 +244,8 @@
         .track_name, .track_name_play {
             grid-area: title;
             justify-self: start;
+            font-family: CircularSp-Cyrl-Bold, CircularSp-Bold;
+            font-size: 1.1em;
         }
 
         .player-current-track-info {
@@ -344,8 +372,7 @@
             margin: 0;
             padding: 0;
             min-width: 620px;
-            background-color: #181818;
-            border-top: 1px solid #282828;
+            background-color: #000;
         }
 
         .now-player-container {
@@ -572,15 +599,19 @@
         }
 
         #now_playing_track_name {
-            font-size: 1.5rem;
-            font-weight: 400;
+            /*font-size: 1.5rem;*/
+            /*font-weight: 400;*/
             color: #fff;
+
+            font-family: CircularSp-Cyrl-Book, CircularSp-Book;
+            font-size: 1.1em;
         }
 
         #now_playing_track_artist {
-            font-size: 1.1rem;
-            font-weight: 400;
-            color: #6a6a6a;
+            /*font-size: 1.1rem;*/
+            /*font-weight: 400;*/
+            color: #b3b3b3;
+            font-family: CircularSp-Cyrl-Book, CircularSp-Book;
         }
 
         .player-actions {
