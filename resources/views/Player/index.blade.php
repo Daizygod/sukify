@@ -64,7 +64,7 @@
         .time {
             width: 0;
             height: 4px;
-            transition: all 1.5s linear;
+            /*transition: all 1.5s linear;*/
             background-color: #ffffff;
             border-radius: 2px;
         }
@@ -804,9 +804,114 @@
             gap: 8px;
         }
 
-        #controls {
-            display:none;
+        .playback {
+            width: 100%;
+            /*background-color: hsla(0,0%,100%,.3);*/
+            /*border-radius: 2px;*/
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
+
+        .paybackTimeLine {
+            width: 100%;
+            margin-left: 0.5em;
+            margin-right: 0.5em;
+            background-color: hsla(0,0%,100%,.3);
+            border-radius: 2px;
+        }
+
+        #currentTimePayback {
+            color: #b3b3b3;
+            font-size: 80%;
+            font-family: CircularSp-Cyrl-Book, CircularSp-Book;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        #currentTimeIsLeftPayback {
+            color: #b3b3b3;
+            font-size: 80%;
+            font-family: CircularSp-Cyrl-Book, CircularSp-Book;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .volume_control {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .button-volume {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            align-items: center;
+            background: transparent;
+            border: none;
+            color: hsla(0,0%,100%,.7);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            height: var(--button-size);
+            justify-content: center;
+            min-width: var(--button-size);
+            position: relative;
+            width: var(--button-size);
+        }
+
+        #volume_input {
+            --primary: rgb(29 184 45);
+            --value: 0;
+            --track-background: rgb(83 83 83);
+            --track-progress-background: rgb(179 179 179);
+            --thumb-background: rgb(255 255 255);
+
+            width: 100%;
+            appearance: none;
+            cursor: pointer;
+            background: none;
+
+            accent-color: rgb(29 184 45);
+
+            animation: play 5s linear;
+        }
+        #volume_input:hover,
+        #volume_input:focus {
+            --track-progress-background: rgb(29 184 45);
+            --thumb-scale: 1;
+        }
+
+        #volume_input::-webkit-slider-runnable-track {
+            height: 0.25rem;
+            margin-block: 0.25rem;
+            border-radius: 999px;
+
+            background: linear-gradient(
+                    to right,
+                    var(--track-progress-background)
+                    calc(var(--value, 0) * 1%),
+                    var(--track-background) 0
+            );
+        }
+        #volume_input::-webkit-slider-thumb {
+            appearance: none;
+            box-shadow: 0 0 0.25rem rgb(0 0 0 / 50%);
+            height: 0.75rem;
+            width: 0.75rem;
+            border-radius: 999px;
+            background: var(--thumb-background);
+            margin-top: -0.25rem;
+            transform: scale(var(--thumb-scale, 0));
+        }
+
+        /*#volume_input::-webkit-slider-runnable-track  {*/
+        /*    -webkit-appearance: none;*/
+        /*    box-shadow: none;*/
+        /*    border: none;*/
+        /*    background: transparent;*/
+        /*}*/
 
     </style>
 
@@ -863,23 +968,41 @@
         /*}*/
 
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vibrant.js/1.0.0/Vibrant.min.js"></script>
+    <!-- Debug version -->
+{{--    <script src="<?= url('/js/vibrant.js') ?>"></script>--}}
+    <!-- Uglified version -->
+{{--    <script src="<?= url('/js/vibrant.min.js') ?>"></script>--}}
     <script>
         document.addEventListener('DOMContentLoaded', function(){ // Аналог $(document).ready(function(){
 
         let treck; // Переменная с индексом трека
         treck = 0; // Присваиваем переменной ноль
         let playButton = false;
+        let masterVolume = 0.1;
+        let masterVolumeInput = 10;
 
-        let defaultTransitionSec = 5;
+        let volumeSlider = document.getElementById("volume_input");
+
+        volumeSlider.addEventListener("input", function() {
+            masterVolumeInput = Math.min(volumeSlider.value,100);
+            masterVolumeInput = Math.max(masterVolumeInput,0);
+            masterVolume = masterVolumeInput / 100;
+        })
+        let defaultTransitionSec = 10;
 
         let audio1 = document.getElementById("audio1");    // Берём элемент audio
+        audio1.volume = masterVolume;
         let mainAudio = audio1;
         let audio2 = document.getElementById("audio2");    // Берём второй элемент audio
+        audio2.volume = masterVolume;
         let time = document.querySelector(".time");      // Берём аудио дорожку
         let btnPlay = document.getElementById("control_track");   // Берём кнопку проигрывания
         let btnPrev = document.getElementById("control_prev_track");   // Берём кнопку переключения предыдущего трека
         let btnNext = document.getElementById("control_next_track");   // Берём кнопку переключение следующего трека
 
+        let tobBarList = document.querySelector(".top-bar-list");
         let playerCover = document.getElementById("player_cover");
         let bigPlayerCover = document.getElementById("big_player_cover");
         let track_name = document.getElementById("track_name_0");
@@ -889,6 +1012,10 @@
 
         let pauseIconSVG = document.getElementById("playButtonSvg");
         let playIconSVG = document.getElementById("pauseButtonSvg");
+
+        let currentTrackTime = document.getElementById("currentTimePayback");
+        let currentTrackLeftTime = document.getElementById("currentTimeIsLeftPayback");
+        currentTrackLeftTime.innerHTML = "1:32";
 
         let inTransition = false;
         // Массив с названиями песен
@@ -912,10 +1039,12 @@
             mainAudio.src = playlist[numTreck]["src"];
             // Назначаем время песни ноль
             mainAudio.currentTime = 0;
+            currentTrackTime.innerHTML = "0:00";
             // Включаем песню
             mainAudio.play();
         }
 
+        const colorThief = new ColorThief();
         function changeFeedbackUI(prevTrack, nextTrack) {
             track_name = document.getElementById("track_name_" + playlist[prevTrack]["id"]);
             track_name.className = "track_name";
@@ -928,6 +1057,38 @@
 
             playerCover.src = playlist[nextTrack]["cover"];
             bigPlayerCover.src = playlist[nextTrack]["cover"];
+
+            // let v = new Vibrant(bigPlayerCover.src, opts);
+            // Vibrant.from(bigPlayerCover.src).getPalette().then(function(palette) {});
+            // tobBarList.setAttribute("style", `background: rgb(${colorThief.getColor(bigPlayerCover)})`);
+            let testItem = document.getElementById("test_123");
+            try {
+                var vibrant = new Vibrant(bigPlayerCover);
+                // console.log(vibrant.getRgb());
+                var swatches = vibrant.swatches();
+
+                let count = 1;
+                let lightVibrantHex  = "#ffffff";
+                let vibrantHex = "#000000";
+
+                for (var swatch in swatches) {
+                    if (swatches.hasOwnProperty(swatch) && swatches[swatch] && swatch == "Vibrant") {
+                        vibrantHex = swatches[swatch].getHex();
+                        // console.log(swatch);
+                        // document.getElementById("test" + count).setAttribute("style", `height: 200px; width: 100%; background: ` + swatches[swatch].getHex());
+                        // count++;
+                    } else if (swatches.hasOwnProperty(swatch) && swatches[swatch] && swatch == "LightVibrant") {
+                        lightVibrantHex = swatches[swatch].getHex();
+                    }
+                }
+                testItem.setAttribute("style", `height:100%; background: linear-gradient(0deg, ` + vibrantHex + ` 0%, ` + lightVibrantHex + ` 100%);`);
+            } catch (e) {}
+
+
+            // Vibrant.from(bigPlayerCover.src).getPalette(function(err, palette) {
+            //     console.log(palette);
+            // });
+
         }
 
         function audioPlayAsync() {
@@ -947,6 +1108,19 @@
             // Назначаем ширину элементу time
             time.style.width = (audioTime * 100) / audioLength + '%';
 
+            let currentSecondsTime = audioTime % 60;
+            currentSecondsTime = currentSecondsTime ? currentSecondsTime : 0;
+            currentSecondsTime = currentSecondsTime > 9 ? currentSecondsTime : "0" + currentSecondsTime;
+
+            let currentLeftSeconds = audioLength - audioTime;
+            currentLeftSeconds = isNaN(currentLeftSeconds) ? 0 : currentLeftSeconds;
+            let currentSecondsLeftTime = currentLeftSeconds % 60;
+            currentSecondsLeftTime = currentSecondsLeftTime ? currentSecondsLeftTime : 0;
+            currentSecondsLeftTime = currentSecondsLeftTime > 9 ? currentSecondsLeftTime : "0" + currentSecondsLeftTime;
+
+            currentTrackTime.innerHTML = Math.floor(audioTime / 60) + ":" + currentSecondsTime;
+            currentTrackLeftTime.innerHTML = "-" + Math.floor(currentLeftSeconds / 60) + ":" + currentSecondsLeftTime;
+
             if (true) {
                 if (audioTime == (audioLength - defaultTransitionSec) && treck < '<?= $count ?>' && !inTransition) {
                     inTransition = true;
@@ -956,10 +1130,10 @@
                     if (isPlaying(audio1) || isPlaying(audio2)) {
                         let nowAudio = audio1;
                         let nextAudio = audio2;
-                        let nowAudioVolume = 1;
+                        let nowAudioVolume = masterVolume;
                         let nextAudioVolume = 0;
                         let transition = defaultTransitionSec;
-                        let volumeStep = 100 / (transition * 10000);
+                        let volumeStep = masterVolumeInput / (transition * 10000);
                         if(isPlaying(audio2)) {
                             nowAudio = audio2;
                             nextAudio = audio1;
@@ -976,21 +1150,22 @@
                             if (audioTime > audioLength - transition) {
                                 if (nowAudioVolume > 0) {
                                     nowAudioVolume -= volumeStep;
-                                    nowAudio.volume = Math.round(nowAudioVolume * 10) / 10;
+                                    nowAudio.volume = Math.round(nowAudioVolume * 100) / 100;
                                 } else {
                                     nowAudioVolume = 0;
                                     nowAudio.volume = 0;
                                 }
-                                if (nextAudioVolume > 1) {
-                                    nextAudioVolume = 1;
-                                    nextAudioVolume.volume = 1;
+                                if (nextAudioVolume > masterVolume) {
+                                    nextAudioVolume = masterVolume;
+                                    nextAudioVolume.volume = masterVolume;
                                 } else if (nextAudioVolume < 1 || !isPlaying(nowAudio)) {
                                     nextAudioVolume += volumeStep;
-                                    nextAudio.volume = Math.round(nextAudioVolume * 10) / 10;
+                                    let roundedNextVolume = Math.round(nextAudioVolume * 100) / 100;
+                                    nextAudio.volume = roundedNextVolume > masterVolume ? masterVolume : roundedNextVolume;
                                 }
                             }
                             resultArray.push({'current': nowAudioVolume, 'next': nextAudioVolume});
-                            if (nowAudioVolume == 0 && nextAudioVolume == 1) {
+                            if (nowAudioVolume == 0 && nextAudioVolume == masterVolume) {
                                 clearInterval(audioPlay2);
                                 mainAudio = nextAudio;
                                 inTransition = false;
@@ -1007,10 +1182,10 @@
                     if (isPlaying(audio1) || isPlaying(audio2)) {
                         let nowAudio = audio1;
                         let nextAudio = audio2;
-                        let nowAudioVolume = 1;
+                        let nowAudioVolume = masterVolume;
                         let nextAudioVolume = 0;
                         let transition = defaultTransitionSec;
-                        let volumeStep = 100 / (transition * 10000);
+                        let volumeStep = masterVolumeInput / (transition * 10000);
                         if(isPlaying(audio2)) {
                             nowAudio = audio2;
                             nextAudio = audio1;
@@ -1026,20 +1201,21 @@
                             if (audioTime > audioLength - transition) {
                                 if (nowAudioVolume > 0) {
                                     nowAudioVolume -= volumeStep;
-                                    nowAudio.volume = Math.round(nowAudioVolume * 10) / 10;
+                                    nowAudio.volume = Math.round(nowAudioVolume * 100) / 100;
                                 } else {
                                     nowAudioVolume = 0;
                                     nowAudio.volume = 0;
                                 }
-                                if (nextAudioVolume > 1) {
-                                    nextAudioVolume = 1;
-                                    nextAudioVolume.volume = 1;
+                                if (nextAudioVolume > masterVolume) {
+                                    nextAudioVolume = masterVolume;
+                                    nextAudioVolume.volume = masterVolume;
                                 } else if (nextAudioVolume < 1 || !isPlaying(nowAudio)) {
                                     nextAudioVolume += volumeStep;
-                                    nextAudio.volume = Math.round(nextAudioVolume * 10) / 10;
+                                    let roundedNextVolume = Math.round(nextAudioVolume * 100) / 100;
+                                    nextAudio.volume = roundedNextVolume > masterVolume ? masterVolume : roundedNextVolume;
                                 }
                             }
-                            if (nowAudioVolume == 0 && nextAudioVolume == 1) {
+                            if (nowAudioVolume == 0 && nextAudioVolume == masterVolume) {
                                 clearInterval(audioPlay2);
                                 mainAudio = nextAudio;
                                 inTransition = false;
@@ -1047,6 +1223,9 @@
                         }, 10);
                     }
                     // Иначе проверяем тоже самое, но переменная treck больше или равна
+                } else {
+                    audio1.volume = masterVolume;
+                    audio2.volume = masterVolume;
                 }
             } else {
                 // Сравниваем, на какой секунде сейчас трек и всего сколько времени длится
@@ -1068,12 +1247,12 @@
                 artist: playlist[treck]["artist"],
                 album: playlist[treck]["name"],
                 artwork: [
-                    { src: "http://192.168.0.10:80/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
+                    { src: "http://192.168.1.101/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
                 ]
             });
         }
@@ -1125,12 +1304,12 @@
                 artist: playlist[treck]["artist"],
                 album: playlist[treck]["name"],
                 artwork: [
-                    { src: "http://192.168.0.10:80/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
+                    { src: "http://192.168.1.101/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
                 ]
             });
         }
@@ -1159,12 +1338,12 @@
                 artist: playlist[treck]["artist"],
                 album: playlist[treck]["name"],
                 artwork: [
-                    { src: "http://192.168.0.10:80/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
-                    { src: 'http://192.168.0.10:80/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
+                    { src: "http://192.168.1.101/storage/images202212/tape96.png",   sizes: '96x96',   type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape128.png', sizes: '128x128', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape192.png', sizes: '192x192', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape256.png', sizes: '256x256', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape384.png', sizes: '384x384', type: 'image/png' },
+                    { src: 'http://192.168.1.101/storage/images202212/tape512.png', sizes: '512x512', type: 'image/png' },
                 ]
             });
         }
@@ -1278,6 +1457,14 @@
             </div>
             <nav id="navigationBar" class="navigation-bar">
                 <div class="top-bar-list">
+                    <div style="display: none">
+                    <div id="test1" style="height: 200px; width: 100%"></div>
+                    <div id="test2" style="height: 200px; width: 100%"></div>
+                    <div id="test3" style="height: 200px; width: 100%"></div>
+                    <div id="test4" style="height: 200px; width: 100%"></div>
+                    <div id="test5" style="height: 200px; width: 100%"></div>
+                    </div>
+                    <div id="test_123"></div>
                     <div class="now-playing-big-cover collapsed" style="display: none" id="now_playing_big_cover">
                         <div style="width: auto; height: auto; padding-bottom: 100%;">
                             <img id="big_player_cover" class="big-cover-img" draggable="false" src="' . $tracks[0]['cover'] . '">
@@ -1370,9 +1557,22 @@
                                 </div>
                             </div>
                             <div class="playback">
+                                <div id="currentTimePayback">0:00</div>
+                                <div class="paybackTimeLine">
+                                    <div class="time"></div>
+                                </div>
+                                <div id="currentTimeIsLeftPayback"></div>
                             </div>
                         </div>
                         <div class="player-actions">
+                            <div class="volume_control">
+                                <button id="volume_btn" class="button-volume">
+                                    <svg fill="currentColor" role="presentation" height="16" width="16" aria-hidden="true" aria-label="Высокая громкость" id="volume-icon" viewBox="0 0 16 16" data-encore-id="icon" class="Svg-sc-ytk21e-0 haNxPq"><path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.642 3.642 0 0 1-1.33-4.967 3.639 3.639 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.139 2.139 0 0 0 0 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 0 1 0 4.88z"></path><path d="M11.5 13.614a5.752 5.752 0 0 0 0-11.228v1.55a4.252 4.252 0 0 1 0 8.127v1.55z"></path></svg>
+                                </button>
+                                <div style="display: flex; align-items: center">
+                                    <input type="range" id="volume_input" name="volume" min="0" max="100"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </footer>
@@ -1394,6 +1594,10 @@
         . '</div>'
         . '</div>';
     }
+    echo '<div class="track-list-track-primary">';
+   echo '<audio id="audio1" src="' . $tracks[0]['src'] . '" controls></audio>';
+   echo '<audio id="audio2" src="' . $tracks[1]['src'] . '" controls></audio>';
+    echo  '</div>';
     echo '
             </div>
     </div>';
@@ -1412,15 +1616,15 @@
 
         break;
     }
-    echo '<div id="controls">
-        <div class="audio-track">
-            <div class="time"></div>
-        </div>
-    </div>';
+//    echo '<div id="controls">
+//        <div class="audio-track">
+//            <div class="time"></div>
+//        </div>
+//    </div>';
     echo '</div>';
 
-   echo '<audio id="audio1" src="' . $tracks[0]['src'] . '" controls></audio>';
-   echo '<audio id="audio2" src="' . $tracks[1]['src'] . '" controls></audio>';
+//   echo '<audio id="audio1" src="' . $tracks[0]['src'] . '" controls></audio>';
+//   echo '<audio id="audio2" src="' . $tracks[1]['src'] . '" controls></audio>';
     //    $gridData = [
     //        'dataProvider' => $dataProvider,
     //        'title' => 'Tracks',
