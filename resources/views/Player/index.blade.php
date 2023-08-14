@@ -1579,21 +1579,27 @@
             </div>
             <div class="main-view-tracklist">
             ';
-    foreach ($tracks as $key => $track) {
-        echo '<div class="player-track-list-track">'
-        . '<div class="track-list-track-number"><div class="track-list-action-play">'
-        . '<span class="track-number">' . $key+1 . '</span>'
-        . '<button id="play_track_' . $track['id'] . '" class="play_track_button">'
-        . '<svg height="24" width="24" aria-hidden="true" class="play_track_icon" viewBox="0 0 24 24" data-encore-id="icon"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path></svg>'
-        . '</div>'
-        . '</div>'
-        . '<div class="track-list-track-primary">'
-        . '<img class="player-track-list-cover" width="40" height="40" src="' . $track['cover'] . '">'
-        . '<div class="track-list-info"><div id="track_name_' . $track['id'] . '" class="track_name">' . $track['name'] . '</div>'
-        . '<div class="track-list-artist">' . $track['artist'] . '</div></div>'
-        . '</div>'
-        . '</div>';
-    }
+@endphp
+@foreach ($tracksObj as $key => $track)
+    <x-player.trackitem :number="$key + 1" :track="$track"/>
+@endforeach
+
+    @php
+//    foreach ($tracks as $key => $track) {
+//        echo '<div class="player-track-list-track">'
+//        . '<div class="track-list-track-number"><div class="track-list-action-play">'
+//        . '<span class="track-number">' . $key+1 . '</span>'
+//        . '<button id="play_track_' . $track['id'] . '" class="play_track_button">'
+//        . '<svg height="24" width="24" aria-hidden="true" class="play_track_icon" viewBox="0 0 24 24" data-encore-id="icon"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path></svg>'
+//        . '</div>'
+//        . '</div>'
+//        . '<div class="track-list-track-primary">'
+//        . '<img class="player-track-list-cover" width="40" height="40" src="' . $track['cover'] . '">'
+//        . '<div class="track-list-info"><div id="track_name_' . $track['id'] . '" class="track_name">' . $track['name'] . '</div>'
+//        . '<div class="track-list-artist">' . $track['artist'] . '</div></div>'
+//        . '</div>'
+//        . '</div>';
+//    }
     echo '<div class="track-list-track-primary">';
    echo '<audio id="audio1" src="' . $tracks[0]['src'] . '" controls></audio>';
    echo '<audio id="audio2" src="' . $tracks[1]['src'] . '" controls></audio>';
