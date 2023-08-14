@@ -47,6 +47,7 @@ class PlayerController extends Controller
             'tracks' => $tracksArray,
             'tracksJSON' => json_encode($tracksArray, JSON_PRETTY_PRINT),
             'count' => Track::where('id', '<>', 47)->count() - 1,
+            'tracksObj' => Track::where('id', '<>', 47)->orderBy('id', 'desc')->get()
         ]);
     }
 
