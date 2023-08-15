@@ -11,7 +11,7 @@
     </div>
     <div class="track-list-track-primary">'
         <img class="player-track-list-cover" width="40" height="40" src="{{
-    (env("APP_DEBUG") ? str_replace('http://localhost:8000', env('APP_URL'), $track->cover_file) : $track->cover_file
+    env("APP_DEBUG") ? str_replace('http://localhost:8000', env('APP_URL'), $track->cover_file) : $track->cover_file
     }}">
 {{--        TODO REMOVE THIS SHISH--}}
         <div class="track-list-info">
