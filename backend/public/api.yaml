@@ -27,7 +27,7 @@ swagger: "2.0"
 info:
   version: 1.0.5
   title: API Documentation
-host: oasystem.ru
+host: 4807-176-52-96-170.ngrok-free.app
 basePath: /method
 tags: [ ]
 paths:

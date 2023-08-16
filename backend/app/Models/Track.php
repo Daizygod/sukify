@@ -81,6 +81,10 @@ class Track extends Model
             $model->updated_by = is_object(Auth::guard(config('app.guards.web'))->user()) ? Auth::guard(config('app.guards.web'))->user()->id : 1;
             $model->created_at = Carbon::now('UTC')->timestamp;
             $model->updated_at = Carbon::now('UTC')->timestamp;
+            $model->type = 1;
+            $model->counter = 0;
+            $model->video_file = "";
+            $model->artist_id = 1;
         });
 
         static::updating(function ($model) {

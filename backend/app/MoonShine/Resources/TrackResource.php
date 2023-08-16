@@ -6,13 +6,16 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Track;
 
+use Illuminate\Http\UploadedFile;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Grid;
 use MoonShine\Fields\BelongsToMany;
 use MoonShine\Fields\Date;
+use MoonShine\Fields\File;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Select;
+use MoonShine\Fields\StackFields;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\Resource;
 use MoonShine\Fields\ID;
@@ -23,6 +26,21 @@ class TrackResource extends Resource
 	public static string $model = Track::class;
 
 	public static string $title = 'Tracks';
+
+    public string $titleField = 'name';
+
+    public static int $itemsPerPage = 5;
+
+    protected bool $createInModal = true;
+
+    protected bool $editInModal = true;
+
+    protected bool $showInModal = true;
+
+    public static array $with = [
+        'artists'
+    ];//TODO - 112 remove
+
 
 	public function fields(): array
     {
@@ -36,7 +54,21 @@ class TrackResource extends Resource
                             ->dir('/')
                             ->disk('public')
                             ->allowedExtensions(['jpg', 'png'])
-//                            ->required()
+                            ->required()
+                            ->customName(fn(UploadedFile $file) =>  "images" . Carbon::now()->format('Ym') . '/' . $file->hashName()),
+                        File::make('Audio', 'file')
+                            ->dir('/')
+                            ->disk('public')
+                            ->allowedExtensions(['mp3', 'wav'])
+                            ->hideOnIndex()
+                            ->required()
+                            ->customName(fn(UploadedFile $file) =>  "music" . Carbon::now()->format('Ym') . '/' . $file->hashName()),
+                        File::make('Video', 'video_file')
+                            ->dir('/')
+                            ->disk('public')
+                            ->allowedExtensions(['mp4'])
+                            ->hideOnIndex()
+                            ->customName(fn(UploadedFile $file) =>  "videos" . Carbon::now()->format('Ym') . '/' . $file->hashName())
                     ])
                 ])->columnSpan(4),
                 Column::make([
@@ -44,14 +76,22 @@ class TrackResource extends Resource
                         Text::make('Name', 'name')
                             ->required()
                             ->sortable()
-                    ])
+                            ->locked()
+                            ->hideOnIndex()
+                    ]),
+
+                    StackFields::make('Title')->fields([
+                        Text::make('Name', 'name'),
+                        BelongsToMany::make('Artists', 'artists', 'name')->inLine(separator: ' ', badge: true),
+                    ])->isOnIndex(),
                 ])->columnSpan(8)
             ]),
 
             BelongsToMany::make('Artists', 'artists', 'name')
                 ->asyncSearch()
                 ->select()
-                ->inLine(separator: ' ', badge: true),
+                ->inLine(separator: ' ', badge: true)
+                ->hideOnIndex(),
 
             Date::make('Release date', 'release_date')
                 ->format('d.m.Y'),
