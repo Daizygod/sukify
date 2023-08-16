@@ -176,9 +176,9 @@ class TrackController extends Controller
 
     public function search(Request $request)
     {
-//        return Track::where('name', 'LIKE', "%{$request->input('search')}%")
-//            ->get();
-        return Track::orderBy('id')->cursorPaginate(5)->map(function($track) {
+        return Track::where('name', 'LIKE', "%{$request->input('search')}%")
+            ->get()
+            ->transform(function($track) {
             $track->file = env('APP_URL') . "/storage/" . $track->file;
             $track->cover_file = env('APP_URL') . "/storage/" . $track->cover_file;
             return $track;
