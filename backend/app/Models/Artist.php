@@ -9,19 +9,15 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Artist
  * 
  * @property int $id
  * @property string $name
- * @property int $country_id
- * @property int $photo_wall_id
- * @property int $photo_cover_id
- * @property int $created_by
- * @property int $updated_by
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property string|null $avatar
+ * @property string|null $background
  * 
  * @property Collection|Track[] $tracks
  *
@@ -30,26 +26,31 @@ use Illuminate\Database\Eloquent\Model;
 class Artist extends Model
 {
 	protected $table = 'artists';
-
-	protected $casts = [
-		'country_id' => 'int',
-		'photo_wall_id' => 'int',
-		'photo_cover_id' => 'int',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+	public $timestamps = false;
 
 	protected $fillable = [
 		'name',
-		'country_id',
-		'photo_wall_id',
-		'photo_cover_id',
-		'created_by',
-		'updated_by'
+		'avatar',
+		'background'
 	];
 
 	public function tracks()
 	{
 		return $this->belongsToMany(Track::class, 'tracks_artists');
 	}
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+//            $model->updated_by = is_object(Auth::guard(config('app.guards.web'))->user()) ? Auth::guard(config('app.guards.web'))->user()->id : 1;
+//            $model->updated_by = 1;
+        });
+
+        static::updating(function ($model) {
+//            $model->updated_by = is_object(Auth::guard(config('app.guards.web'))->user()) ? Auth::guard(config('app.guards.web'))->user()->id : 1;
+//            $model->updated_by = 1;
+        });
+    }
 }
