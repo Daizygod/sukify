@@ -17,6 +17,8 @@ use MoonShine\Fields\Image;
 use MoonShine\Fields\Select;
 use MoonShine\Fields\StackFields;
 use MoonShine\Fields\Text;
+use MoonShine\Filters\BelongsToManyFilter;
+use MoonShine\Filters\SelectFilter;
 use MoonShine\Resources\Resource;
 use MoonShine\Fields\ID;
 use MoonShine\Actions\FiltersAction;
@@ -83,7 +85,7 @@ class TrackResource extends Resource
                     StackFields::make('Title')->fields([
                         Text::make('Name', 'name'),
                         BelongsToMany::make('Artists', 'artists', 'name')->inLine(separator: ' ', badge: true),
-                    ])->isOnIndex(),
+                    ])->hideOnForm()->hideOnDetail(),
                 ])->columnSpan(8)
             ]),
 
@@ -114,12 +116,15 @@ class TrackResource extends Resource
 
     public function search(): array
     {
-        return ['id'];
+        return ['name'];
     }
 
     public function filters(): array
     {
-        return [];
+        return [
+            BelongsToManyFilter::make('Artists', 'artists', 'name')
+                ->select()
+        ];
     }
 
     public function actions(): array

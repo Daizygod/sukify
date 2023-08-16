@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Artist;
 use App\Models\Track;
+use App\MoonShine\Resources\ArtistResource;
 use App\MoonShine\Resources\TrackResource;
 use Illuminate\Support\ServiceProvider;
 use MoonShine\MoonShine;
@@ -28,8 +30,11 @@ class MoonShineServiceProvider extends ServiceProvider
             MenuGroup::make('Music', [
                 MenuItem::make('Tracks', new TrackResource())
                     ->icon("heroicons.musical-note")
-                    ->badge(fn() => Track::all()->count())
-            ])->icon("heroicons.outline.musical-note"),
+                    ->badge(fn() => Track::all()->count()),
+                MenuItem::make('Artists', new ArtistResource())
+                    ->icon("heroicons.microphone")
+                    ->badge(fn() => Artist::all()->count())
+            ])->icon("heroicons.outline.microphone"),
 
             MenuItem::make('Documentation', 'https://laravel.com')
                 ->badge(fn() => 'Check'),
