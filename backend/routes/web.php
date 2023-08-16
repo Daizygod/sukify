@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::view('swagger', 'swagger');
 
 Route::resource('player', PlayerController::class);
 

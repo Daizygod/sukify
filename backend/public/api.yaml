@@ -1,0 +1,86 @@
+#openapi: 3.0.0
+#info:
+#  title: Sukify API
+#  description: API for client-side, hi again molbert
+#  version: 0.1.9
+#
+#servers:
+#  - url: http://localhost:8000/api
+#    description: local server
+#  - url: http://producation.app/api
+#    description: production server
+#
+#paths:
+#  /users:
+#    get:
+#      summary: Returns a list of users.
+#      responses:
+#        '200':
+#          description: A JSON array of user names
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  type: string
+swagger: "2.0"
+info:
+  version: 1.0.5
+  title: API Documentation
+host: oasystem.ru
+basePath: /method
+tags: [ ]
+paths:
+
+  /api/tracks/search:
+    get:
+      tags:
+        - Tracks
+      summary: Get tracks
+      description: <b>In work</b>
+      operationId: tracks
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: search
+          type: string
+          description: search by
+      responses:
+        "200":
+          description: OK
+          examples:
+            application/json: [
+              {
+                "id": 31,
+                "name": "Дежавю",
+                "release_date": "2002-02-02T00:00:00.000000Z",
+                "type": 3,
+                "counter": 0,
+                "cover_file": "https://4807-176-52-96-170.ngrok-free.app/storage/images202212/yKflNWcMqRrm8FhxjUOUfTBKr7g9btZENxTVPf8o.png",
+                "file": "https://4807-176-52-96-170.ngrok-free.app/storage/music202212/8j7Xfo0z0mBX5AxAz2MoDum88oNxiJCSWvf7N7WK.mp3",
+                "video_file": "http://localhost:8000/storage/videos202212/4YVlmQaD0sYFeIOxaN6G6kC8DJEIRf0IBOGNr6aA.mp3",
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": 20221204090318,
+                "updated_at": 1692176664,
+                "artist_id": 1
+              },
+              {
+                "id": 32,
+                "name": "Snake",
+                "release_date": "2002-02-02T00:00:00.000000Z",
+                "type": 1,
+                "counter": 0,
+                "cover_file": "https://4807-176-52-96-170.ngrok-free.app/storage/images202212/7P3q7bRFm7rAabAPaKUDJ38gET3PoAfXBNZ4MaF5.jpg",
+                "file": "https://4807-176-52-96-170.ngrok-free.app/storage/music202212/GRgyTjp6u72PspUGKbWNEEcpxchDcWED4DMZoSkX.mp3",
+                "video_file": "http://localhost:8000/storage/videos202212/2CUzskJe3oRbemdLHeI71Un1ih8DKwBAz9rD0PzT.mp3",
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": 20221204090541,
+                "updated_at": 1692176657,
+                "artist_id": 13
+              }
+            ]
