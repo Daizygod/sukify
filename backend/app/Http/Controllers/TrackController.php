@@ -176,12 +176,22 @@ class TrackController extends Controller
 
     public function search(Request $request)
     {
-        return Track::where('name', 'LIKE', "%{$request->input('search')}%")
-            ->get()
-            ->transform(function($track) {
+        //TODO get user_id from jwt
+        $user_id = 202;
+        $tracks = Track::where('name', 'LIKE', "%{$request->input('search')}%")
+            ->with('artists')
+            ->orderBy('counter', 'desc')
+            ->orderBy('id', 'desc')
+            ->cursorPaginate(5);
+
+        collect($tracks->items())
+            ->map(function ($track) use ($user_id) {
             $track->file = env('APP_URL') . "/storage/" . $track->file;
             $track->cover_file = env('APP_URL') . "/storage/" . $track->cover_file;
+            $track->is_fav = $track->hasLikeFromUser($user_id);
             return $track;
         });
+
+        return $tracks;
     }
 }

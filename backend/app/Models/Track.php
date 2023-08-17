@@ -9,7 +9,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Track
@@ -17,90 +16,72 @@ use Illuminate\Support\Facades\Auth;
  * @property int $id
  * @property string $name
  * @property Carbon $release_date
- * @property int $type
  * @property int $counter
  * @property string $cover_file
  * @property string $file
- * @property string $video_file
- * @property int $created_by
- * @property int $updated_by
- * @property int $created_at
- * @property int $updated_at
- * @property int $artist_id
+ * @property string|null $video_file
  * 
- * @property Artist $artist
+ * @property Collection|Album[] $albums
+ * @property Collection|Playlist[] $playlists
  * @property Collection|Artist[] $artists
+ * @property Collection|User[] $users
  *
  * @package App\Models
  */
 class Track extends Model
 {
 	protected $table = 'tracks';
-    public $timestamps = false;
+	public $timestamps = false;
 
 	protected $casts = [
 		'release_date' => 'datetime',
-		'type' => 'int',
-		'counter' => 'int',
-		'created_by' => 'int',
-		'updated_by' => 'int',
-		'artist_id' => 'int',
-		'created_at' => 'int',
-		'updated_at' => 'int'
-	];
-
-	protected $dates = [
-		'release_date'
+		'counter' => 'int'
 	];
 
 	protected $fillable = [
 		'name',
 		'release_date',
-		'type',
 		'counter',
 		'cover_file',
 		'file',
-		'video_file',
-		'created_by',
-		'updated_by',
-		'artist_id'
+		'video_file'
 	];
 
-    public static $types_array = [
-        1 => 'single',
-        2 => 'only in album',
-        3 => 'single and album'
-    ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->created_by = is_object(Auth::guard(config('app.guards.web'))->user()) ? Auth::guard(config('app.guards.web'))->user()->id : 1;
-            $model->updated_by = is_object(Auth::guard(config('app.guards.web'))->user()) ? Auth::guard(config('app.guards.web'))->user()->id : 1;
-            $model->created_at = Carbon::now('UTC')->timestamp;
-            $model->updated_at = Carbon::now('UTC')->timestamp;
-            $model->type = 1;
-            $model->counter = 0;
-            $model->video_file = "";
-            $model->artist_id = 1;
-        });
-
-        static::updating(function ($model) {
-            $model->updated_by = is_object(Auth::guard(config('app.guards.web'))->user()) ? Auth::guard(config('app.guards.web'))->user()->id : 1;
-            #TODO check UPDATE, if it work on update form or it unnecessary cause of Laravel default
-            $model->updated_at = Carbon::now('UTC')->timestamp;
-        });
-    }
-
-	public function artist()
+	public function albums()
 	{
-		return $this->belongsTo(Artist::class);
+		return $this->belongsToMany(Album::class, 'albums_tracks');
+	}
+
+	public function playlists()
+	{
+		return $this->belongsToMany(Playlist::class, 'playlists_tracks');
 	}
 
 	public function artists()
 	{
 		return $this->belongsToMany(Artist::class, 'tracks_artists');
 	}
+
+	public function users()
+	{
+		return $this->belongsToMany(User::class, 'users_liked_tracks');
+	}
+
+    public function hasLikeFromUser($user_id)
+    {
+        return $this->users()->where(['user_id' => $user_id])->count() > 0;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            //
+        });
+
+        static::updating(function ($model) {
+            //
+        });
+    }
 }
