@@ -34,7 +34,7 @@ class Track extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'release_date' => 'datetime',
+		'release_date' => 'datetime:Y-m-d',
 		'counter' => 'int'
 	];
 
