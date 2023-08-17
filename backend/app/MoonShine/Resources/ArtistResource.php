@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Artist;
 
 use Illuminate\Http\UploadedFile;
+use MoonShine\Fields\BelongsTo;
+use MoonShine\Fields\BelongsToMany;
+use MoonShine\Fields\HasMany;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\Resource;
@@ -29,6 +32,10 @@ class ArtistResource extends Resource
 
     protected bool $showInModal = true;
 
+    public static array $with = [
+        'tracks'
+    ];
+
 	public function fields(): array
 	{
 		return [
@@ -49,7 +56,26 @@ class ArtistResource extends Resource
                 ->dir('/')
                 ->disk('public')
                 ->allowedExtensions(['jpg', 'png'])
-                ->customName(fn(UploadedFile $file) =>  "images" . Carbon::now()->format('Ym') . '/' . $file->hashName())
+                ->customName(fn(UploadedFile $file) =>  "images" . Carbon::now()->format('Ym') . '/' . $file->hashName()),
+
+            BelongsToMany::make('Tracks', 'tracks')
+                ->hideOnIndex()
+                ->hideOnForm()
+//                ->canBeResourceMode()
+//                ->resourceMode()
+//                ->fields([
+//                    ID::make(),
+//                    BelongsTo::make('Name', 'name'),
+//                ])
+//            HasMany::make('Tracks', 'tracks')
+//                ->fields([
+//                    ID::make(),
+//                    BelongsTo::make('Name', 'name'),
+//                ])
+//                ->hideOnForm()
+//                ->hideOnIndex()
+//                ->hideOnIndex()
+//                ->resourceMode()
         ];
 	}
 
@@ -60,7 +86,7 @@ class ArtistResource extends Resource
 
     public function search(): array
     {
-        return ['id'];
+        return ['name'];
     }
 
     public function filters(): array
