@@ -104,11 +104,20 @@ class TrackController extends Controller
         $new_track->artist_id = $request->input('artist_id');
         $new_track->release_date = Carbon::createFromFormat('Y-m-d', $request->input('release_date'), 'Europe/Moscow')->format('Y/m/d H:i:s');
         $new_track->type = $request->input('type');
+        if ($request->input('ui_background_color')) {
+            if (preg_match('/^#[a-f0-9]{6}$/i', $request->input('ui_background_color')))
+            {
+                $new_track->ui_background_color = $request->input('ui_background_color');
+            } elseif(preg_match('/^[a-f0-9]{6}$/i', $request->input('ui_background_color')))
+            {
+                $new_track->ui_background_color = '#' . $request->input('ui_background_color');
+            }
+        }
         $new_track->counter = 0;
         //TODO very very fucking piece of shit, on production need to correct
-        $new_track->cover_file = env('APP_URL') . ':8000/' . $cover_path;
-        $new_track->file = env('APP_URL') . ':8000/' . $track_path;
-        $new_track->video_file = env('APP_URL') . ':8000/' . $video_path;
+        $new_track->cover_file = env('APP_URL') . ':8000/' . $cover_path; //FIXME
+        $new_track->file = env('APP_URL') . ':8000/' . $track_path; //FIXME
+        $new_track->video_file = env('APP_URL') . ':8000/' . $video_path; //FIXME
 //        $new_track->created_by = $request->input('name');
 //        $new_track->updated_by = $request->input('name');
 
