@@ -1,4 +1,9 @@
-<div style="display:flex"><img style="height: 3em" src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" height="50" alt=""/><img style="height: 3em" src="https://free-png.ru/wp-content/uploads/2022/02/free-png.ru-566.png" height="50" alt=""/><img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" height="50" alt=""/><img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/768px-HTML5_logo_and_wordmark.svg.png?20170517184425" height="50" alt=""/><img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/544px-CSS3_logo_and_wordmark.svg.png?20160530175649" height="50" alt=""/><img style="height: 3em" src="https://tutsplus.s3.amazonaws.com/tutspremium/web-development/180_Laravel4/images/composer.png" height="50" alt=""/><img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/PhpStorm_Icon.svg/2048px-PhpStorm_Icon.svg.png" alt="PHP Storm" /><img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/MariaDB_colour_logo.svg/1200px-MariaDB_colour_logo.svg.png" alt="MariaDB" /></div>
+<div style="display:flex;">
+  <img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" height="50" alt=""/>
+  <img style="height: 3em" src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" height="50" alt=""/>
+  <img style="height: 3em" src="https://moonshine.cutcode.dev/vendor/moonshine/logo.svg" alt="Moonshine" />
+  <img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/MariaDB_colour_logo.svg/1200px-MariaDB_colour_logo.svg.png" alt="MariaDB" />
+</div>
 
 # Clone spotify (not in release now) work in progress
 
