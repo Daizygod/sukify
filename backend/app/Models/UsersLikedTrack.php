@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -45,4 +46,17 @@ class UsersLikedTrack extends Model
 	{
 		return $this->belongsTo(User::class);
 	}
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = Carbon::now('UTC')->timestamp;
+        });
+
+        static::updating(function ($model) {
+            //
+        });
+    }
 }

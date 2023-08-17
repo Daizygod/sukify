@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Track;
+use App\Models\User;
+use App\Models\UsersLikedTrack;
 use Carbon\Carbon;
 use Cassandra\Uuid;
 use Illuminate\Http\Request;
@@ -183,6 +185,47 @@ class TrackController extends Controller
         //
     }
 
+    public function setTrackUnfavorite(Request $request)
+    {
+        $return = new \stdClass();
+        $return->error = true;
+        //TODO get user_id from jwt
+        $user_id = 202;
+        $track_id = $request->input('track_id');
+        $track = Track::where(['id' => $track_id])->first();
+        $user = User::where(['id' => $user_id])->first();
+        if ($track && $user) {
+            UsersLikedTrack::where(['user_id' => $user_id, 'track_id' => $track_id])->delete();
+            $return->error = false;
+        }
+        return $return;
+    }
+
+    public function setTrackFavorite(Request $request)
+    {
+        $return = new \stdClass();
+        $return->error = true;
+        //TODO get user_id from jwt
+        $user_id = 202;
+        $track_id = $request->input('track_id');
+        $track = Track::where(['id' => $track_id])->first();
+        $user = User::where(['id' => $user_id])->first();
+        if ($track && $user) {
+            $isset = UsersLikedTrack::where(['user_id' => $user_id, 'track_id' => $track_id])->first();
+            if (!$isset) {
+                $link = new UsersLikedTrack([
+                    'user_id' => $user_id,
+                    'track_id' => $track_id
+                ]);
+            }
+            $return->error = false;
+            if (!$isset && !$link->save()) {
+                $return->error = true;
+            }
+        }
+        return $return;
+    }
+
     public function search(Request $request)
     {
         //TODO get user_id from jwt
@@ -197,9 +240,31 @@ class TrackController extends Controller
             ->map(function ($track) use ($user_id) {
             $track->file = env('APP_URL') . "/storage/" . $track->file;
             $track->cover_file = env('APP_URL') . "/storage/" . $track->cover_file;
-            $track->is_fav = $track->hasLikeFromUser($user_id);
+            $track->liked = $track->hasLikeFromUser($user_id);
             return $track;
         });
+
+        return $tracks;
+    }
+
+    public function favorites(Request $request)
+    {
+        //TODO get user_id from jwt
+        $user_id = 202;
+        $allUserTrackIds = UsersLikedTrack::where(['user_id' => $user_id])->pluck('track_id')->toArray();
+        $tracks = Track::whereIn('id', $allUserTrackIds)
+            ->with('artists')
+            ->orderBy('counter', 'desc')
+            ->orderBy('id', 'desc')
+            ->cursorPaginate(5);
+
+        collect($tracks->items())
+            ->map(function ($track) use ($user_id) {
+                $track->file = env('APP_URL') . "/storage/" . $track->file;
+                $track->cover_file = env('APP_URL') . "/storage/" . $track->cover_file;
+                $track->liked = true;
+                return $track;
+            });
 
         return $tracks;
     }

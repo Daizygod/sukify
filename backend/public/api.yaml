@@ -32,6 +32,57 @@ basePath: /method
 tags: [ ]
 paths:
 
+  /api/tracks/like:
+    post:
+      tags:
+        - Tracks
+      summary: Like the track
+      description: <b>For users</b>
+      operationId: tracksLike
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: ""
+          schema:
+            type: object
+            properties:
+              track_id:
+                type: integer
+                example: 135
+      responses:
+        "200":
+          description: OK
+          examples:
+            application/json: { "error": false }
+
+  /api/tracks/unlike:
+    post:
+      tags:
+        - Tracks
+      summary: Unlike the track
+      description: <b>For users</b>
+      operationId: tracksUnlike
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: ""
+          schema:
+            type: object
+            properties:
+              track_id:
+                type: integer
+                example: 135
+      responses:
+        "200":
+          description: OK
+          examples:
+            application/json: { "error": false }
   /api/tracks/search:
     get:
       tags:
@@ -62,7 +113,7 @@ paths:
                   "cover_file": "https://4807-176-52-96-170.ngrok-free.app/storage/images202301/S1eaWxcNecnAgkXFnZC1ayNmZBOVmIcBt8m31SDx.png",
                   "file": "https://4807-176-52-96-170.ngrok-free.app/storage/music202301/QaSuhZVLFYT9y7YIZWeC0ErWMbcQ8IOj77nxOPaw.mp3",
                   "video_file": "http://localhost:8000/storage/videos202301/4x0dkHxFqAlTjkz4TdSMkWAEHLvn13KbqOsGeTaM.png",
-                  "is_fav": false,
+                  "liked": false,
                   "artists": [
                     {
                       "id": 25,
@@ -84,7 +135,7 @@ paths:
                   "cover_file": "https://4807-176-52-96-170.ngrok-free.app/storage/images202301/1ELqhICVNIFvhnpNKHfVMP9xwS7IY4xsxItzHKyk.png",
                   "file": "https://4807-176-52-96-170.ngrok-free.app/storage/music202301/xZQDNys6OgVUnMD5urbodviM68XfH9tmh2OR73bt.mp3",
                   "video_file": "http://localhost:8000/storage/videos202301/PX0qtWC0lDBasfr2k8dQ89pidjSnUn282Hjqlt0X.png",
-                  "is_fav": true,
+                  "liked": true,
                   "artists": [
                     {
                       "id": 26,
