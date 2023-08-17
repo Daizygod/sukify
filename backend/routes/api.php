@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('tracks/like', [\App\Http\Controllers\TrackController::class, 'setTrackFavorite']);
+Route::get('tracks/unlike', [\App\Http\Controllers\TrackController::class, 'setTrackUnfavorite']);
+
 Route::get('tracks/search', [\App\Http\Controllers\TrackController::class, 'search']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
