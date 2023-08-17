@@ -240,6 +240,12 @@ class TrackController extends Controller
             ->map(function ($track) use ($user_id) {
             $track->file = env('APP_URL') . "/storage/" . $track->file;
             $track->cover_file = env('APP_URL') . "/storage/" . $track->cover_file;
+            $covers = [];
+            foreach (Track::coverResizeSquareSizes as $size) {
+                $covers[$size] = $track->generateCoverPathForSize($size);
+            }
+            $track->covers = $covers;
+
             $track->liked = $track->hasLikeFromUser($user_id);
             return $track;
         });
@@ -262,6 +268,10 @@ class TrackController extends Controller
             ->map(function ($track) use ($user_id) {
                 $track->file = env('APP_URL') . "/storage/" . $track->file;
                 $track->cover_file = env('APP_URL') . "/storage/" . $track->cover_file;
+                $track->cover = [];
+                foreach (Track::coverResizeSquareSizes as $size) {
+                    $track->cover[$size] = $track->generateCoverPathForSize($size);
+                }
                 $track->liked = true;
                 return $track;
             });

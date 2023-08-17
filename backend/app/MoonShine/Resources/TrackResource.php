@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Track;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
+use Intervention\Image\ImageManagerStatic;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Grid;
@@ -56,20 +58,23 @@ class TrackResource extends Resource
                             ->dir('/')
                             ->disk('public')
                             ->allowedExtensions(['jpg', 'png'])
-                            ->required()
+//                            ->required()
+                            ->removable()
                             ->customName(fn(UploadedFile $file) =>  "images" . Carbon::now()->format('Ym') . '/' . $file->hashName()),
                         File::make('Audio', 'file')
                             ->dir('/')
                             ->disk('public')
                             ->allowedExtensions(['mp3', 'wav'])
                             ->hideOnIndex()
-                            ->required()
+//                            ->required()
+                            ->removable()
                             ->customName(fn(UploadedFile $file) =>  "music" . Carbon::now()->format('Ym') . '/' . $file->hashName()),
                         File::make('Video', 'video_file')
                             ->dir('/')
                             ->disk('public')
                             ->allowedExtensions(['mp4'])
                             ->hideOnIndex()
+                            ->removable()
                             ->customName(fn(UploadedFile $file) =>  "videos" . Carbon::now()->format('Ym') . '/' . $file->hashName())
                     ])
                 ])->columnSpan(4),
@@ -133,4 +138,20 @@ class TrackResource extends Resource
             FiltersAction::make(trans('moonshine::ui.filters')),
         ];
     }
+
+//    protected function beforeCreating(Track $item)
+//    {
+//
+//    }
+
+//    protected function afterCreated(Track $item)
+//    {
+//        Log::info(json_encode($item));
+//        // Событие после добавления записи
+//    }
+
+//    protected function beforeUpdating(Model $item)
+//    {
+//        // Событие перед обновлением записи
+//    }
 }
