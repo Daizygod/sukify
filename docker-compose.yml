@@ -1,0 +1,34 @@
+version: '3.0'
+
+services:
+
+  backend:
+    build: ./docker_backend
+    environment:
+      - APACHE_RUN_USER=#1000
+    volumes:
+      - ${BACKEND_APP_PATH_HOST}:${BACKEND_APP_PATH_CONTAINER}
+    ports:
+      - 8080:80
+    working_dir: ${BACKEND_APP_PATH_CONTAINER}
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: 123456
+    volumes:
+      - ${BACKEND_DB_PATH_HOST}:/var/lib/mysql
+
+  adminer:
+      image: adminer
+      restart: always
+      ports:
+        - 6080:8080
+
+  composer:
+    image: composer:2.5
+    volumes:
+      - ${BACKEND_APP_PATH_HOST}:${BACKEND_APP_PATH_CONTAINER}
+    working_dir: ${BACKEND_APP_PATH_CONTAINER}
+    command: composer install
