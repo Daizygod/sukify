@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TrackController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,10 +14,16 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('tracks/like', [\App\Http\Controllers\TrackController::class, 'setTrackFavorite']);
-Route::get('tracks/unlike', [\App\Http\Controllers\TrackController::class, 'setTrackUnfavorite']);
+//Route::get('/getaudio/{fileName}', [
+//    'as' => 'audio',
+//    'uses' => 'TrackController@listenAudio'
+//]);
+Route::get('/getaudio/{folder}/{filename}/{ext}', [TrackController::class, 'listenAudio', 'as' => 'audio']);
 
-Route::get('tracks/search', [\App\Http\Controllers\TrackController::class, 'search']);
+Route::get('tracks/like', [TrackController::class, 'setTrackFavorite']);
+Route::get('tracks/unlike', [TrackController::class, 'setTrackUnfavorite']);
+
+Route::get('tracks/search', [TrackController::class, 'search']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
