@@ -321,7 +321,7 @@ class TrackController extends Controller
 //            ->with('albums')
             ->orderBy('counter', 'desc')
             ->orderBy('id', 'desc')
-            ->cursorPaginate(30);
+            ->cursorPaginate(10);
 
         collect($tracks->items())
             ->map(function ($track) use ($user_id) {
@@ -340,7 +340,17 @@ class TrackController extends Controller
             //FIXME
             $track->duration = rand(30, 300);
             $track->album = ["id" => 12, "name" => "Karmagedon 12"];
-            $track->added_at = Carbon::createFromTimestamp(1692985392, 'UTC')->locale('ru')->diffForHumans();
+                setlocale(LC_TIME, 'ro_RO.UTF-8');
+            $track->added_at = Carbon::now('UTC')->subMinutes(rand(1, 87600));
+//                $track->added_at = Carbon::createFromTimestamp(1687705261, 'UTC');
+
+
+            if (Carbon::now('UTC')->diffInMonths($track->added_at) > 1) {
+                $track->added_at = $track->added_at->locale('ru')->translatedFormat('d M. o');
+            } else {
+                $track->added_at = $track->added_at->locale('ru')->diffForHumans();
+            }
+//            $track->added_at = Carbon::createFromTimestamp(Carbon::now('UTC')->subSeconds(rand(10, 172800))->timestamp, 'UTC')->locale('ru')->diffForHumans();
             $track->liked = $track->hasLikeFromUser($user_id);
             return $track;
         });
