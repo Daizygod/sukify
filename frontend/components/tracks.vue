@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-slate-800">
-                <tr :class="{ bg_slate : active === idx }" @click="playTrack(track.file, track.file2, idx)" class="hover:bg-slate-100 dark:hover:bg-slate-700" v-if="tracks" v-for="(track, idx) in tracks.data">
+                <tr :class="{ bg_slate : active === idx }" @click="playTrack(track.file, idx)" class="hover:bg-slate-100 dark:hover:bg-slate-700" v-if="tracks" v-for="(track, idx) in tracks.data">
                     <td
                         class="flex items-center gap-4 border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
                         {{ idx + 1 }}
@@ -41,7 +41,7 @@
                         {{ track.album.name }}
                     </td>
                     <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
-                        {{ unixTime(track.added_at) }}</td>
+                        {{ track.added_at }}</td>
                     <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
                         {{ formatTrackDuration(track.duration) }}
                     </td>
@@ -49,25 +49,23 @@
             </tbody>
         </table>
     </div>
-    <AudioPlayer v-if="audio_active" :currentSongUrl="currentSongUrl" :currentSongDuration="currentSongDuration" />
+    <AudioPlayer class="h-[80px] w-full flex items-center justify-center bg-white fixed bottom-0 left-0" v-if="audio_active" :currentSongUrl="currentSongUrl" />
 </template>
 
 <script setup>
 
 const currentSongUrl = ref();
-const currentSongDuration = ref();
 const active = ref();
 const audio = ref();
 const audio_active = ref(false);
 const { data: tracks, error, pending } = await useFetch('https://d3f0-176-52-96-170.ngrok-free.app/api/tracks/search');
 
-const playTrack = (track, duration, idx) => {
+const playTrack = (track, idx) => {
     audio_active.value = false;
     active.value = idx;
     audio.value = null;
     nextTick(() => {
         currentSongUrl.value = track;
-        currentSongDuration.value = duration;
         audio_active.value = true;
     })
 }

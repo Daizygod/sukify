@@ -1,11 +1,10 @@
+<!-- TODO : buffer fetch request -->
+
 <template>
     <div class="audio-player">
-        <audio ref="audioElement" @timeupdate="updateTime">
+        <audio ref="audioElement" @timeupdate="updateTime" @loadedmetadata="updateDuration">
             <source :src="currentSongUrl" type="audio/mpeg">
             Your browser does not support the audio element.
-        </audio>
-        <audio ref="audioDuration" @loadedmetadata="updateDuration">
-            <source :src="currentSongDuration" type="audio/mpeg">
         </audio>
         <div class="controls">
             <button @click="togglePlayback">{{ isPlaying ? 'Pause' : 'Play' }}</button>
@@ -23,15 +22,13 @@ export default {
         currentSongUrl: {
             type: String,
         },
-        currentSongDuration: {
-            type: String,
-        }
     },
     data() {
         return {
             isPlaying: false,
             currentTime: 0,
             duration: 0,
+            currentSong: null,
         };
     },
     methods: {
@@ -57,7 +54,8 @@ export default {
             return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
         },
         updateDuration() {
-            this.duration = this.$refs.audioDuration.duration;
+            this.duration = this.$refs.audioElement.duration;
+            this.togglePlayback();
             // console.log(this.duration);
         },
     },
