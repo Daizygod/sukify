@@ -38,7 +38,8 @@ class Track extends Model
 
 	protected $casts = [
 		'release_date' => 'datetime:Y-m-d',
-		'counter' => 'int'
+		'counter' => 'int',
+        'covers' => 'array'
 	];
 
 	protected $fillable = [
@@ -113,6 +114,42 @@ class Track extends Model
                 $model->deleteCoverInDifferentSizes($model->cover_file);
             }
         });
+    }
+
+//    public function getCoversAttribute() {
+//
+//        $covers = new \stdClass();
+//
+//        foreach (Track::coverResizeSquareSizes as $size) {
+//            $method = "getCover" . $size . "pxAttribute";
+//            $covers->$size = $this->$method;
+//        }
+//
+//        return $covers;
+//    }
+
+    public function getCover512pxAttribute() {
+        return $this->generateCoverPathForSize(512);
+    }
+
+    public function getCover384pxAttribute() {
+        return $this->generateCoverPathForSize(384);
+    }
+
+    public function getCover256pxAttribute() {
+        return $this->generateCoverPathForSize(256);
+    }
+
+    public function getCover192pxAttribute() {
+        return $this->generateCoverPathForSize(192);
+    }
+
+    public function getCover128pxAttribute() {
+        return $this->generateCoverPathForSize(128);
+    }
+
+    public function getCover96pxAttribute() {
+        return $this->generateCoverPathForSize(96);
     }
 
     public function saveCoverInDifferentSizes(string $cover_file) {

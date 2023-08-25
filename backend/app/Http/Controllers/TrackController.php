@@ -8,7 +8,10 @@ use App\Models\UsersLikedTrack;
 use Carbon\Carbon;
 use Cassandra\Uuid;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Itstructure\GridView\DataProviders\EloquentDataProvider;
 
@@ -185,6 +188,89 @@ class TrackController extends Controller
         //
     }
 
+    public function listenAudio(Request $request, $folder, $filename, $ext)
+    {
+        $response_code = 200;
+        $headers = ['Content-Type' => 'audio/mpeg'];
+        $fileNameWithFolder = "$folder/$filename.$ext";
+        $filePath = "public/" . $fileNameWithFolder;
+//
+//        $filePath = "public/" . $fileNameWithFolder;
+//        if (Storage::disk('local')->exists($filePath)) {
+//            $file = Storage::disk('local')->get($filePath);
+////            return response()->file($file, ['Content-Type' => 'audio/mpeg']);
+//            return response()->file($file);
+//        } else {
+//            return 0;
+//        }
+        $file = Storage::disk('local')->get($filePath);
+        $response = \Illuminate\Support\Facades\Response::make($file, 200);
+        $size = Storage::disk('local')->size($filePath);
+        $stream = fopen(storage_path('app/' . $filePath), "r");
+        $fullsize = $size;
+        // Check for request for part of the stream
+        $range = \Illuminate\Support\Facades\Request::header('Range');
+        if($range != null) {
+            $eqPos = strpos($range, "=");
+            $toPos = strpos($range, "-");
+            $unit = substr($range, 0, $eqPos);
+            $start = intval(substr($range, $eqPos+1, $toPos));
+            $success = fseek($stream, $start);
+            if($success == 0) {
+                $size = $fullsize - $start;
+                $response_code = 206;
+                $headers["Accept-Ranges"] = $unit;
+                $headers["Content-Range"] = $unit . " " . $start . "-" . ($fullsize-1) . "/" . $fullsize;
+            }
+        }
+
+        $headers["Content-Length"] = $size;
+
+        return \Illuminate\Support\Facades\Response::stream(function () use ($stream) {
+            fpassthru($stream);
+        }, $response_code, $headers);
+
+//        $response->header('Content-Type', 'audio/mpeg');
+//        return $response;
+//
+//
+//        $file=Storage::disk('local')->get($filePath);
+////        return response()->file($file, ['Content-Type' => 'audio/mpeg']);
+////        return response()->file($file, $headers);
+//
+////        dd($file);
+////        return 1;
+//        $fileName=$filePath;
+//        $filesize = Storage::disk('local')->size($filePath);
+//
+//
+//        // return response($file, 200)->header('Content-Type', $mime_type);
+//
+//        $size   = $filesize; // File size
+//        $length = $size;           // Content length
+//        $start  = 0;               // Start byte
+//        $end    = $size - 1;       // End byte
+//
+//        $headersArray=[
+//            'Accept-Ranges' => "bytes",
+//            'Accept-Encoding' => "gzip, deflate",
+//            'Pragma' => 'public',
+//            'Expires' => '0',
+//            'Cache-Control' => 'must-revalidate',
+//            'Content-Transfer-Encoding' => 'binary',
+//            'Content-Disposition' => ' inline; filename='."$filename.$ext",
+//            'Content-Length' => $filesize,
+//            'Content-Type' => "audio/mpeg",
+//            'Connection' => "Keep-Alive",
+//            'Content-Range' => 'bytes 0-'.$end .'/'.$size,
+//            'X-Pad' => 'avoid browser bug',
+//            'Etag' => "$filename.$ext",
+//        ];
+//
+//        return response()->file($fileName, $headersArray);
+
+    }
+
     public function setTrackUnfavorite(Request $request)
     {
         $return = new \stdClass();
@@ -232,25 +318,44 @@ class TrackController extends Controller
         $user_id = 202;
         $tracks = Track::where('name', 'LIKE', "%{$request->input('search')}%")
             ->with('artists')
+//            ->with('albums')
             ->orderBy('counter', 'desc')
             ->orderBy('id', 'desc')
-            ->cursorPaginate(5);
+            ->cursorPaginate(10);
 
         collect($tracks->items())
             ->map(function ($track) use ($user_id) {
-            $track->file = env('APP_URL') . "/storage/" . $track->file;
+            $track->file2 = env('APP_URL') . "/storage/" . $track->file;
+            $track->file = env('APP_URL') . "/api/getaudio/" . str_replace('.', '/', $track->file);
             $track->cover_file = env('APP_URL') . "/storage/" . $track->cover_file;
-            $covers = [];
-            foreach (Track::coverResizeSquareSizes as $size) {
-                $covers[$size] = $track->generateCoverPathForSize($size);
-            }
-            $track->covers = $covers;
+            $track->cover512px = $track->cover512px;
+            $track->cover384px = $track->cover384px;
+            $track->cover256px = $track->cover256px;
+            $track->cover192px = $track->cover192px;
+            $track->cover128px = $track->cover128px;
+            $track->cover96px = $track->cover96px;
+//            foreach (Track::coverResizeSquareSizes as $size) {
+//                $track->covers[$size] = $track->generateCoverPathForSize($size);
+//            }
+            //FIXME
+            $track->duration = rand(30, 300);
+            $track->album = ["id" => 12, "name" => "Karmagedon 12"];
+                setlocale(LC_TIME, 'ro_RO.UTF-8');
+            $track->added_at = Carbon::now('UTC')->subMinutes(rand(1, 87600));
+//                $track->added_at = Carbon::createFromTimestamp(1687705261, 'UTC');
 
+
+            if (Carbon::now('UTC')->diffInMonths($track->added_at) > 1) {
+                $track->added_at = $track->added_at->locale('ru')->translatedFormat('d M. o');
+            } else {
+                $track->added_at = $track->added_at->locale('ru')->diffForHumans();
+            }
+//            $track->added_at = Carbon::createFromTimestamp(Carbon::now('UTC')->subSeconds(rand(10, 172800))->timestamp, 'UTC')->locale('ru')->diffForHumans();
             $track->liked = $track->hasLikeFromUser($user_id);
             return $track;
         });
 
-        return $tracks;
+        return response()->json($tracks, 200);
     }
 
     public function favorites(Request $request)
