@@ -18,10 +18,11 @@
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-slate-800">
-                <tr :class="{ bg_slate : active === idx }" @click="playTrack(track.file, idx)" class="hover:bg-slate-100 dark:hover:bg-slate-700" v-if="tracks" v-for="(track, idx) in tracks.data">
+                <tr :class="{ bg_slate : active === idx }" @click="playTrack(track.file, track.file2, idx)" class="hover:bg-slate-100 dark:hover:bg-slate-700" v-if="tracks" v-for="(track, idx) in tracks.data">
                     <td
                         class="flex items-center gap-4 border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
                         {{ idx + 1 }}
+                        <!-- {{ track }} -->
                         <img class="w-[40px] rounded" :src="track.cover_file" alt="img" loading="lazy">
                         <div class="flex flex-col justify-between">
                             <p class="text-black">
@@ -48,22 +49,26 @@
             </tbody>
         </table>
     </div>
-    <audio v-if="audio" controls>
-        <source :src="audio" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio>
+    <AudioPlayer v-if="audio_active" :currentSongUrl="currentSongUrl" :currentSongDuration="currentSongDuration" />
 </template>
+
 <script setup>
 
+const currentSongUrl = ref();
+const currentSongDuration = ref();
 const active = ref();
 const audio = ref();
+const audio_active = ref(false);
 const { data: tracks, error, pending } = await useFetch('https://d3f0-176-52-96-170.ngrok-free.app/api/tracks/search');
 
-const playTrack = (track , idx) => {
+const playTrack = (track, duration, idx) => {
+    audio_active.value = false;
     active.value = idx;
     audio.value = null;
     nextTick(() => {
-        audio.value = track;
+        currentSongUrl.value = track;
+        currentSongDuration.value = duration;
+        audio_active.value = true;
     })
 }
 
@@ -87,6 +92,7 @@ const unixTime = (time) => {
     })
 }
 </script>
+
 <style lang="css">
     .bg_slate {
         background-color: #f5f5f5;
