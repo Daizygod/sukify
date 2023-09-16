@@ -1,22 +1,12 @@
 <template>
   <div>
-    <tracks />
+    <tracks-line />
   </div>
 </template>
-
-<script setup>
+<script setup lang="ts">
+import TracksLine from "components/TracksLine.vue";
 
 useHead({
-  title: 'Sukify',
-})
-
+  title: "Sukify",
+});
 </script>
-
-<style>
-
-/* img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-} */
-</style>
