@@ -1,6 +1,6 @@
 <template>
   <div class="shadow-sm overflow-hidden my-8">
-    <table class="border-collapse table-auto w-full text-sm">
+    <table class="table-auto w-full text-sm">
       <thead>
         <tr>
           <th
@@ -34,49 +34,51 @@
           @click="playTrack(track.file, idx)"
         >
           <td
-            class="flex items-center gap-4 border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
+            class="dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
           >
-            {{ idx + 1 }}
-            <!-- {{ track }} -->
-            <img
-              class="w-[40px] rounded"
-              :src="track.cover_file"
-              alt="img"
-              loading="lazy"
-            />
-            <div class="flex flex-col justify-between">
-              <p class="text-black">
-                {{ track.name }}
-              </p>
-              <div class="flex flex-wrap gap-1">
-                <span
-                  v-for="(artist, index) in track.artists"
-                  :key="index"
-                  class="cursor-pointer"
-                >
-                  {{ artist.name
-                  }}<span
-                    v-if="
-                      track.artists.indexOf(artist) !== track.artists.length - 1
-                    "
-                    >,</span
+            <div class="flex items-center gap-4 justify-start">
+              <p>{{ idx + 1 }}</p>
+              <img
+                class="w-[40px] rounded"
+                :src="track.cover_file"
+                alt="img"
+                loading="lazy"
+              />
+              <div class="flex flex-col justify-between">
+                <p class="text-black">
+                  {{ track.name }}
+                </p>
+                <div class="flex flex-wrap gap-1">
+                  <span
+                    v-for="(artist, index) in track.artists"
+                    :key="index"
+                    class="cursor-pointer"
                   >
-                </span>
+                    {{ artist.name
+                    }}<span
+                      v-if="
+                        track.artists.indexOf(artist) !==
+                        track.artists.length - 1
+                      "
+                      >,</span
+                    >
+                  </span>
+                </div>
               </div>
             </div>
           </td>
           <td
-            class="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"
+            class="dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"
           >
             {{ track.album.name }}
           </td>
           <td
-            class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
+            class="dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
           >
             {{ track.added_at }}
           </td>
           <td
-            class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
+            class="dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
           >
             {{ formatTrackDuration(track.duration) }}
           </td>
