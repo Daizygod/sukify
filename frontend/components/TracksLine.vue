@@ -85,7 +85,7 @@
     </table>
   </div>
   <AudioPlayer
-    v-if="audio_active"
+    v-if="audioActive"
     class="h-[80px] w-full flex items-center justify-center bg-white fixed bottom-0 left-0"
     :current-song-url="currentSongUrl"
   />
@@ -97,7 +97,7 @@ const active = ref();
 const audio = ref();
 const audioActive = ref(false);
 const { data: tracks } = await useFetch(
-  "https://d3f0-176-52-96-170.ngrok-free.app/api/tracks/search",
+  "https://c567-176-52-78-14.ngrok-free.app/api/tracks/search",
 );
 
 const playTrack = (track, idx) => {
