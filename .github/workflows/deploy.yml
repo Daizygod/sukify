@@ -1,0 +1,34 @@
+name: Deploy
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server
+        users: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            echo "🚦 Deploying..."
+            set -e
+            cd /sukify.ru/htdocs/www/backend
+            php artisan down
+            echo "🌊 Pull from develop..."
+            git pull origin develop
+            echo "🧩 Update composer..."
+            php composer.phar install --no-dev --optimize-autoloader
+            echo "🩻 Migration..."
+            php artisan migrate
+            php artisan config:cache
+            php artisan route:cache
+            echo "🚀 Server up..."
+            php artisan up
+            echo "🎉 Completed"
