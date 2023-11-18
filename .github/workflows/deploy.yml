@@ -21,15 +21,15 @@ jobs:
             echo "🚦 Deploying..."
             set -e
             cd sukify.ru/htdocs/www/backend
-            php8.2 artisan down
+            /usr/local/php/php-8.2/bin/php artisan down
             echo "🌊 Pull from develop..."
             git pull origin develop
             echo "🧩 Update composer..."
-            php8.2 composer.phar install --no-dev --optimize-autoloader
+            /usr/local/php/php-8.2/bin/php composer.phar install --no-dev --optimize-autoloader
             echo "🩻 Apply migration..."
-            php8.2 artisan migrate
-            php8.2 artisan config:cache
-            php8.2 artisan route:cache
+            /usr/local/php/php-8.2/bin/php artisan migrate
+            /usr/local/php/php-8.2/bin/php artisan config:cache
+            /usr/local/php/php-8.2/bin/php artisan route:cache
             echo "🚀 Server up..."
-            php8.2 artisan up
+            /usr/local/php/php-8.2/bin/php artisan up
             echo "🎉 Completed"
