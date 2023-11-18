@@ -20,11 +20,15 @@ use Intervention\Image\ImageManagerStatic;
  * @property string $name
  * @property Carbon $release_date
  * @property int $counter
- * @property string $cover_file
+ * @property string|null $cover_file
  * @property string $file
  * @property string|null $video_file
+ * @property string|null $color
+ * @property bool $single
+ * @property int $duration
+ * @property int|null $album_id
  * 
- * @property Collection|Album[] $albums
+ * @property Album|null $album
  * @property Collection|Playlist[] $playlists
  * @property Collection|Artist[] $artists
  * @property Collection|User[] $users
@@ -39,7 +43,9 @@ class Track extends Model
 	protected $casts = [
 		'release_date' => 'datetime:Y-m-d',
 		'counter' => 'int',
-        'covers' => 'array'
+		'single' => 'bool',
+		'duration' => 'int',
+		'album_id' => 'int'
 	];
 
 	protected $fillable = [
@@ -48,12 +54,16 @@ class Track extends Model
 		'counter',
 		'cover_file',
 		'file',
-		'video_file'
+		'video_file',
+		'color',
+		'single',
+		'duration',
+		'album_id'
 	];
 
-	public function albums()
+	public function album()
 	{
-		return $this->belongsToMany(Album::class, 'albums_tracks');
+		return $this->belongsTo(Album::class);
 	}
 
 	public function playlists()
@@ -172,7 +182,8 @@ class Track extends Model
         }
     }
 
-    public function deleteCoverInDifferentSizes(string $cover_file) {
+    public function deleteCoverInDifferentSizes(string $cover_file)
+    {
         $originalCoverPath = public_path("storage/" . $cover_file);
 
         $pathInfo = pathinfo($originalCoverPath);

@@ -16,7 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  * @property Carbon $release_date
- * @property string|null $cover
+ * @property string|null $cover_file
+ * @property int $duration
  * 
  * @property Collection|Track[] $tracks
  * @property Collection|User[] $users
@@ -29,18 +30,20 @@ class Album extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'release_date' => 'datetime'
+		'release_date' => 'datetime',
+		'duration' => 'int'
 	];
 
 	protected $fillable = [
 		'name',
 		'release_date',
-		'cover'
+		'cover_file',
+		'duration'
 	];
 
 	public function tracks()
 	{
-		return $this->belongsToMany(Track::class, 'albums_tracks');
+		return $this->hasMany(Track::class);
 	}
 
 	public function users()

@@ -12,12 +12,17 @@ use Intervention\Image\ImageManagerStatic;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Grid;
+use MoonShine\Fields\BelongsTo;
 use MoonShine\Fields\BelongsToMany;
+use MoonShine\Fields\Color;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\File;
+use MoonShine\Fields\HasOne;
 use MoonShine\Fields\Image;
+use MoonShine\Fields\Number;
 use MoonShine\Fields\Select;
 use MoonShine\Fields\StackFields;
+use MoonShine\Fields\SwitchBoolean;
 use MoonShine\Fields\Text;
 use MoonShine\Filters\BelongsToManyFilter;
 use MoonShine\Filters\SelectFilter;
@@ -61,6 +66,8 @@ class TrackResource extends Resource
 //                            ->required()
                             ->removable()
                             ->customName(fn(UploadedFile $file) =>  "images" . Carbon::now()->format('Ym') . '/' . $file->hashName()),
+                        Color::make('Color', 'color')
+                            ->hideOnIndex(),
                         File::make('Audio', 'file')
                             ->dir('/')
                             ->disk('public')
@@ -69,6 +76,11 @@ class TrackResource extends Resource
 //                            ->required()
                             ->removable()
                             ->customName(fn(UploadedFile $file) =>  "music" . Carbon::now()->format('Ym') . '/' . $file->hashName()),
+                        Number::make('Duration', 'duration')
+                            ->min(1)
+                            ->max(600)
+                            ->hideOnIndex()
+                            ->hideOnDetail(),
                         File::make('Video', 'video_file')
                             ->dir('/')
                             ->disk('public')
@@ -99,6 +111,31 @@ class TrackResource extends Resource
                 ->select()
                 ->inLine(separator: ' ', badge: true)
                 ->hideOnIndex(),
+
+//            BelongsTo::make('Albums', 'albums', 'name')
+//                ->asyncSearch()
+////                ->select()
+////                ->inLine(separator: ' ', badge: true)
+//                ->hideOnIndex(),
+//            BelongsToMany::make('Albums', 'albums', 'name')
+//                ->asyncSearch()
+//                ->fields([
+//                    Text::make('Position', 'position'),
+//                ])
+//                ->hideOnIndex(),
+            BelongsTo::make('Album', 'album', 'name')
+                ->asyncSearch()
+                ->hideOnIndex(),
+
+            SwitchBoolean::make('Single', 'single'),
+
+            Text::make('Duration', resource: function ($item) {
+                $date = Carbon::now('UTC')->startOfDay()->addSeconds($item->duration);
+                return $date->format('i:s');
+            })->hideOnForm(),
+
+            Number::make('Streams', 'counter')
+                ->hideOnForm(),
 
             Date::make('Release date', 'release_date')
                 ->format('d.m.Y'),
