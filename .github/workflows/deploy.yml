@@ -20,7 +20,7 @@ jobs:
           script: |
             echo "🚦 Deploying..."
             set -e
-            cd /sukify.ru/htdocs/www/backend
+            cd sukify.ru/htdocs/www/backend
             php artisan down
             echo "🌊 Pull from develop..."
             git pull origin develop
