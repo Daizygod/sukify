@@ -7,16 +7,16 @@ on:
 
 jobs:
   deploy:
+    name: deploy
     runs-on: ubuntu-latest
-
     steps:
       - name: Deploy to server
-        users: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: |
+          script:
             echo "🚦 Deploying..."
             set -e
             cd /sukify.ru/htdocs/www/backend
