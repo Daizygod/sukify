@@ -6,11 +6,11 @@ on:
       - develop
 
 jobs:
-  pull_from_branch:
-    name: pull from branch
+  deploy:
+    name: deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to server
+      - name: connect and pull
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -24,11 +24,7 @@ jobs:
             echo "🌊 Pull from develop..."
             git pull origin develop
             echo "🎉 Completed"
-  deploy_backend:
-    name: deploy backend
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to server
+      - name: Update backend
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -49,11 +45,7 @@ jobs:
             echo "🚀 Server up..."
             /usr/local/php/php-8.2/bin/php artisan up
             echo "🎉 Completed"
-  deploy_front:
-    name: deploy front
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to server
+      - name: Update front
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
