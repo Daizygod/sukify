@@ -39,4 +39,3 @@ jobs:
             cd sukify.ru/htdocs/www/frontend
             PATH=$HOME/.local/bin:$HOME/bin:$HOME/sukify.ru/htdocs/node/bin:$PATH
             echo "🧩 Build npm..."
-            npm run build --if-present
