@@ -99,7 +99,7 @@ const active = ref();
 const audio = ref();
 const audioActive = ref(false);
 const { data: tracks } = await useFetch(
-  "https://c567-176-52-78-14.ngrok-free.app/api/tracks/search",
+  "http://sukify.ru/api/tracks/search",
 );
 
 const playTrack = (track, idx) => {
