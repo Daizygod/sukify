@@ -6,8 +6,26 @@ on:
       - develop
 
 jobs:
-  deploy:
-    name: deploy
+  pull_from_branch:
+    name: pull from branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "🚦 Deploying..."
+            set -e
+            cd sukify.ru/htdocs/www/backend
+            echo "🌊 Pull from develop..."
+            git pull origin develop
+            echo "🎉 Completed"
+  deploy_backend:
+    name: deploy backend
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to server
@@ -22,8 +40,6 @@ jobs:
             set -e
             cd sukify.ru/htdocs/www/backend
             /usr/local/php/php-8.2/bin/php artisan down
-            echo "🌊 Pull from develop..."
-            git pull origin develop
             echo "🧩 Update composer..."
             /usr/local/php/php-8.2/bin/php composer.phar install --no-dev --optimize-autoloader
             echo "🩻 Apply migration..."
@@ -32,4 +48,23 @@ jobs:
             /usr/local/php/php-8.2/bin/php artisan route:cache
             echo "🚀 Server up..."
             /usr/local/php/php-8.2/bin/php artisan up
+            echo "🎉 Completed"
+  deploy_front:
+    name: deploy front
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "🚦 Deploying..."
+            set -e
+            cd sukify.ru/htdocs/www/frontend
+            PATH=$HOME/.local/bin:$HOME/bin:$HOME/sukify.ru/htdocs/node/bin:$PATH
+            echo "🧩 Build npm..."
+            npm run build
             echo "🎉 Completed"
