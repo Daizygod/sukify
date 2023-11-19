@@ -16,7 +16,7 @@
           <th
             class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
           >
-            Дата добавления
+            Дата добавления 2
           </th>
           <th
             class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
