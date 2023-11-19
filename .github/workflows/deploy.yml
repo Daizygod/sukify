@@ -27,7 +27,7 @@ jobs:
             echo "🧩 Update composer..."
             /usr/local/php/php-8.2/bin/php composer.phar install --no-dev --optimize-autoloader
             echo "🩻 Apply migration..."
-            /usr/local/php/php-8.2/bin/php artisan migrate
+            /usr/local/php/php-8.2/bin/php artisan migrate --force
             /usr/local/php/php-8.2/bin/php artisan config:cache
             /usr/local/php/php-8.2/bin/php artisan route:cache
             echo "🚀 Server up..."
