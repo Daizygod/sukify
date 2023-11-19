@@ -181,7 +181,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Itstructure\GridView\GridViewServiceProvider::class,
+//        Itstructure\GridView\GridViewServiceProvider::class,
 
         /*
          * Package Service Providers...
