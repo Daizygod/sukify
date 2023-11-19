@@ -14,10 +14,11 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "4.0",
         "laravelcollective/html": "^6.3",
-        "moonshine/moonshine": "^1.61"
+        "moonshine/moonshine": "^1.61",
+        "barryvdh/laravel-debugbar": "^3.7"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.7",
+        "roave/security-advisories": "dev-latest",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.12",
         "laravel/pint": "^1.0",
