@@ -339,10 +339,10 @@ class TrackController extends Controller
 //                $track->covers[$size] = $track->generateCoverPathForSize($size);
 //            }
             //FIXME
-            $track->duration = rand(30, 300);
+            $track->duration = $track->duration ?? random_int(30, 300);
             $track->album = ["id" => 12, "name" => "Karmagedon 12"];
                 setlocale(LC_TIME, 'ro_RO.UTF-8');
-            $track->added_at = Carbon::now('UTC')->subMinutes(rand(1, 87600));
+            $track->added_at = Carbon::now('UTC')->subMinutes(random_int(1, 87600));
 //                $track->added_at = Carbon::createFromTimestamp(1687705261, 'UTC');
 
 
