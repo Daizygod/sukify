@@ -38,5 +38,4 @@ jobs:
             echo "🚦 Deploying frontend..."
             cd ..
             cd frontend
-            PATH=$HOME/.local/bin:$HOME/bin:$HOME/sukify.ru/htdocs/node/bin:$PATH
             echo "🧩 Build npm..."
