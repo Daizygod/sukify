@@ -34,5 +34,3 @@ jobs:
             /usr/local/php/php-8.2/bin/php artisan route:cache
             echo "🚀 Server up..."
             /usr/local/php/php-8.2/bin/php artisan up
-            cd ..
-            cd frontend
