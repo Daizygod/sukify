@@ -36,6 +36,4 @@ jobs:
             /usr/local/php/php-8.2/bin/php artisan up
             echo "🎉 Completed"
             echo "🚦 Deploying frontend..."
-            cd ..
-            cd frontend
             echo "🧩 Build npm..."
