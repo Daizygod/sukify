@@ -36,6 +36,7 @@ jobs:
             /usr/local/php/php-8.2/bin/php artisan up
             echo "🎉 Completed"
             echo "🚦 Deploying frontend..."
-            cd sukify.ru/htdocs/www/frontend
+            cd ..
+            cd frontend
             PATH=$HOME/.local/bin:$HOME/bin:$HOME/sukify.ru/htdocs/node/bin:$PATH
             echo "🧩 Build npm..."
