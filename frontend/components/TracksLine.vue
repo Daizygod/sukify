@@ -16,7 +16,7 @@
           <th
             class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
           >
-            Дата добавления 2
+            Дата добавления
           </th>
           <th
             class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
@@ -31,7 +31,7 @@
           :key="idx"
           :class="{ bg_slate: active === idx }"
           class="hover:bg-slate-100 dark:hover:bg-slate-700"
-          @click="playTrack(track.file, idx)"
+          @click="playTrack(track.file2, idx)"
         >
           <td
             class="dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
@@ -88,49 +88,76 @@
   </div>
   <AudioPlayer
     v-if="audioActive"
-    class="h-[80px] w-full flex items-center justify-center bg-white fixed bottom-0 left-0"
+    class="h-[80px] w-full flex items-center justify-center bg-white fixed bottom-8 left-0"
     :current-song-url="currentSongUrl"
+    @play-next="playNext"
+    @play-previous="playPrevious"
   />
 </template>
 
-<script setup>
-const currentSongUrl = ref();
-const active = ref();
-const audio = ref();
-const audioActive = ref(false);
-const { data: tracks } = await useFetch(
-  "http://sukify.ru/api/tracks/search",
-);
+<script>
+import AudioPlayer from "@/components/AudioPlayer.vue";
 
-const playTrack = (track, idx) => {
-  audioActive.value = false;
-  active.value = idx;
-  audio.value = null;
-  nextTick(() => {
-    currentSongUrl.value = track;
-    audioActive.value = true;
-  });
+export default {
+  name: "TracksLine",
+  components: {
+    AudioPlayer,
+  },
+  data() {
+    return {
+      audioActive: false,
+      currentSongUrl: "",
+      active: null,
+      audio: null,
+      tracks: [],
+    };
+  },
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
+    playPrevious() {
+      const previousSound = this.tracks.data[this.active - 1];
+      if (previousSound) {
+        this.playTrack(previousSound.file2, this.active - 1);
+      } else {
+        this.playTrack(
+          this.tracks.data[this.tracks.data.length - 1].file2,
+          this.tracks.data.length - 1,
+        );
+      }
+    },
+    playNext() {
+      const nextSound = this.tracks.data[this.active + 1];
+      if (nextSound) {
+        this.playTrack(nextSound.file2, this.active + 1);
+      } else {
+        this.playTrack(this.tracks.data[0].file2, 0);
+      }
+    },
+    playTrack(track, idx) {
+      this.audioActive = false;
+      this.active = idx;
+      this.audio = null;
+      nextTick(() => {
+        this.currentSongUrl = track;
+        this.audioActive = true;
+      });
+    },
+    formatTrackDuration(duration) {
+      const minutes = Math.floor((duration % 3600) / 60);
+      const seconds = Math.floor(duration % 60);
+      if (seconds < 10) {
+        return `${minutes}:0${seconds}`;
+      }
+      return `${minutes}:${seconds}`;
+    },
+    async fetchData() {
+      const response = await $fetch("https://sukify.ru/api/tracks/search");
+      this.tracks = await response;
+    },
+  },
 };
-
-const formatTrackDuration = (duration) => {
-  const minutes = Math.floor((duration % 3600) / 60);
-  const seconds = Math.floor(duration % 60);
-  if (seconds < 10) {
-    return `${minutes}:0${seconds}`;
-  }
-  return `${minutes}:${seconds}`;
-};
-
-// const unixTime = (time) => {
-//   return new Date(time * 1000).toLocaleString("ru-RU", {
-//     year: "numeric",
-//     month: "long",
-//     day: "numeric",
-//     // hour: 'numeric',
-//     // minute: 'numeric',
-//     // second: 'numeric',
-//   });
-// };
 </script>
 
 <style lang="css">
