@@ -1,5 +1,5 @@
 <template>
-  <div class="audio-player">
+  <div class="audio-player bg-white">
     <audio
       ref="audioElement"
       :src="currentSong?.file2"
