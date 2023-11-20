@@ -2,7 +2,6 @@
   <div class="audio-player">
     <audio
       ref="audioElement"
-      autoplay
       :src="currentSong?.file2"
       @timeupdate="updateTime"
       @loadedmetadata="updateDuration"
@@ -197,6 +196,7 @@ export default {
       return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     },
     updateDuration() {
+      this.isPlaying = false;
       this.duration = this.$refs.audioElement.duration;
       this.togglePlayback();
     },
