@@ -4,7 +4,7 @@ module.exports = {
       name: "Sukify",
       port: "3000",
       exec_mode: "cluster",
-      instances: "max",
+      instances: "4",
       script: ".output/server/index.mjs",
     },
   ],
