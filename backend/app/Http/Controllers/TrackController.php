@@ -322,7 +322,7 @@ class TrackController extends Controller
 //            ->with('albums')
             ->orderBy('counter', 'desc')
             ->orderBy('id', 'desc')
-            ->cursorPaginate(10);
+            ->cursorPaginate(20);
 
         collect($tracks->items())
             ->map(function ($track) use ($user_id) {
