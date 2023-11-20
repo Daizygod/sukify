@@ -3,15 +3,15 @@
     <audio
       ref="audioElement"
       autoplay
-      :src="currentSongUrl"
+      :src="currentSong?.file2"
       @timeupdate="updateTime"
       @loadedmetadata="updateDuration"
-      @ended="$emit('play-next')"
+      @ended="playNextSong"
     ></audio>
     <div class="controls border-t w-full py-8">
       <div class="flex flex-col justify-center items-center gap-6">
         <div class="controls_btns flex items-center gap-8 justify-center">
-          <button @click="$emit('play-previous')">
+          <button @click="playPrevious">
             <svg
               width="20"
               height="20"
@@ -59,7 +59,7 @@
               />
             </svg>
           </button>
-          <button @click="$emit('play-next')">
+          <button @click="playNextSong">
             <svg
               width="20"
               height="20"
@@ -101,9 +101,11 @@
 <script>
 export default {
   props: {
-    currentSongUrl: {
-      type: String,
-      required: true,
+    currentSong: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
   },
   emits: ["play-next", "play-previous"],
@@ -112,7 +114,6 @@ export default {
       isPlaying: false,
       currentTime: 0,
       duration: 0,
-      currentSong: null,
     };
   },
   computed: {
@@ -123,7 +124,57 @@ export default {
       };
     },
   },
+  mounted() {
+    this.setupMediaSession();
+  },
   methods: {
+    playPrevious() {
+      this.$emit("play-previous");
+      const player = this.$refs.audioElement;
+      if (player) {
+        player.src = this.currentSong.file2;
+        setTimeout(() => {
+          this.setupMediaSession();
+          player.play();
+          this.isPlaying = true;
+        }, 500);
+      }
+    },
+    playNextSong() {
+      this.$emit("play-next");
+      const player = this.$refs.audioElement;
+      if (player) {
+        player.src = this.currentSong.file2;
+        setTimeout(() => {
+          this.setupMediaSession();
+          player.play();
+          this.isPlaying = true;
+        }, 500);
+      }
+    },
+    setupMediaSession() {
+      if ("mediaSession" in navigator && this.currentSong) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: this.currentSong.name,
+          artist: this.currentSong.artists[0].name,
+          album: this.currentSong.album.name,
+          artwork: [
+            {
+              src: this.currentSong.cover_file,
+              sizes: "512x512",
+              type: "image/png",
+            },
+          ],
+        });
+        navigator.mediaSession.setActionHandler("nexttrack", this.playNextSong);
+        navigator.mediaSession.setActionHandler(
+          "previoustrack",
+          this.playPrevious,
+        );
+        navigator.mediaSession.setActionHandler("play", this.togglePlayback);
+        navigator.mediaSession.setActionHandler("pause", this.togglePlayback);
+      }
+    },
     togglePlayback() {
       this.isPlaying = !this.isPlaying;
       if (this.isPlaying) {

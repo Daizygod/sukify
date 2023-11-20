@@ -31,7 +31,7 @@
           :key="idx"
           :class="{ bg_slate: active === idx }"
           class="hover:bg-slate-100 dark:hover:bg-slate-700"
-          @click="playTrack(track.file2, idx)"
+          @click="playTrack(idx)"
         >
           <td
             class="dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
@@ -89,7 +89,7 @@
   <AudioPlayer
     v-if="audioActive"
     class="h-[80px] w-full flex items-center justify-center bg-white fixed bottom-8 left-0"
-    :current-song-url="currentSongUrl"
+    :current-song="currentSong"
     @play-next="playNext"
     @play-previous="playPrevious"
   />
@@ -106,7 +106,7 @@ export default {
   data() {
     return {
       audioActive: false,
-      currentSongUrl: "",
+      currentSong: null,
       active: null,
       audio: null,
       tracks: [],
@@ -119,30 +119,25 @@ export default {
     playPrevious() {
       const previousSound = this.tracks.data[this.active - 1];
       if (previousSound) {
-        this.playTrack(previousSound.file2, this.active - 1);
+        this.playTrack(this.active - 1);
       } else {
-        this.playTrack(
-          this.tracks.data[this.tracks.data.length - 1].file2,
-          this.tracks.data.length - 1,
-        );
+        this.playTrack(this.tracks.data.length - 1);
       }
     },
     playNext() {
       const nextSound = this.tracks.data[this.active + 1];
       if (nextSound) {
-        this.playTrack(nextSound.file2, this.active + 1);
+        this.playTrack(this.active + 1);
       } else {
-        this.playTrack(this.tracks.data[0].file2, 0);
+        this.playTrack(0);
       }
     },
-    playTrack(track, idx) {
+    playTrack(idx) {
       this.audioActive = false;
       this.active = idx;
       this.audio = null;
-      nextTick(() => {
-        this.currentSongUrl = track;
-        this.audioActive = true;
-      });
+      this.currentSong = this.tracks.data[idx];
+      this.audioActive = true;
     },
     formatTrackDuration(duration) {
       const minutes = Math.floor((duration % 3600) / 60);
