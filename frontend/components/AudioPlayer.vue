@@ -7,7 +7,7 @@
       @loadedmetadata="updateDuration"
       @ended="playNextSong"
     ></audio>
-    <div class="controls border-t w-full py-8">
+    <div class="controls border-t bg-white w-full py-8">
       <div class="flex flex-col justify-center items-center gap-6">
         <div class="controls_btns flex items-center gap-8 justify-center">
           <button @click="playPrevious">

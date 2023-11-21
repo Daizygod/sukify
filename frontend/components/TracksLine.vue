@@ -1,12 +1,19 @@
 <template>
-  <div class="shadow-sm overflow-hidden my-8">
+  <div
+    class="h-[calc(100vh-170px)] overflow-y-auto shadow-sm overflow-hidden my-8"
+  >
     <table class="table-auto w-full text-sm">
       <thead>
         <tr>
           <th
+            class="border-b dark:border-slate-600 font-medium pt-0 pb-3 text-slate-400 dark:text-slate-200 text-right"
+          >
+            #
+          </th>
+          <th
             class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
           >
-            # Название
+            Название
           </th>
           <th
             class="border-b dark:border-slate-600 font-medium p-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
@@ -33,11 +40,13 @@
           class="hover:bg-slate-100 dark:hover:bg-slate-700"
           @click="playTrack(idx)"
         >
+          <td class="dark:border-slate-700 text-slate-500 dark:text-slate-400">
+            <p class="text-right">{{ idx + 1 }}</p>
+          </td>
           <td
             class="dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
           >
             <div class="flex items-center gap-4 justify-start">
-              <p>{{ idx + 1 }}</p>
               <img
                 class="w-[40px] rounded"
                 :src="track.cover_file"
