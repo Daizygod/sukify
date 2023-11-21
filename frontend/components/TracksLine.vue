@@ -6,48 +6,44 @@
       <thead>
         <tr>
           <th
-            class="hidden xl:table-cell border-b dark:border-slate-600 font-medium pt-0 pb-3 text-slate-400 dark:text-slate-200 text-right"
+            class="hidden xl:table-cell border-b font-medium pt-0 pb-3 text-slate-400 text-right"
           >
             #
           </th>
           <th
-            class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            class="border-b font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 text-left"
           >
             Название
           </th>
           <th
-            class="hidden xl:table-cell border-b dark:border-slate-600 font-medium p-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            class="hidden xl:table-cell border-b font-medium p-4 pt-0 pb-3 text-slate-400 text-left"
           >
             Альбом
           </th>
           <th
-            class="hidden xl:table-cell border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            class="hidden xl:table-cell border-b font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 text-left"
           >
             Дата добавления
           </th>
           <th
-            class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            class="border-b font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 text-left"
           >
             Длительность
           </th>
         </tr>
       </thead>
-      <tbody v-if="tracks" class="bg-white dark:bg-slate-800">
+      <tbody v-if="tracks" class="bg-white">
         <tr
           v-for="(track, idx) in tracks.data"
           :key="idx"
           :class="{ bg_slate: active === idx }"
-          class="hover:bg-slate-100 dark:hover:bg-slate-700"
+          class="hover:bg-slate-100"
           @click="playTrack(idx)"
         >
-          <td
-            class="hidden xl:table-cell dark:border-slate-700 text-slate-500 dark:text-slate-400"
-          >
+          <td class="hidden xl:table-cell text-slate-500">
             <p class="text-right">{{ idx + 1 }}</p>
           </td>
-          <td
-            class="dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
-          >
+          <td class="p-4 pl-8 text-slate-500">
             <div class="flex items-center gap-4 justify-start">
               <img
                 class="w-[40px] rounded"
@@ -78,19 +74,13 @@
               </div>
             </div>
           </td>
-          <td
-            class="hidden xl:table-cell dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"
-          >
+          <td class="hidden xl:table-cell p-4 text-slate-500">
             {{ track.album.name }}
           </td>
-          <td
-            class="hidden xl:table-cell dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
-          >
+          <td class="hidden xl:table-cell p-4 pr-8 text-slate-500">
             {{ track.added_at }}
           </td>
-          <td
-            class="text-right xl:text-left dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
-          >
+          <td class="text-right xl:text-left p-4 pr-8 text-slate-500">
             {{ formatTrackDuration(track.duration) }}
           </td>
         </tr>

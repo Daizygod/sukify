@@ -168,9 +168,12 @@ export default {
     },
     setupMediaSession() {
       if ("mediaSession" in navigator && this.currentSong) {
+        const artistNames = this.currentSong.artists
+          .map((artist) => artist.name)
+          .join(", ");
         navigator.mediaSession.metadata = new MediaMetadata({
           title: this.currentSong.name,
-          artist: this.currentSong.artists[0].name,
+          artist: artistNames,
           album: this.currentSong.album.name,
           artwork: [
             {
