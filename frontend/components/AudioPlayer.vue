@@ -1,5 +1,20 @@
 <template>
-  <div class="audio-player bg-white">
+  <div class="relative audio-player bg-white">
+    <div class="hidden xl:flex absolute left-0 z-10 px-6 items-center gap-4">
+      <div>
+        <img
+          :src="currentSong?.cover_file"
+          alt="cover"
+          class="w-[58px] object-cover rounded"
+        />
+      </div>
+      <div class="flex flex-col">
+        <p class="text-xl">{{ currentSong?.name }}</p>
+        <p class="text-sm text-gray-500 whitespace-nowrap">
+          {{ currentSong?.artists[0].name }}
+        </p>
+      </div>
+    </div>
     <audio
       ref="audioElement"
       :src="currentSong?.file2"
@@ -7,7 +22,7 @@
       @loadedmetadata="updateDuration"
       @ended="playNextSong"
     ></audio>
-    <div class="controls border-t bg-white w-full py-8">
+    <div class="absolute controls border-t bg-white w-full py-8">
       <div class="flex flex-col justify-center items-center gap-6">
         <div class="controls_btns flex items-center gap-8 justify-center">
           <button @click="playPrevious">
@@ -81,7 +96,7 @@
           </span>
           <input
             v-model="currentTime"
-            class="min-w-[400px] max-w-[400px] w-full"
+            class="min-w-[200px] max-w-[200px] xl:min-w-[400px] xl:max-w-[400px] w-full"
             :style="sliderStyle"
             min="0"
             :max="duration"

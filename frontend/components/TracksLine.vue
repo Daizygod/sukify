@@ -6,7 +6,7 @@
       <thead>
         <tr>
           <th
-            class="border-b dark:border-slate-600 font-medium pt-0 pb-3 text-slate-400 dark:text-slate-200 text-right"
+            class="hidden xl:table-cell border-b dark:border-slate-600 font-medium pt-0 pb-3 text-slate-400 dark:text-slate-200 text-right"
           >
             #
           </th>
@@ -16,12 +16,12 @@
             Название
           </th>
           <th
-            class="border-b dark:border-slate-600 font-medium p-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            class="hidden xl:table-cell border-b dark:border-slate-600 font-medium p-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
           >
             Альбом
           </th>
           <th
-            class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            class="hidden xl:table-cell border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
           >
             Дата добавления
           </th>
@@ -40,7 +40,9 @@
           class="hover:bg-slate-100 dark:hover:bg-slate-700"
           @click="playTrack(idx)"
         >
-          <td class="dark:border-slate-700 text-slate-500 dark:text-slate-400">
+          <td
+            class="hidden xl:table-cell dark:border-slate-700 text-slate-500 dark:text-slate-400"
+          >
             <p class="text-right">{{ idx + 1 }}</p>
           </td>
           <td
@@ -77,17 +79,17 @@
             </div>
           </td>
           <td
-            class="dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"
+            class="hidden xl:table-cell dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"
           >
             {{ track.album.name }}
           </td>
           <td
-            class="dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
+            class="hidden xl:table-cell dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
           >
             {{ track.added_at }}
           </td>
           <td
-            class="dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
+            class="text-right xl:text-left dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"
           >
             {{ formatTrackDuration(track.duration) }}
           </td>
