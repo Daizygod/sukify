@@ -36,7 +36,7 @@ jobs:
             /usr/local/php/php-8.2/bin/php artisan up
             cd ..
             cd frontend
-            pm2 kill
             PATH=$HOME/.local/bin:$HOME/bin:$HOME/sukify.ru/htdocs/node/bin:$PATH
+            pm2 kill
             npm run build
             pm2 start
