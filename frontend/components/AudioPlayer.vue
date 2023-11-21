@@ -138,6 +138,11 @@ export default {
       };
     },
   },
+  watch: {
+    currentSong() {
+      this.setupMediaSession();
+    },
+  },
   mounted() {
     this.setupMediaSession();
   },
