@@ -91,6 +91,8 @@
     v-if="audioActive"
     class="h-[80px] w-full flex items-center justify-center bg-white fixed bottom-8 left-0"
     :current-song="currentSong"
+    :shuffle="shuffle"
+    @shuffle="shuffleToggle"
     @play-next="playNext"
     @play-previous="playPrevious"
   />
@@ -111,12 +113,16 @@ export default {
       active: null,
       audio: null,
       tracks: [],
+      shuffle: false,
     };
   },
   mounted() {
     this.fetchData();
   },
   methods: {
+    shuffleToggle() {
+      this.shuffle = !this.shuffle;
+    },
     playPrevious() {
       const previousSound = this.tracks.data[this.active - 1];
       if (previousSound) {
@@ -127,7 +133,16 @@ export default {
     },
     playNext() {
       const nextSound = this.tracks.data[this.active + 1];
-      if (nextSound) {
+      // KOCTblJlb shuffle
+      if (this.shuffle) {
+        const randomIndex = Math.floor(Math.random() * this.tracks.data.length);
+        const randomNumber = this.tracks.data[randomIndex];
+        if (randomNumber.id !== this.active) {
+          this.playTrack(randomNumber.id);
+        } else {
+          this.playNext();
+        }
+      } else if (nextSound) {
         this.playTrack(this.active + 1);
       } else {
         this.playTrack(0);
