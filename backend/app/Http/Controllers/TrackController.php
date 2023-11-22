@@ -340,9 +340,7 @@ class TrackController extends Controller
 //            }
             //FIXME
             $track->duration = $track->duration ?? random_int(30, 300);
-            if (!$track->album) {
-                $track->album = ["id" => $track->id, "name" => $track->name];
-            }
+            $track->album = ["id" => 12, "name" => $track->name];
                 setlocale(LC_TIME, 'ro_RO.UTF-8');
             $track->added_at = Carbon::now('UTC')->subMinutes(random_int(1, 87600));
 //                $track->added_at = Carbon::createFromTimestamp(1687705261, 'UTC');
