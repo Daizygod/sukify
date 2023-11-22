@@ -26,7 +26,7 @@ Route::resource('artists', ArtistController::class);
 Route::get('/getAjax', [ArtistController::class, 'getAjax'])->name('getAjax');
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->away(ENV('FRONT_URL'));
 });
 
 Route::get('/dashboard', function () {
