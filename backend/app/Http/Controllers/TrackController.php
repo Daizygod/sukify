@@ -316,17 +316,94 @@ class TrackController extends Controller
     }
 
     /**
-     * @OA\Get(
+     * @OA\Get (
      *     path="/api/tracks/search",
+     *     tags={"tracks"},
      *     description="Search tracks",
-     *     @OA\Response(response="default", description="Searching tracks")
+     *     summary="Search tracks",
+     *      @OA\Parameter(
+     *          name="search",
+     *          description="String to search",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                 type="array",
+     *                 property="data",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id",type="number",example="1"),
+     *                     @OA\Property(property="name",type="string",example="Проснулся В Темноте"),
+     *                     @OA\Property(property="release_date",type="string",example="2002-02-02"),
+     *                     @OA\Property(property="counter",type="number",example="1"),
+     *                     @OA\Property(property="cover_file",type="string",example="http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa.jpg"),
+     *                     @OA\Property(property="file",type="string",example="http://localhost:80/api/getaudio/music202308/aFjuB7PHa8OtF63SrDACxwLRuo5vMwIq7eTNNdcH/mp3"),
+     *                     @OA\Property(property="video_file",type="string",example="http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa.mp4"),
+     *                     @OA\Property(property="color",type="string",example="#236180"),
+     *                     @OA\Property(property="single",type="number",example="true"),
+     *                     @OA\Property(property="duration",type="number",example="125"),
+     *                     @OA\Property(property="album_id",type="number",example="1"),
+     *                     @OA\Property(property="cover512px",type="string",example="http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_512px.jpg"),
+     *                     @OA\Property(property="cover384px",type="string",example="http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_384px.jpg"),
+     *                     @OA\Property(property="cover256px",type="string",example="http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_256px.jpg"),
+     *                     @OA\Property(property="cover192px",type="string",example="http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_192px.jpg"),
+     *                     @OA\Property(property="cover128px",type="string",example="http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_128px.jpg"),
+     *                     @OA\Property(property="cover96px",type="string",example="http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_96px.jpg"),
+     *                     @OA\Property(property="in_album",type="boolean",example="true"),
+     *
+     *                      @OA\Property(
+     *                          property="album",
+     *                          type="object",
+     *                          @OA\Property(property="id",type="number", example="1"),
+     *                          @OA\Property(property="name",type="string", example="Проснулся В Темноте"),
+     *                      ),
+     *
+     *                     @OA\Property(property="added_at",type="string",example="3 недели назад"),
+     *                     @OA\Property(property="liked",type="boolean",example="false"),
+     *
+     *                      @OA\Property(
+     *                          property="artists",
+     *                          type="array",
+     *                          example={{"id":113,"name":"GONE.Fludd","avatar":"http://localhost:80/storage/images202308/s3LOwH4H1xZbfkFSxrdhTRGhTABS7wUHEHe8Nr0J.png","background":"http://localhost:80/storage/images202308/s3LOwH4H1xZbfkFSxrdhTRGhTABS7wUHEHe8Nr0J.png"}},
+     *                          @OA\Items(
+     *                              type="object",
+     *                              @OA\Property(property="id",type="number"),
+     *                              @OA\Property(property="name",type="string"),
+     *                              @OA\Property(property="avatar",type="string"),
+     *                              @OA\Property(property="background",type="string")
+     *                          )
+     *                      )
+     *                 )
+     *             ),
+     *              @OA\Property(property="path", type="string", example="http://localhost/api/tracks/search"),
+     *              @OA\Property(property="per_page", type="number", example="20"),
+     *              @OA\Property(property="next_cursor", type="string", example="eyJjb3VudGVyIjowLCJpZCI6MzksIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"),
+     *              @OA\Property(property="next_page_url", type="string", example="http://localhost/api/tracks/search?cursor=eyJjb3VudGVyIjowLCJpZCI6MzksIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"),
+     *              @OA\Property(property="prev_cursor", type="string", example="eyJjb3VudGVyIjowLCJpZCI6MzgsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9"),
+     *              @OA\Property(property="prev_page_url", type="string", example="http://localhost/api/tracks/search?cursor=eyJjb3VudGVyIjowLCJpZCI6MzgsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="invalid",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="msg", type="string", example="Пошел нахуй"),
+     *          )
+     *      )
      * )
      */
     public function search(Request $request)
     {
         //TODO get user_id from jwt
         $user_id = 202;
-        $tracks = Track::where('name', 'LIKE', "%{$request->input('search')}%")
+        $tracks = Track::where('name', 'LIKE', "%{$request->query('search')}%")
             ->with('artists')
 //            ->with('albums')
             ->orderBy('counter', 'desc')

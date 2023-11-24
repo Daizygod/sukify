@@ -7,11 +7,204 @@
     "paths": {
         "/api/tracks/search": {
             "get": {
+                "tags": [
+                    "tracks"
+                ],
+                "summary": "Search tracks",
                 "description": "Search tracks",
                 "operationId": "58306885717a27e8df09d4d4ce08c6ec",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "String to search",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
-                    "default": {
-                        "description": "Searching tracks"
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Проснулся В Темноте"
+                                                    },
+                                                    "release_date": {
+                                                        "type": "string",
+                                                        "example": "2002-02-02"
+                                                    },
+                                                    "counter": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "cover_file": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa.jpg"
+                                                    },
+                                                    "file": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:80/api/getaudio/music202308/aFjuB7PHa8OtF63SrDACxwLRuo5vMwIq7eTNNdcH/mp3"
+                                                    },
+                                                    "video_file": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa.mp4"
+                                                    },
+                                                    "color": {
+                                                        "type": "string",
+                                                        "example": "#236180"
+                                                    },
+                                                    "single": {
+                                                        "type": "number",
+                                                        "example": "true"
+                                                    },
+                                                    "duration": {
+                                                        "type": "number",
+                                                        "example": "125"
+                                                    },
+                                                    "album_id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "cover512px": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_512px.jpg"
+                                                    },
+                                                    "cover384px": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_384px.jpg"
+                                                    },
+                                                    "cover256px": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_256px.jpg"
+                                                    },
+                                                    "cover192px": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_192px.jpg"
+                                                    },
+                                                    "cover128px": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_128px.jpg"
+                                                    },
+                                                    "cover96px": {
+                                                        "type": "string",
+                                                        "example": "http://localhost:80/storage/images202308/Rh5M9Q1ip4s9JphcHHBL8SYIAF39QMq0p4rpIiHa_96px.jpg"
+                                                    },
+                                                    "in_album": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    },
+                                                    "album": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "number",
+                                                                "example": "1"
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Проснулся В Темноте"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "added_at": {
+                                                        "type": "string",
+                                                        "example": "3 недели назад"
+                                                    },
+                                                    "liked": {
+                                                        "type": "boolean",
+                                                        "example": "false"
+                                                    },
+                                                    "artists": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "avatar": {
+                                                                    "type": "string"
+                                                                },
+                                                                "background": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "example": [
+                                                            {
+                                                                "id": 113,
+                                                                "name": "GONE.Fludd",
+                                                                "avatar": "http://localhost:80/storage/images202308/s3LOwH4H1xZbfkFSxrdhTRGhTABS7wUHEHe8Nr0J.png",
+                                                                "background": "http://localhost:80/storage/images202308/s3LOwH4H1xZbfkFSxrdhTRGhTABS7wUHEHe8Nr0J.png"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "path": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/tracks/search"
+                                        },
+                                        "per_page": {
+                                            "type": "number",
+                                            "example": "20"
+                                        },
+                                        "next_cursor": {
+                                            "type": "string",
+                                            "example": "eyJjb3VudGVyIjowLCJpZCI6MzksIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+                                        },
+                                        "next_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/tracks/search?cursor=eyJjb3VudGVyIjowLCJpZCI6MzksIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+                                        },
+                                        "prev_cursor": {
+                                            "type": "string",
+                                            "example": "eyJjb3VudGVyIjowLCJpZCI6MzgsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/tracks/search?cursor=eyJjb3VudGVyIjowLCJpZCI6MzgsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "invalid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string",
+                                            "example": "Пошел нахуй"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
