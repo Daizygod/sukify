@@ -12,6 +12,10 @@
         {
             "url": "http://localhost",
             "description": "Demo API Server"
+        },
+        {
+            "url": "https://sukify.ru",
+            "description": "Deploy API Server"
         }
     ],
     "paths": {

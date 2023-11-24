@@ -31,6 +31,11 @@ use Itstructure\GridView\DataProviders\EloquentDataProvider;
  *      description="Demo API Server"
  * )
  *
+ * @OA\Server(
+ *      url="https://sukify.ru",
+ *      description="Deploy API Server"
+ * )
+ *
  */
 class TrackController extends Controller
 {
