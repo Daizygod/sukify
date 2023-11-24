@@ -1,5 +1,5 @@
 <div style="display:flex;">
-  <img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" height="50" alt=""/>
+  <img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Nuxt_logo_%282021%29.svg/2560px-Nuxt_logo_%282021%29.svg.png" alt="NuxtJS" />
   <img style="height: 3em" src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" height="50" alt=""/>
   <img style="height: 3em" src="https://moonshine.cutcode.dev/vendor/moonshine/logo.svg" alt="Moonshine" />
   <img style="height: 3em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/MariaDB_colour_logo.svg/1200px-MariaDB_colour_logo.svg.png" alt="MariaDB" />
@@ -29,11 +29,21 @@ As the result I start create this project,<br>
 ![alt text](https://user-images.githubusercontent.com/46899953/209230334-d8b7e010-e581-4d30-a3cf-f56ca3b5024b.png)
 ![alt text](https://user-images.githubusercontent.com/46899953/208583653-b748f261-5d42-4670-8ed7-ab340ec5d54a.png)
 
-
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 ## Commands
-###CRUD
+
+### Backend Docker up (in work)
+
+1. up - `docker-compose up --build`, note that `--build` not always 
+2. create database in adminer, name - `sukify` and collation is `utf8mb4_unicode_ci`
+3. go to container - `docker-compose exec docker_backend bash`
+4. in docker container:
+   * `php artisan key:generate`
+   * `php artisan migrate`
+   * `php artisan moonshine:user`
+
+> Note, for use app, url will be smth like that - `127.0.0.1:8080/public`
+
+### CRUD generate
 
 generate model based on table from DB
 `php artisan code:models --table=}}Table Name{{`
@@ -47,7 +57,7 @@ generate views (need svenluijten/artisan-view)
 
 `getenv('APP_DEBUG');`
 
-## Setup
+## Setup on Windows
 ### DataBase
 
 Connect to MySQL.exe (I have it in mariaDB)
@@ -77,10 +87,11 @@ Create database with your name in env file
 
 `php artisan key:generate`
 
-### Для проверки на моб устройстве (нужно подключится к одной сетке)
+### For testing on mobile device (LAN connect)
 
 `php artisan serve --host=0.0.0.0:80`
 
-### Пакеты для PHP
-`sudo apt install php8.1 php8.1-fpm php8.1-{bcmath,xml,fpm,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi,ssh2}`
+[//]: # (### PHP packages )
+
+[//]: # (`sudo apt install php8.1 php8.1-fpm php8.1-{bcmath,xml,fpm,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi,ssh2}`)
 

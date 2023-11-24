@@ -1,0 +1,41 @@
+name: Deploy
+run-name: ${{ github.actor }} added new commits to develop, yep 🚀
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "🚦 Pulling..."
+            set -e
+            cd sukify.ru/htdocs/www/backend
+            echo "🌊 Pull from develop..."
+            git pull origin develop
+            echo "🎉 Completed"
+            echo "🚦 Deploying backend..."
+            /usr/local/php/php-8.2/bin/php artisan down
+            echo "🧩 Update composer..."
+            /usr/local/php/php-8.2/bin/php composer.phar install --no-dev --optimize-autoloader
+            echo "🩻 Apply migration..."
+            /usr/local/php/php-8.2/bin/php artisan migrate --force
+            /usr/local/php/php-8.2/bin/php artisan config:clear
+            echo "🚀 Server up..."
+            /usr/local/php/php-8.2/bin/php artisan up
+            cd ..
+            cd frontend
+            PATH=$HOME/.local/bin:$HOME/bin:$HOME/sukify.ru/htdocs/node/bin:$PATH
+            pm2 kill
+            npm run build
+            pm2 start

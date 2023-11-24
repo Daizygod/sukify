@@ -181,7 +181,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Itstructure\GridView\GridViewServiceProvider::class,
+//        Itstructure\GridView\GridViewServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -197,6 +197,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\MoonShineServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        L5Swagger\L5SwaggerServiceProvider::class
 
     ],
 

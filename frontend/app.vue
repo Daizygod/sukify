@@ -1,24 +1,12 @@
 <template>
   <div>
-    <ul v-for="track in tracks">
-      {{ track }}
-      <p>
-        {{ track.name }}
-      </p>
-      <img :src="track.cover_file" alt="img" loading="lazy">
-    </ul>
+    <tracks-line />
   </div>
 </template>
+<script setup lang="ts">
+import TracksLine from "@/components/TracksLine.vue";
 
-<script setup>
-const { data: tracks} = await useFetch('https://4807-176-52-96-170.ngrok-free.app/api/tracks/search');
+useHead({
+  title: "Sukify",
+});
 </script>
-
-<style>
-
-img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-}
-</style>
