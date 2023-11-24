@@ -1,0 +1,20 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Tracks",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/tracks/search": {
+            "get": {
+                "description": "Search tracks",
+                "operationId": "58306885717a27e8df09d4d4ce08c6ec",
+                "responses": {
+                    "default": {
+                        "description": "Searching tracks"
+                    }
+                }
+            }
+        }
+    }
+}

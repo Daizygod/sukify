@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::view('swagger', 'swagger');
+//Route::view('swagger', 'swagger');
 
 Route::resource('player', PlayerController::class);
 
@@ -25,9 +25,9 @@ Route::resource('artists', ArtistController::class);
 
 Route::get('/getAjax', [ArtistController::class, 'getAjax'])->name('getAjax');
 
-Route::get('/', function () {
-    return redirect()->away(ENV('FRONT_URL'));
-});
+//Route::get('/', function () {
+//    return redirect()->away(ENV('FRONT_URL'));
+//});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

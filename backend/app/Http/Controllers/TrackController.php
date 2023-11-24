@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Itstructure\GridView\DataProviders\EloquentDataProvider;
 
-
+/**
+ * @OA\Info(title="Tracks", version="0.1")
+ */
 class TrackController extends Controller
 {
     /**
@@ -313,6 +315,13 @@ class TrackController extends Controller
         return $return;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/tracks/search",
+     *     description="Search tracks",
+     *     @OA\Response(response="default", description="Searching tracks")
+     * )
+     */
     public function search(Request $request)
     {
         //TODO get user_id from jwt
