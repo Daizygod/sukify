@@ -16,27 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Itstructure\GridView\DataProviders\EloquentDataProvider;
 
-/**
- * @OA\Info(
- *      version="1.0.0",
- *      title="Sukify Documentation",
- *      description="Sukify Swagger OpenApi description",
- *      @OA\Contact(
- *          url="https://github.com/Daizygod/sukify"
- *      )
- * )
- *
- * @OA\Server(
- *      url=L5_SWAGGER_CONST_HOST,
- *      description="Demo API Server"
- * )
- *
- * @OA\Server(
- *      url="https://sukify.ru",
- *      description="Deploy API Server"
- * )
- *
- */
+
 class TrackController extends Controller
 {
     /**
@@ -214,6 +194,7 @@ class TrackController extends Controller
      * @OA\Get (
      *     path="/api/tracks/search",
      *     tags={"tracks"},
+     *     security = {{"api_key": {}}},
      *     description="Search tracks",
      *     summary="Search tracks",
      *      @OA\Parameter(
@@ -291,7 +272,10 @@ class TrackController extends Controller
      *          @OA\JsonContent(
      *              @OA\Property(property="msg", type="string", example="Пошел нахуй"),
      *          )
-     *      )
+     *      ),
+     *     security={
+     *         {"api_key": {}}
+     *     }
      * )
      */
     public function search(Request $request)

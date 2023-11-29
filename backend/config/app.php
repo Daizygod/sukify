@@ -197,7 +197,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\MoonShineServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-        L5Swagger\L5SwaggerServiceProvider::class
+        L5Swagger\L5SwaggerServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class
 
     ],
 

@@ -23,6 +23,9 @@ Route::resource('tracks', TrackController::class);
 
 Route::resource('artists', ArtistController::class);
 
+Route::get('api/getaudio/{folder}/{filename}/{ext}', [TrackController::class, 'listenAudio', 'as' => 'audio']);//FIXME delete here
+Route::get('api/tracks/search', [TrackController::class, 'search']);//FIXME delete here
+
 Route::get('/getAjax', [ArtistController::class, 'getAjax'])->name('getAjax');
 
 //Route::get('/', function () {

@@ -91,6 +91,10 @@ Create database with your name in env file
 
 `php artisan serve --host=0.0.0.0:80`
 
+### For testing via Swagger
+
+after `api/auth/login` use swagger auth field like `Bearer your_jwt_token`
+
 [//]: # (### PHP packages )
 
 [//]: # (`sudo apt install php8.1 php8.1-fpm php8.1-{bcmath,xml,fpm,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi,ssh2}`)
