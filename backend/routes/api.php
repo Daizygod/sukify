@@ -25,6 +25,7 @@ Route::get('tracks/like', [TrackController::class, 'setTrackFavorite']);
 Route::get('tracks/unlike', [TrackController::class, 'setTrackUnfavorite']);
 
 //Route::get('tracks/search', [TrackController::class, 'search']);FIXME delete from web.php and uncomment here (auth)
+//Route::middleware('auth')->get('tracks/fav', [TrackController::class, 'favorites']);
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
