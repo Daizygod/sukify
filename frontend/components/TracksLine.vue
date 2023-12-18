@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-[calc(100vh-170px)] overflow-y-auto shadow-sm overflow-hidden my-8"
+    class="h-[calc(100vh-170px)] pb-[50px] overflow-y-auto shadow-sm overflow-hidden my-8"
   >
     <table class="table-auto w-full text-sm">
       <thead>
