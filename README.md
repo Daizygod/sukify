@@ -95,3 +95,6 @@ Create database with your name in env file
 
 [//]: # (`sudo apt install php8.1 php8.1-fpm php8.1-{bcmath,xml,fpm,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi,ssh2}`)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Daizygod/sukify&type=Date)](https://star-history.com/#Daizygod/sukify&Date)
