@@ -36,6 +36,13 @@ jobs:
             cd ..
             cd frontend
             PATH=$HOME/.local/bin:$HOME/bin:$HOME/sukify.ru/htdocs/node/bin:$PATH
-            pm2 kill
-            npm run build
-            pm2 start
+            npm run generate
+            cd .output/public
+            echo "<IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+            RewriteRule ^index\.html$ - [L]
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule . /index.html [L]
+            </IfModule>" > .htaccess
