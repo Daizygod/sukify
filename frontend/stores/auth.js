@@ -19,7 +19,7 @@ export const useAuthStore = defineStore("auth", {
     },
     async login(credentials) {
       try {
-        const response = await fetch("https://sukify.ru/api/auth/login", {
+        const response = await fetch("https://api.sukify.ru/api/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

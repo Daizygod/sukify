@@ -164,7 +164,7 @@ export default {
       return `${minutes}:${seconds}`;
     },
     async fetchData() {
-      const response = await $fetch("https://sukify.ru/api/tracks/search");
+      const response = await $fetch("https://api.sukify.ru/api/tracks/search");
       this.tracks = await response;
     },
   },
