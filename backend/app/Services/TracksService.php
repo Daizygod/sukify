@@ -37,9 +37,9 @@ class TracksService implements TracksServiceInterface
 
 
                 if (Carbon::now('UTC')->diffInMonths($track->added_at) > 1) {
-                    $track->added_at = $track->added_at->locale('ru')->translatedFormat('d M. o');
+                    $track->added_at = $track->added_at->locale(app()->getLocale())->translatedFormat('d M. o');
                 } else {
-                    $track->added_at = $track->added_at->locale('ru')->diffForHumans();
+                    $track->added_at = $track->added_at->locale(app()->getLocale())->diffForHumans();
                 }
 //            $track->added_at = Carbon::createFromTimestamp(Carbon::now('UTC')->subSeconds(rand(10, 172800))->timestamp, 'UTC')->locale('ru')->diffForHumans();
                 $track->liked = $track->hasLikeFromUser($user_id);

@@ -269,6 +269,116 @@
                 ]
             }
         },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "register"
+                ],
+                "summary": "Register and get jwt bearer token",
+                "description": "Register and get jwt bearer token",
+                "operationId": "02a35f8078678f9f0c89b8fdaa5b696a",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "username"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "exmaple@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "qwerty123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "qwerty123"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "username",
+                                    "email": "exmaple@email.com",
+                                    "password": "qwerty123",
+                                    "password_confirmation": "qwerty123"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "qwerty123"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "exmaple@email.com"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2024-03-09T13:45:15.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2024-03-09T13:45:15.000000Z"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "4"
+                                        },
+                                        "token": {
+                                            "properties": {
+                                                "access_token": {
+                                                    "type": "number",
+                                                    "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNzAxMjg5ODk2LCJleHAiOjE3MDEyOTM0OTYsIm5iZiI6MTcwMTI4OTg5NiwianRpIjoiczNkR2RPRENJdzl4QWNXOCIsInN1YiI6IjEwMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZE1gFMtIMT3FHZNWIpvPULYBa8ip86arfs-Wf9R_vOs"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "bearer"
+                                                },
+                                                "expires_in": {
+                                                    "type": "integer",
+                                                    "example": "3600"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "The email has already been taken"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/getaudio/{folder}/{filename}/{ext}": {
             "get": {
                 "tags": [
@@ -322,6 +432,130 @@
                                         "msg": {
                                             "type": "string",
                                             "example": "Пошел нахуй"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tracks/unlike": {
+            "post": {
+                "tags": [
+                    "tracks"
+                ],
+                "summary": "Unlike track",
+                "description": "Unlike track",
+                "operationId": "cc2628eb164207afc0ca5a63346849b1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "track_id": {
+                                        "type": "integer",
+                                        "example": "2134"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "track_id": 2134
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": "The selected track id is invalid."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tracks/like": {
+            "post": {
+                "tags": [
+                    "tracks"
+                ],
+                "summary": "Like track",
+                "description": "Like track",
+                "operationId": "302de12c94f066cac3941608399069d8",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "track_id": {
+                                        "type": "integer",
+                                        "example": "2134"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "track_id": 2134
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": "The selected track id is invalid."
                                         }
                                     },
                                     "type": "object"

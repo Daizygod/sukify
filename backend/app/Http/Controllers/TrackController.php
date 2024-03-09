@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Tracks\LikeUnlikeRequest;
 use App\Models\Track;
 use App\Models\User;
 use App\Models\UsersLikedTrack;
@@ -14,6 +15,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Itstructure\GridView\DataProviders\EloquentDataProvider;
@@ -70,6 +72,12 @@ class TrackController extends Controller
      */
     public function listenAudio(Request $request, $folder, $filename, $ext)
     {
+        if (!Auth::user()) {
+            return response()->json([
+                'error' => Lang::choice('auth.unauthorized', 1, [])
+            ], 400);
+        }
+        $user_id = Auth::user()->id;
         $response_code = 200;
         $headers = ['Content-Type' => 'audio/mpeg'];
         $fileNameWithFolder = "$folder/$filename.$ext";
@@ -84,6 +92,11 @@ class TrackController extends Controller
 //            return 0;
 //        }
         $file = Storage::disk('local')->get($filePath);
+        if (!$file) {
+            return response()->json([
+                'error' => Lang::choice('error.unknown.file', 1, [])
+            ], 400);
+        }
         $response = \Illuminate\Support\Facades\Response::make($file, 200);
         $size = Storage::disk('local')->size($filePath);
         $stream = fopen(storage_path('app/' . $filePath), "r");
@@ -151,12 +164,42 @@ class TrackController extends Controller
 
     }
 
+    /**
+     * @OA\Post (
+     *     path="/api/tracks/unlike",
+     *     tags={"tracks"},
+     *     description="Unlike track",
+     *     summary="Unlike track",
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                  @OA\Property(property="track_id",type="integer",example="2134"),
+     *                  example={"track_id": 2134}
+     *             )
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error",type="boolean", example="false"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="validation error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error",type="boolean", example="The selected track id is invalid."),
+     *          )
+     *      )
+     * )
+     */
     public function setTrackUnfavorite(Request $request)
     {
         $return = new \stdClass();
         $return->error = true;
-        //TODO get user_id from jwt
-        $user_id = 202;
+        $user_id = Auth::user()->id;
         $track_id = $request->input('track_id');
         $track = Track::where(['id' => $track_id])->first();
         $user = User::where(['id' => $user_id])->first();
@@ -167,27 +210,49 @@ class TrackController extends Controller
         return $return;
     }
 
-    public function setTrackFavorite(Request $request)
+    /**
+     * @OA\Post (
+     *     path="/api/tracks/like",
+     *     tags={"tracks"},
+     *     description="Like track",
+     *     summary="Like track",
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                  @OA\Property(property="track_id",type="integer",example="2134"),
+     *                  example={"track_id": 2134}
+     *             )
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error",type="boolean", example="false"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="validation error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error",type="boolean", example="The selected track id is invalid."),
+     *          )
+     *      )
+     * )
+     */
+    public function setTrackFavorite(LikeUnlikeRequest $request)
     {
         $return = new \stdClass();
         $return->error = true;
-        //TODO get user_id from jwt
-        $user_id = 202;
+        $user = Auth::user();
         $track_id = $request->input('track_id');
         $track = Track::where(['id' => $track_id])->first();
-        $user = User::where(['id' => $user_id])->first();
-        if ($track && $user) {
-            $isset = UsersLikedTrack::where(['user_id' => $user_id, 'track_id' => $track_id])->first();
-            if (!$isset) {
-                $link = new UsersLikedTrack([
-                    'user_id' => $user_id,
-                    'track_id' => $track_id
-                ]);
-            }
-            $return->error = false;
-            if (!$isset && !$link->save()) {
-                $return->error = true;
-            }
+        if ($track) {
+            try {
+                UsersLikedTrack::firstOrCreate(['user_id' => $user->id, 'track_id' => $track_id]);
+                $return->error = false;
+            } catch (\Exception $e) {}
         }
         return $return;
     }
@@ -282,14 +347,14 @@ class TrackController extends Controller
      */
     public function search(Request $request)
     {
-        //TODO get user_id from jwt
-        $user_id = 202;
+        $user_id = Auth::user()->id;
+        $search = $request->query('search', '');
 
         $repository = new TracksRepository($user_id);
         $service = new TracksService($user_id);
         $tracks = $service->toResponse(
             $repository->paginate(
-                $repository->search($request->query('search'))
+                $repository->search($search)
             )->items()
         );
 
@@ -426,7 +491,6 @@ class TrackController extends Controller
      */
     public function favorites(Request $request)
     {
-//        //TODO get user_id from jwt
 //        $user_id = 202;
 //        $allUserTrackIds = UsersLikedTrack::where(['user_id' => $user_id])->pluck('track_id')->toArray();
 //        $tracks = Track::whereIn('id', $allUserTrackIds)
@@ -447,8 +511,7 @@ class TrackController extends Controller
 //                return $track;
 //            });
 
-        //TODO get user_id from jwt
-        $user_id = 202;
+        $user_id = Auth::user()->id;
 
         $repository = new TracksRepository($user_id);
         $service = new TracksService($user_id);
