@@ -12,9 +12,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Track
+ *
+ * @mixin Builder
  * 
  * @property int $id
  * @property string $name
