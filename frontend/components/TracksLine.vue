@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-[calc(100vh-170px)] overflow-y-auto shadow-sm overflow-hidden my-8"
+    class="h-[calc(100vh-170px)] pb-[50px] overflow-y-auto shadow-sm overflow-hidden my-8"
   >
     <table class="table-auto w-full text-sm">
       <thead>
@@ -164,7 +164,7 @@ export default {
       return `${minutes}:${seconds}`;
     },
     async fetchData() {
-      const response = await $fetch("https://sukify.ru/api/tracks/search");
+      const response = await $fetch("https://api.sukify.ru/api/tracks/search");
       this.tracks = await response;
     },
   },
