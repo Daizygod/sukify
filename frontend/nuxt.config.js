@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
   modules: [
+    ["@pinia/nuxt"],
     // '@nuxtjs/tailwindcss'
   ],
   postcss: {
@@ -10,5 +11,5 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  devtools: { enabled: true }
-})
+  devtools: { enabled: true },
+});
